@@ -1,13 +1,15 @@
 server:
-  port: 8080
+  port: 8080  # Port de ton API Gateway
 
 spring:
   application:
-    name: gateway-service
+    name: gateway-service  # Nom sous lequel il apparaîtra sur Eureka
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/  # URL du serveur Eureka
   instance:
     prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10  # Envoie un heartbeat toutes les 10 secondes
+    lease-expiration-duration-in-seconds: 30  # Supprime l'instance si aucun heartbeat pendant 30s

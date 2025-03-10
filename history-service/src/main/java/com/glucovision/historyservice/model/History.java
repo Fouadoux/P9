@@ -4,25 +4,18 @@ package com.glucovision.historyservice.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Data
 @Document(collection = "history")
 public class History {
+
     @Id
     private String id;
 
     private String patientId;
 
-    private List<Comment> comments = new ArrayList<>();
+    private String comments;
 
-    public History(String patientId) {
-        this.patientId = patientId;
-    }
-
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-    }
+    private Date date;
 }
