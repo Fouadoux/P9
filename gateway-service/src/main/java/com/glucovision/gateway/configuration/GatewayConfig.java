@@ -11,7 +11,7 @@ public class GatewayConfig {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("patient_route",r -> r.path("/patients/**").uri("lb://paient-service"))
+                .route("patient-route",r -> r.path("/patients/**").uri("lb://patient-service"))
                 .route("history_route",r -> r.path("/history/**").uri("lb://history-service"))
                 .route("diabetes_risk_route",r->r.path("/diabetes/**").uri("lb://diabetes-service"))
                 .build();
