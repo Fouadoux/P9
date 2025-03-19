@@ -1,5 +1,6 @@
 package com.glucovision.patientservice.controller;
 
+import com.glucovision.patientservice.dto.PatientDTO;
 import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.service.PatientService;
 import jakarta.validation.Valid;
@@ -37,16 +38,19 @@ public class PatientController {
 
     // Récupérer un patient par ID
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
+    public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
         Patient patient = patientService.findPatientById(id);
-        return ResponseEntity.ok(patient);
+        PatientDTO patientDto=patientService.convertToDTO(patient);
+        return ResponseEntity.ok(patientDto);
     }
 
     // Récupérer un patient par son nom
     @GetMapping("/name/{lastName}")
-    public ResponseEntity<Patient> getPatientByName(@PathVariable String lastName) {
+    public ResponseEntity<PatientDTO> getPatientByName(@PathVariable String lastName) {
         Patient patient = patientService.findPatientByName(lastName);
-        return patient != null ? ResponseEntity.ok(patient) : ResponseEntity.notFound().build();
+        PatientDTO patientDto=patientService.convertToDTO(patient);
+
+        return patientDto != null ? ResponseEntity.ok(patientDto) : ResponseEntity.notFound().build();
     }
 
     // Mettre à jour un patient
