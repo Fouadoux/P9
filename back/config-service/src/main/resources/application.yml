@@ -1,0 +1,11 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: native  # Active le stockage local
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///C:/Users/fouad/Documents/openclassroom/P9/back/glucovision-config # Remplace par ton chemin exact
