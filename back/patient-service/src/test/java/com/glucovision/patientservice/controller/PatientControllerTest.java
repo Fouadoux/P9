@@ -1,5 +1,6 @@
 package com.glucovision.patientservice.controller;
 
+import com.glucovision.patientservice.dto.PatientDTO;
 import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.service.PatientService;
 import jakarta.ws.rs.core.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
@@ -67,8 +69,13 @@ public class PatientControllerTest {
     @Test
     void testGetPatientByName_Success() throws Exception {
         String name = "Doe";
+        LocalDate birthDate = LocalDate.of(1989, 01, 01);
         Patient patient = new Patient(1L,"Alice",name,"1989-01-01","M");
+        PatientDTO patientDto = new PatientDTO(1L, "Alice", "Doe", birthDate, "F");
+
         when(patientService.findPatientByName(name)).thenReturn(patient);
+        when(patientService.convertToDTO(patient)).thenReturn(patientDto);
+
         mockMvc.perform(get("/patients/name/{name}", name))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.lastName").value(name));
@@ -89,8 +96,12 @@ public class PatientControllerTest {
     void testGetPatientById_Found() throws Exception {
         // Arrange
         Long id = 1L;
+        LocalDate birthDate = LocalDate.of(1992, 10, 20);
         Patient patient = new Patient(id, "Alice", "Doe", "1992-10-20", "F");
+        PatientDTO patientDto = new PatientDTO(id, "Alice", "Doe", birthDate, "F");
+
         when(patientService.findPatientById(id)).thenReturn(patient);
+        when(patientService.convertToDTO(patient)).thenReturn(patientDto);
 
         // Act & Assert
         mockMvc.perform(get("/patients/{id}", id))

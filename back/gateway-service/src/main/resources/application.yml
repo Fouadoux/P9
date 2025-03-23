@@ -1,15 +1,26 @@
 server:
-  port: 8080  # Port de ton API Gateway
+  port: 8080
 
 spring:
   application:
-    name: gateway-service  # Nom sous lequel il apparaîtra sur Eureka
+    name: gateway-service
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/  # URL du serveur Eureka
-  instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 10  # Envoie un heartbeat toutes les 10 secondes
-    lease-expiration-duration-in-seconds: 30  # Supprime l'instance si aucun heartbeat pendant 30s
+  main:
+    web-application-type: reactive  # ✅ Important pour WebFlux
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration  # ✅ Désactive Spring Security
+
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: patient-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/patients/**
+          filters:
+            - StripPrefix=1

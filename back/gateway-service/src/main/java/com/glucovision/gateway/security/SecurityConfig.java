@@ -1,5 +1,5 @@
 package com.glucovision.gateway.security;
-
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -29,6 +29,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .cors(ServerHttpSecurity.CorsSpec::disable) // ✅ Nouvelle méthode pour désactiver CORS
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/auth/**", "/eureka/**").permitAll()  // Routes publiques
                         .anyExchange().authenticated()  // Auth requise pour toutes les autres routes
@@ -37,4 +38,8 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 }
+
+ */

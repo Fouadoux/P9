@@ -1,0 +1,35 @@
+@if (!loading()) {
+    <form [formGroup]="form()!" (ngSubmit)="submit()" class="form-container">
+      <h2>Modifier le patient</h2>
+  
+      <label>Prénom</label>
+      <input type="text" formControlName="firstName" />
+  
+      <label>Nom</label>
+      <input type="text" formControlName="lastName" />
+  
+      <label>Date de naissance</label>
+      <input type="date" formControlName="birthDate" />
+  
+      <label>Genre</label>
+      <select formControlName="gender">
+        <option value="Male">Homme</option>
+        <option value="Female">Femme</option>
+        <option value="Other">Autre</option>
+      </select>
+  
+      <label>Adresse</label>
+      <input type="text" formControlName="address" />
+  
+      <label>Téléphone</label>
+      <input type="tel" formControlName="phone" />
+  
+      <div class="buttons">
+        <button type="submit" [disabled]="form()!.invalid">Enregistrer</button>
+        <button type="button" (click)="cancel()">Annuler</button>
+      </div>
+    </form>
+  } @else {
+    <p>Chargement...</p>
+  }
+  

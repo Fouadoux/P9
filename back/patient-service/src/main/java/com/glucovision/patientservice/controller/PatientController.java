@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -23,14 +24,9 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping
-    public String getAllPatients() {
-        return "Liste des patients";
-    }
-
     // Ajouter un patient
     @PostMapping
-    public ResponseEntity<Patient> createPatient(@Valid @RequestBody Patient patient) {
+    public ResponseEntity<Patient> createPatient(@Valid @RequestBody PatientDTO patient) {
         Patient savedPatient = patientService.addPatient(patient);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPatient);
     }
@@ -44,6 +40,13 @@ public class PatientController {
         return ResponseEntity.ok(patientDto);
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<PatientDTO>> getPatients() {
+        List<Patient> patients=patientService.findAll();
+        List<PatientDTO> patientDtos=patientService.convertToDTOList(patients);
+        return ResponseEntity.ok(patientDtos);
+    }
+
     // Récupérer un patient par son nom
     @GetMapping("/name/{lastName}")
     public ResponseEntity<PatientDTO> getPatientByName(@PathVariable String lastName) {
@@ -54,14 +57,18 @@ public class PatientController {
     }
 
     // Mettre à jour un patient
- /*   @PutMapping("/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient patientDetails) {
-        Patient updatedPatient = patientService.updatePatient(id, patientDetails);
-        return updatedPatient != null ? ResponseEntity.ok(updatedPatient) : ResponseEntity.notFound().build();
+    @PutMapping("/{id}")
+    public ResponseEntity<PatientDTO> updatePatient(
+            @PathVariable Long id,
+            @Valid @RequestBody PatientDTO patientDTO) {
+
+        PatientDTO updatedPatient = patientService.updatePatient(id, patientDTO);
+
+        return updatedPatient != null
+                ? ResponseEntity.ok(updatedPatient)
+                : ResponseEntity.notFound().build();
     }
 
-
-  */
     // Supprimer un patient
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {

@@ -10,8 +10,7 @@ import javax.sql.DataSource;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
-@SpringBootTest
-@ActiveProfiles("test")  // Charge application-test.properties
+@SpringBootTest(properties = {"spring.profiles.active=test"})
 class PatientServiceApplicationTests {
 
 	@Test

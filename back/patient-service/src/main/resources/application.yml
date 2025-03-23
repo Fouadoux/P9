@@ -1,8 +1,8 @@
 spring:
   application:
     name: patient-service
-    import: "optional:configserver:http://localhost:8888/"
 
+spring.config.import: "optional:configserver:http://localhost:8888/"
 #logging:
 #  level:
   #  root: DEBUG  # Active les logs pour voir s’il récupère la config

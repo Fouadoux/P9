@@ -1,0 +1,14 @@
+@if (patient()) {
+    <div>
+      <h2>{{ patient()!.firstName }} {{ patient()!.lastName }}</h2>
+      <p><strong>Date de naissance:</strong> {{ patient()!.birthDate }}</p>
+      <p><strong>Genre:</strong> {{ patient()!.gender }}</p>
+      <p><strong>Adresse :</strong> {{ patient()!.address }}</p>
+      <p><strong>Phone :</strong> {{ patient()!.phone }}</p>
+      <button (click)="goBack()">Retour</button>
+      <button (click)="editPatient()">Modifier</button>
+    </div>
+  } @else {
+    <p>Patient inexistant...</p>
+  }
+   
