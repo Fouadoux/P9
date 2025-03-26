@@ -1,0 +1,61 @@
+<div class="notes-wrapper">
+<section class="notes-container">
+    <h2>📝 Notes du patient</h2>
+  
+    <button (click)="showDialog.set(true)">➕ Ajouter une note</button>
+  
+    <div class="note-list">
+      @if (notes().length > 0) {
+        @for (note of notes(); track note.creationDate) {
+          <div class="note-card">
+            <p><strong>Date de création :</strong> {{ note.creationDate | date: 'short' }}</p>
+            @if(note.modificationDate !=null){
+              <p><strong>Date de modification :</strong> {{ note.modificationDate | date: 'short' }}</p>
+            }
+            <p class="note-preview">{{ note.comments }}</p>
+            <div class="note-actions">
+              @if(canEdit(note)){
+                <button title="Modifiable pendant 24h" (click)="editNote(note)">✏️</button>
+                @if(showModifDialog()==true){
+                  <app-note-modif-dialog   [note]="noteToEdit()"
+                  (close)="showModifDialog.set(false)"
+                  (noteModifier)="handleNoteUpdate($event!)"
+                />
+                }
+              }
+             
+              <button (click)="openNote(note)">🔍</button>
+              @if(showViewDialog()==true){
+                <app-note-view-dialog 
+                [note]="selectedNote()"
+                (close)="showViewDialog.set(false)"
+                ></app-note-view-dialog>
+              }
+              @if(canEdit(note)){
+                <button title="Supprimable pendant 24h" (click)="deleteNote(note)">🗑️</button>
+                @if(showDeleteDialog()==true){
+                  <app-delete-note-dialog
+                  [noteToDelete]="noteToDelete()"
+                  (close)="showDeleteDialog.set(false)"
+                  (delete)="handleNoteDelete($event!)"
+                />
+                }
+              }
+
+            </div>
+          </div>
+        }
+      } @else {
+        <p>Aucune note pour ce patient.</p>
+      }
+    </div>
+  
+    @if (showDialog()) {
+      <app-add-note-dialog
+        [patientId]="patientId() ?? null"
+        (comment)="handleNoteSubmit($event)"
+        (close)="showDialog.set(false)"
+      />
+    }
+  </section>
+</div>

@@ -1,0 +1,12 @@
+<div class="backdrop" (click)="close.emit()"></div>
+
+<div class="dialog">
+  <h2>🗑️ Supprimer la note</h2>
+  <p>Souhaitez-vous vraiment supprimer cette note créée le :</p>
+  <p><strong>{{ noteToDelete()?.creationDate | date: 'short' }}</strong></p>
+
+  <div class="actions">
+    <button (click)="close.emit()">Annuler</button>
+    <button (click)="delete.emit(noteToDelete())">Confirmer</button>
+  </div>
+</div>

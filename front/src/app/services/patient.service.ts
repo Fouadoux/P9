@@ -8,7 +8,7 @@ import { Patient } from "../shared/components/patient-card/patient-card.componen
 })
 export class PatientService{
 
-    private apiUrl='http://localhost:8080/patients';
+    private apiUrl='http://localhost:8080/api/patients';
 
     
     private http = inject(HttpClient);

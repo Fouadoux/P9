@@ -1,0 +1,18 @@
+<div class="backdrop" (click)="close.emit()"></div>
+
+<div class="dialog">
+
+    @if (note()) {
+        <h2>Note du {{ note()?.creationDate | date: 'short' }}</h2>
+      
+        @if (note()?.modificationDate) {
+          <p>Dernière modification : {{ note()?.modificationDate | date: 'short' }}</p>
+        }
+      
+        <p>{{ note()?.comments }}</p>
+      
+        <button  class="close" (click)="close.emit()">Fermer</button>
+      }
+
+
+</div>

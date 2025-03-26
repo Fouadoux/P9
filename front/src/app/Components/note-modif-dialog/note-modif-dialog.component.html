@@ -1,0 +1,15 @@
+<div class="backdrop" (click)="close.emit()"></div>
+
+<div class="dialog">
+  <textarea
+    [value]="text()"
+    (input)="updateText($event)"
+    placeholder="Modifier l'observation..."
+    rows="6"
+  ></textarea>
+
+  <div class="actions">
+    <button class="save" (click)="save()">Enregistrer</button>
+    <button class="cancel" (click)="close.emit()">Annuler</button>
+  </div>
+</div>

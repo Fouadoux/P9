@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class SearchBarComponent {
-  search = output<string>(); // ✅ Utilisation correcte de output<string>()
+  search = output<string>(); 
 
   updateSearch(event: Event) {
     const inputElement = event.target as HTMLInputElement;

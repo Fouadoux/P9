@@ -1,0 +1,18 @@
+<p>add-note-dialog works!</p>
+<div class="backdrop" (click)="close.emit()"></div>
+
+<div class="dialog">
+  <h2>Ajouter une note</h2>
+
+  <textarea
+    [ngModel]="text()"
+    (ngModelChange)="text.set($event)"
+    placeholder="Écris une observation ici..."
+    rows="6"
+  ></textarea>
+
+  <div class="actions">
+    <button class="cancel" (click)="close.emit()">Annuler</button>
+    <button class="save" (click)="save()">Enregistrer</button>
+  </div>
+</div>

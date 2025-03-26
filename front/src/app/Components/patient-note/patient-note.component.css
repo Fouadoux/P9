@@ -1,0 +1,41 @@
+.notes-wrapper {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.notes-container {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background: #f9f9f9;    
+  }
+  
+  .note-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .note-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .note-preview {
+    margin-top: 0.5rem;
+    color: #444;
+  }
+  
+  .note-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+  
