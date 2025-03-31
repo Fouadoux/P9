@@ -12,10 +12,9 @@
       <input type="date" formControlName="birthDate" />
   
       <label>Genre</label>
-      <select formControlName="gender">
-        <option value="Male">Homme</option>
-        <option value="Female">Femme</option>
-        <option value="Other">Autre</option>
+      <select [formControl]="genderControl">
+        <option value="MALE">Homme</option>
+        <option value="FEMALE">Femme</option>
       </select>
   
       <label>Adresse</label>

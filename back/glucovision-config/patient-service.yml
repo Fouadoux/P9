@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: patient-service
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
 
   datasource:
     url: jdbc:mysql://localhost:3306/glucovision-patient-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC

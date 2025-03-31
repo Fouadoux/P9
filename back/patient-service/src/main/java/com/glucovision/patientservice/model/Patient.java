@@ -18,7 +18,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(Long id, String firstName, String lastName, String birthDate, String gender, String address, String phoneNumber) {
+    public Patient(Long id, String firstName, String lastName, String birthDate, Gender gender, String address, String phoneNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,7 +27,7 @@ public class Patient {
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
-    public Patient(Long id, String firstName, String lastName, String birthDate, String gender) {
+    public Patient(Long id, String firstName, String lastName, String birthDate, Gender gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -67,8 +67,9 @@ public class Patient {
     private LocalDate birthDate;
 
     @Column(name = "gender", nullable = false)
-    @NotBlank(message = "Gender name is required")
-    private String gender;
+    @NotNull(message = "Gender is required")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(name = "address")
     private String address;

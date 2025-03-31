@@ -1,6 +1,7 @@
 package com.glucovision.patientservice.service;
 
 import com.glucovision.patientservice.dto.PatientDTO;
+import com.glucovision.patientservice.model.Gender;
 import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.repository.PatientRepository;
 import lombok.extern.log4j.Log4j2;
@@ -30,8 +31,7 @@ public class PatientService {
         if (patientDTO == null
                 || patientDTO.getFirstName() == null || patientDTO.getFirstName().trim().isEmpty()
                 || patientDTO.getLastName() == null || patientDTO.getLastName().trim().isEmpty()
-                || patientDTO.getBirthDate() == null
-                || patientDTO.getGender() == null) {
+                || patientDTO.getBirthDate() == null) {
 
             throw new IllegalArgumentException("Invalid patient data");
         }

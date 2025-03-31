@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NoteViewDialogComponent } from "../note-view-dialog/note-view-dialog.component";
 import { NoteModifDialogComponent } from "../note-modif-dialog/note-modif-dialog.component";
 import { DeleteNoteDialogComponent } from '../delete-note-dialog/delete-note-dialog.component';
+import { PatientDetailsComponent } from '../../pages/patient-details/patient-details.component';
 
 @Component({
   selector: 'app-patient-note',
@@ -25,6 +26,9 @@ export class PatientNoteComponent {
   noteToEdit = signal<Note | null>(null);
   showDeleteDialog=signal(false);
   noteToDelete=signal<Note|null>(null);
+  private parent = inject(PatientDetailsComponent);
+
+
 
   constructor(){
     
@@ -39,17 +43,25 @@ export class PatientNoteComponent {
     });
   }
 
-  handleNoteSubmit(noteData:{patientId:number,comments:string}){
+  handleNoteSubmit(noteData: { patientId: number; comments: string }) {
     this.noteService.addNoteByPatientId(noteData).subscribe({
-      next:() => {
+      next: () => {
         this.showDialog.set(false);
         this.noteService.getNotesByPatientId(noteData.patientId).subscribe({
-          next:(data)=>this.notes.set(
-            data.sort((a, b) => new Date(b.creationDate?? '').getTime() - new Date(a.creationDate?? '').getTime())          
-          )});
+          next: (data) => {
+            this.notes.set(
+              data.sort(
+                (a, b) =>
+                  new Date(b.creationDate ?? '').getTime() -
+                  new Date(a.creationDate ?? '').getTime()
+              )
+            );
+            this.parent.refreshRisk();
+          },
+        });
       },
-      error:(err)=>console.log('Erreur ajout de note',err)
-    })
+      error: (err) => console.log('Erreur ajout de note', err),
+    });
   }
 
   handleNoteUpdate(note: Note) {
@@ -57,14 +69,16 @@ export class PatientNoteComponent {
       next: () => {
         this.showModifDialog.set(false);
         this.noteService.getNotesByPatientId(note.patientId).subscribe({
-          next: (data) =>
+          next: (data) =>{
             this.notes.set(
               data.sort(
                 (a, b) =>
                   new Date(b.creationDate ?? '').getTime() -
                   new Date(a.creationDate ?? '').getTime()
               )
-            )
+            );
+            this.parent.refreshRisk();
+          },
         });
       },
       error: (err) => console.log('Erreur de modification de note', err)
@@ -76,14 +90,16 @@ export class PatientNoteComponent {
       next: () => {
         this.showDeleteDialog.set(false);
         this.noteService.getNotesByPatientId(note.patientId).subscribe({
-          next: (data) =>
+          next: (data) =>{
             this.notes.set(
               data.sort(
                 (a, b) =>
                   new Date(b.creationDate ?? '').getTime() -
                   new Date(a.creationDate ?? '').getTime()
               )
-            )
+            );
+            this.parent.refreshRisk();
+          }
         });
       },
       error: (err) => console.log('Erreur de modification de note', err)

@@ -12,10 +12,31 @@ import java.time.OffsetDateTime;
 @Data
 public class NoteDto {
 
-    @NotNull(message = "L'ID du patient est obligatoire")
+    public NoteDto() {
+    }
+
+    public NoteDto(Long patientId, String comments) {
+        this.patientId = patientId;
+        this.comments = comments;
+    }
+
+    public NoteDto(Long patientId, String comments, LocalDateTime creationDate) {
+        this.patientId = patientId;
+        this.comments = comments;
+        this.creationDate = creationDate;
+    }
+
+    public NoteDto(Long patientId, String comments, LocalDateTime creationDate, LocalDateTime modificationDate) {
+        this.patientId = patientId;
+        this.comments = comments;
+        this.creationDate = creationDate;
+        this.modificationDate = modificationDate;
+    }
+
+    @NotNull(message = "PatientId is required")
     private Long patientId;
 
-    @NotBlank(message = "Le commentaire ne peut pas être vide")
+    @NotBlank(message = "Comment is required")
     private String comments;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

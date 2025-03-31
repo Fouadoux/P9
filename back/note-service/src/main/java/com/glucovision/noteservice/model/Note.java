@@ -13,6 +13,15 @@ import java.time.OffsetDateTime;
 @Document(collection = "history")
 public class Note {
 
+    public Note(Long patientId, String comments, LocalDateTime creationDate) {
+        this.patientId = patientId;
+        this.comments = comments;
+        this.creationDate = creationDate;
+    }
+
+    public Note() {
+    }
+
     @Id
     private String id;
 

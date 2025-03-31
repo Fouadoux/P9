@@ -1,5 +1,7 @@
 package com.glucovision.patientservice.service;
 
+import com.glucovision.patientservice.dto.PatientDTO;
+import com.glucovision.patientservice.model.Gender;
 import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
@@ -9,10 +11,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static com.glucovision.patientservice.model.Gender.FEMALE;
+import static com.glucovision.patientservice.model.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -29,9 +34,9 @@ class PatientServiceTest {
     @Test
     public void testFindAll() {
         List<Patient> patients= List.of(
-                new Patient(1L,"John","Doe","1980-12-03","M","place monge","111-222-333"),
-                new Patient(2L,"Fred","Jack","1989-04-03","M","rue pasteur","222-111-333"),
-                new Patient(3L,"Fred","Jack","1989-04-03","M","rue france","333-222-111")
+                new Patient(1L,"John","Doe","1980-12-03", MALE,"place monge","111-222-333"),
+                new Patient(2L,"Fred","Jack","1989-04-03",MALE,"rue pasteur","222-111-333"),
+                new Patient(3L,"Fred","Jack","1989-04-03",MALE,"rue france","333-222-111")
                 );
 
         when(patientRepository.findAll()).thenReturn(patients);
@@ -43,7 +48,7 @@ class PatientServiceTest {
 
     @Test
     public void testFindByLastName_Found() {
-        Patient patient= new Patient(1L,"John","Doe","1980-12-03","M","place monge","111-222-333");
+        Patient patient= new Patient(1L,"John","Doe","1980-12-03",MALE,"place monge","111-222-333");
         when(patientRepository.findByLastName("Doe")).thenReturn(Optional.of(patient));
 
         Patient result = patientService.findPatientByName("Doe");
@@ -60,9 +65,13 @@ class PatientServiceTest {
 
     @Test
     public void testAddPatient() {
-        Patient patient= new Patient(1L,"John","Doe","1980-12-03","M","place monge","111-222-333");
-        when(patientRepository.save(patient)).thenReturn(patient);
-        Patient result = patientService.addPatient(patient);
+        LocalDate birthDate= LocalDate.of(1980, 12, 3);
+        PatientDTO patientDTO= new PatientDTO(1L,"John","Doe",birthDate,MALE,"place monge","111-222-333");
+        Patient patient= new Patient(1L,"John","Doe","1980-12-03",MALE,"place monge","111-222-333");
+
+        when(patientRepository.save(any(Patient.class))).thenReturn(patient);
+
+        Patient result = patientService.addPatient(patientDTO);
         assertNotNull(result);
         assertEquals(patient.getId(), result.getId());
         assertEquals(patient.getLastName(), result.getLastName());
@@ -83,7 +92,7 @@ class PatientServiceTest {
     @Test
     void testAddPatient_WithInvalidFields_ShouldThrowException() {
         // Arrange
-        Patient invalidPatient = new Patient();
+        PatientDTO invalidPatient = new PatientDTO();
         invalidPatient.setLastName("Doe");
 
         // Act & Assert
@@ -98,7 +107,7 @@ class PatientServiceTest {
     @Test
     void testFindPatientById_Found() {
         // Arrange
-        Patient patient = new Patient(1L, "Alice", "Doe", ("1992-10-20"), "F");
+        Patient patient = new Patient(1L, "Alice", "Doe", ("1992-10-20"), FEMALE);
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
 
         // Act

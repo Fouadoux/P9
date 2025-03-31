@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Gender } from '../../model/gender.model';
 
 
 export interface Patient{
@@ -8,7 +9,7 @@ export interface Patient{
   firstName:string;
   lastName:string;
   birthDate:string;
-  gender:string;
+  gender:Gender;
   address:string;
   phone:string;
 }

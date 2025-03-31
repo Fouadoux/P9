@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      database: test-db
+
+eureka:
+  client:
+    enabled: false

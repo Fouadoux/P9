@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { SearchBarComponent } from '../../Components/search-bar/search-bar.component';
 import { PatientService } from '../../services/patient.service';
-import { Patient, PatientCardComponent } from '../../shared/components/patient-card/patient-card.component';
+import { Patient, PatientCardComponent } from '../../Components/patient-card/patient-card.component';
 
 @Component({
   selector: 'app-patients',

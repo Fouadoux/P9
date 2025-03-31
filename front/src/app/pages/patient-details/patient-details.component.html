@@ -5,6 +5,14 @@
     <p><strong>Genre:</strong> {{ patient()!.gender }}</p>
     <p><strong>Adresse :</strong> {{ patient()!.address }}</p>
     <p><strong>Phone :</strong> {{ patient()!.phone }}</p>
+    @if (risk()) {
+      <p>
+        <strong>Risque de diabète :</strong>
+        <span class="risk-label {{ risk()?.riskLevel?.toLowerCase() }}">
+          {{ getRiskLabel(risk()?.riskLevel ?? '') }}
+        </span>
+      </p>
+    }
 
     <div class="actions">
       <button (click)="goBack()">⬅️ Retour</button>
@@ -18,3 +26,4 @@
 @if (patientId() !== null) {
   <app-patient-note [patientId]="patientId()" />
 }
+

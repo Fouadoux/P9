@@ -14,6 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.glucovision.patientservice.model.Gender.FEMALE;
+import static com.glucovision.patientservice.model.Gender.MALE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDate;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")  // Charge application-test.properties
+@ActiveProfiles("test")
 public class PatientControllerTest {
 
     @Mock
@@ -70,8 +72,8 @@ public class PatientControllerTest {
     void testGetPatientByName_Success() throws Exception {
         String name = "Doe";
         LocalDate birthDate = LocalDate.of(1989, 01, 01);
-        Patient patient = new Patient(1L,"Alice",name,"1989-01-01","M");
-        PatientDTO patientDto = new PatientDTO(1L, "Alice", "Doe", birthDate, "F");
+        Patient patient = new Patient(1L,"Alice",name,"1989-01-01",MALE);
+        PatientDTO patientDto = new PatientDTO(1L, "Alice", "Doe", birthDate, FEMALE);
 
         when(patientService.findPatientByName(name)).thenReturn(patient);
         when(patientService.convertToDTO(patient)).thenReturn(patientDto);
@@ -97,8 +99,8 @@ public class PatientControllerTest {
         // Arrange
         Long id = 1L;
         LocalDate birthDate = LocalDate.of(1992, 10, 20);
-        Patient patient = new Patient(id, "Alice", "Doe", "1992-10-20", "F");
-        PatientDTO patientDto = new PatientDTO(id, "Alice", "Doe", birthDate, "F");
+        Patient patient = new Patient(id, "Alice", "Doe", "1992-10-20", FEMALE);
+        PatientDTO patientDto = new PatientDTO(id, "Alice", "Doe", birthDate, FEMALE);
 
         when(patientService.findPatientById(id)).thenReturn(patient);
         when(patientService.convertToDTO(patient)).thenReturn(patientDto);
@@ -124,8 +126,8 @@ public class PatientControllerTest {
     @Test
     void testAddPatient_Valid() throws Exception {
         // Arrange
-        Patient patient = new Patient(null, "Alice", "Doe", "1992-10-20", "F");
-        when(patientService.addPatient(any(Patient.class))).thenReturn(patient);
+        Patient patient = new Patient(null, "Alice", "Doe", "1992-10-20", FEMALE);
+        when(patientService.addPatient(any(PatientDTO.class))).thenReturn(patient);
 
         // Act & Assert
         mockMvc.perform(post("/patients")
@@ -135,7 +137,7 @@ public class PatientControllerTest {
                     "firstName": "Alice",
                     "lastName": "Doe",
                     "birthDate": "1992-10-20",
-                    "gender": "F"
+                    "gender": "FEMALE"
                 }
                 """))
                 .andExpect(status().isCreated())
@@ -150,7 +152,7 @@ public class PatientControllerTest {
             "firstName": "",
             "lastName": "Doe",
             "birthDate": "1992-10-20",
-            "gender": "F"
+            "gender": "FEMALE"
         }
         """;
 

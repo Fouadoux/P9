@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import static com.glucovision.patientservice.model.Gender.FEMALE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +42,7 @@ public class PatientIT {
         patient.setFirstName("Alice");
         patient.setLastName("Martin");
         patient.setBirthDate(LocalDate.of(1990, 1, 1));
-        patient.setGender("F");
+        patient.setGender(FEMALE);
         patient.setAddress("Paris");
         patient.setPhoneNumber("0102030405");
 
@@ -64,7 +65,7 @@ public class PatientIT {
         patient.setFirstName("Alice");
         patient.setLastName("Martin");
         patient.setBirthDate(LocalDate.of(1990, 1, 1));
-        patient.setGender("F");
+        patient.setGender(FEMALE);
         patient.setAddress("Paris");
         patient.setPhoneNumber("0102030405");
 

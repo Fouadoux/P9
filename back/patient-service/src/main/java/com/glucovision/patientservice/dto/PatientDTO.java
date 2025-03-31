@@ -1,6 +1,7 @@
 package com.glucovision.patientservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.glucovision.patientservice.model.Gender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 public class PatientDTO {
 
 
-    public PatientDTO(Long id, String firstName, String lastName, LocalDate birthDate, String gender) {
+    public PatientDTO(Long id, String firstName, String lastName, LocalDate birthDate, Gender gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,19 +28,19 @@ public class PatientDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)  // Empêche la modification de l'ID
     private Long id;
 
-    @NotBlank(message = "Le prénom ne peut pas être vide")
+    @NotBlank(message = "First name is required")
     @Size(max = 50, message = "Le prénom ne doit pas dépasser 50 caractères")
     private String firstName;
 
-    @NotBlank(message = "Le nom ne peut pas être vide")
+    @NotBlank(message = "Last name is required")
     @Size(max = 50, message = "Le nom ne doit pas dépasser 50 caractères")
     private String lastName;
 
-    @NotNull(message = "La date de naissance est obligatoire")
+    @NotNull(message = "Birth date is required")
     private LocalDate birthDate;
 
-    @NotBlank(message = "Le genre est obligatoire")
-    private String gender;
+    @NotNull(message = "Gender is required")
+    private Gender gender;
 
     private String address;
     private String phoneNumber;

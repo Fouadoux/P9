@@ -43,3 +43,27 @@
   background-color: #007bff;
   color: white;
 }
+
+.risk-label {
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.none {
+  background-color: #28a745; /* vert */
+}
+
+.borderline {
+  background-color: #ffc107; /* jaune */
+  color: black;
+}
+
+.in_danger {
+  background-color: #dc3545; /* rouge */
+}
+
+.early_onset {
+  background-color: #6f42c1; /* violet foncé */
+}

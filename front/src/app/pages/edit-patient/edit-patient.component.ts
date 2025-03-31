@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from '../../services/patient.service';
-import { Patient } from '../../shared/components/patient-card/patient-card.component';
+import { Patient } from '../../Components/patient-card/patient-card.component';
 
 @Component({
   selector: 'app-edit-patient',
@@ -67,6 +67,10 @@ export class EditPatientComponent {
 
   cancel() {
     this.router.navigate(['/patients', this.patientId() ?? '']);
+  }
+
+  get genderControl(): FormControl {
+    return this.form()?.get('gender') as FormControl;
   }
 
 

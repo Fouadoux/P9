@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,7 +36,6 @@ public class NoteController {
         if (noteDtoList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(noteDtoList);
     }
 
@@ -56,7 +53,8 @@ public class NoteController {
                     .body(new ErrorResponse("Note non trouvée."));
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(new ErrorResponse(e.getMessage()));        }
+                    .body(new ErrorResponse(e.getMessage()));
+        }
     }
 
     @DeleteMapping
@@ -72,11 +70,7 @@ public class NoteController {
                     .body(new ErrorResponse("Note non trouvée."));
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(new ErrorResponse(e.getMessage()));        }
+                    .body(new ErrorResponse(e.getMessage()));
+        }
     }
-
-
-
-
-
 }
