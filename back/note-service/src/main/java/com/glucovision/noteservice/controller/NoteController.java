@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 @RestController
 @Data
 @AllArgsConstructor
-@RequestMapping("/notes")
+@RequestMapping("/api/notes")
 public class NoteController {
 
     private final NoteService noteService;

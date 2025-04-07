@@ -6,33 +6,7 @@ spring:
     name: gateway-service
 
   main:
-    web-application-type: reactive  # ✅ Important pour WebFlux
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration  # ✅ Désactive Spring Security
+    web-application-type: reactive  # ✅ Requis pour Spring Cloud Gateway (WebFlux)
 
-  cloud:
-    config:
-      enabled: false
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: patient-service
-          uri: http://localhost:8085
-          predicates:
-            - Path=/api/patients/**
-          filters:
-            - StripPrefix=1
-        - id: note-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/notes/**
-          filters:
-            - StripPrefix=1
-        - id: diabetes-risk-service
-          uri: http://localhost:8084
-          predicates:
-            - Path=/api/risk/**
-          filters:
-            - StripPrefix=1
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration  # ✅ Désactive Spring Security auto-configurée (utile en dev)

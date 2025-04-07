@@ -1,0 +1,44 @@
+<div class="register-container">
+    <h2>Créer un compte</h2>
+  
+    <form (submit)="register(); $event.preventDefault()">
+      <input
+        type="text"
+        placeholder="Prénom"
+        [value]="firstName()"
+        (input)="updateFristname($event)"
+      />
+  
+      <input
+        type="text"
+        placeholder="Nom"
+        [value]="lastName()"
+        (input)="updateLastname($event)"
+      />
+  
+      <input
+        type="email"
+        placeholder="Email"
+        [value]="email()"
+        (input)="updateEmail($event)"
+        [class.invalid]="invalidEmail()"
+      />
+
+      <p class="error" *ngIf="invalidEmail()">Adresse email invalide</p>
+  
+      <input
+        type="password"
+        placeholder="Mot de passe"
+        [value]="password()"
+        (input)="updatePassword($event)"
+      />
+  
+      <button type="submit">S’inscrire</button>
+  
+      <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+    </form>
+  
+    <p>Déjà un compte ? <a (click)="goToLogin()">Se connecter</a>
+
+  </div>
+  

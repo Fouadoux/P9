@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -45,7 +44,7 @@ public class RiskControllerTest {
         when(riskService.evaluateRiskLevel(patientId)).thenReturn(riskLevel);
 
         // When + Then
-        mockMvc.perform(get("/risk/patient/{patientId}", patientId))
+        mockMvc.perform(get("/api/risk/patient/{patientId}", patientId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.riskLevel").value("BORDERLINE")); // ✅ on vérifie uniquement le champ
     }

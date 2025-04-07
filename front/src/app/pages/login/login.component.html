@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Connexion à GlucoVision</h2>
+
+        <input
+        type="email"
+        placeholder="Adresse email"
+        [value]="email()"
+        (input)="updateEmail($event)"  
+      />
+      <input
+      type="password"
+      placeholder="Mot de passe"
+      [value]="password()"
+      (input)="updatePassword($event)"
+    />
+
+    <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+    <button (click)="login()">Se connecter</button>
+    <p>Pas de compte ? <a (click)="goToRegister()">S'inscrire</a></p>
+
+
+</div>
+
+    
+</body>
+</html>

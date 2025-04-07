@@ -1,8 +1,26 @@
+server:
+  port: 8085
+
 spring:
   application:
     name: patient-service
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
 
-spring.config.import: "optional:configserver:http://localhost:8888/"
-#logging:
-#  level:
-  #  root: DEBUG  # Active les logs pour voir s’il récupère la config
+  datasource:
+    url: jdbc:mysql://localhost:3306/glucovision-patient-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: rootroot
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Mettre à jour le schéma de la DB à chaque démarrage
+    show-sql: true  # Afficher les requêtes SQL générées
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    # database-platform: org.hibernate.dialect.MySQL5InnoDBDialect (décommenter si nécessaire)
+
+

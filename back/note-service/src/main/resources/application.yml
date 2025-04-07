@@ -1,8 +1,16 @@
+server:
+  port: 8082
+
 spring:
   application:
     name: note-service
 
-spring.config.import: "optional:configserver:http://localhost:8888/"
-#logging:
-#  level:
-  #  root: DEBUG  # Active les logs pour voir s’il récupère la config
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/glucovision-history-db
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+

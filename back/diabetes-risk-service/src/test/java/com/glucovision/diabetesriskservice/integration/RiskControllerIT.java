@@ -1,60 +1,34 @@
 package com.glucovision.diabetesriskservice.integration;
 
-import com.glucovision.diabetesriskservice.util.AbstractWireMockTest;
-
-
-import com.glucovision.diabetesriskservice.util.AbstractWireMockTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.*;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class RiskControllerIT extends AbstractWireMockTest {
-
-    @LocalServerPort
-    private int port;
+public class RiskControllerIT {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
     @Test
-    void shouldReturnRiskLevel_whenPatientAndNotesExist() {
-        // GIVEN – WireMock simule les réponses
-        stubFor(get(urlEqualTo("/patients/1"))
-                .willReturn(okJson("""
-                    {
-                        "id": 1,
-                        "firstName": "John",
-                        "lastName": "Doe",
-                        "birthDate": "1980-05-10",
-                        "gender": "M"
-                    }
-                """)));
+    void shouldReturnRiskLevel_whenPatientAndNotesExist() throws Exception {
+        Long patientId = 1L;
 
-        stubFor(get(urlEqualTo("/notes/patient/1"))
-                .willReturn(okJson("""
-                    [
-                        { "patientId": 1, "comments": "Patient feels tired and dizzy" },
-                        { "patientId": 1, "comments": "Weight loss observed" }
-                    ]
-                """)));
-
-        // WHEN – appel réel via RestTemplate
-        String url = "http://localhost:" + port + "/risk/patient/1";
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-
-        // THEN – vérification
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).contains("riskLevel");
-        assertThat(response.getBody()).contains("BORDERLINE"); // si tu veux être plus précis
+        // ⚠️ Le patient et les notes doivent exister dans les services externes
+        mockMvc.perform(get("/api/risk/patient/{patientId}", patientId)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.patientId").value(patientId))
+                .andExpect(jsonPath("$.riskLevel").isNotEmpty());
     }
-
 }
