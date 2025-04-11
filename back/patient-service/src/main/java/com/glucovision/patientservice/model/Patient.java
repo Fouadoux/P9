@@ -77,5 +77,7 @@ public class Patient {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(nullable = false)
+    private boolean active;
 
 }

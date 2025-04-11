@@ -1,6 +1,7 @@
 package com.glucovion.authservice.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,4 +20,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
+    @ExceptionHandler(DisabledAccountException.class)
+    public ResponseEntity<Map<String, String>> handleDisabledAccountException(DisabledAccountException ex) {
+        return ResponseEntity.badRequest().body(
+                Map.of("error", "DISABLED_ACCOUNT", "details", ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException ex) {
+        return ResponseEntity.badRequest().body(
+                Map.of("error", "INVALID_PASSWORD", "details", ex.getMessage())
+        );
+    }
+
 }
+

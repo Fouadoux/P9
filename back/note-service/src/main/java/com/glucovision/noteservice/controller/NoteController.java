@@ -9,6 +9,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -72,5 +73,11 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new ErrorResponse(e.getMessage()));
         }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin-only")
+    public ResponseEntity<String> onlyAdmin() {
+        return ResponseEntity.ok("Accès ADMIN validé");
     }
 }

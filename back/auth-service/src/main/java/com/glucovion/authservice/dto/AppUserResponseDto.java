@@ -1,7 +1,7 @@
 package com.glucovion.authservice.dto;
 
 import com.glucovion.authservice.entity.AppRole;
-import jakarta.validation.constraints.Email;
+import com.glucovion.authservice.entity.AppUsersStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +13,11 @@ public class AppUserResponseDto {
     private Long id;
     private String lastName;
     private String firstName;
-
-    @Email(message = "Invalid email format")
     private String email;
-
     private AppRole role;
     private boolean active;
+
+    public AppUsersStatus getStatus() {
+        return active ? AppUsersStatus.ACTIF : AppUsersStatus.INACTIF;
+    }
 }

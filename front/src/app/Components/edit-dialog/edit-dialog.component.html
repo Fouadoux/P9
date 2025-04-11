@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ dialogData.title }}</h2>
+
+<form [formGroup]="form" mat-dialog-content>
+
+  <ng-container *ngFor="let key of fieldsOrder">
+    <div *ngIf="form.get(key) && !hiddenFields.includes(key)" class="form-group">
+
+      <label>{{ key | titlecase }}</label>
+
+      <ng-container *ngIf="isSelectField(key); else textInput">
+        <select [formControlName]="key">
+          <option *ngFor="let option of getOptions(key)" [value]="option">{{ option }}</option>
+        </select>
+      </ng-container>
+
+      <ng-template #textInput>
+        <input type="text" [formControlName]="key">
+      </ng-template>
+
+      <div class="error" *ngIf="form.get(key)?.hasError('required') && form.get(key)?.touched">
+        Ce champ est obligatoire
+      </div>
+
+    </div>
+  </ng-container>
+
+</form>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="handleClose()">Annuler</button>
+  <button mat-flat-button color="primary" (click)="handleSave()">Sauvegarder</button>
+</mat-dialog-actions>

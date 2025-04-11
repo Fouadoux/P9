@@ -15,5 +15,8 @@ public interface AppUserService {
     AppUser convertToAppUser(AppUserResponseDto appUserResponseDto);
     List<AppUserResponseDto> convertToDTOList(List<AppUser> appUsers);
     AppUserResponseDto updateAppUser(AppUserResponseDto appUserResponseDto);
+    AppUser findById(Long id);
+    AppUserResponseDto toggleActiveUser(Long id);
+
 
     }

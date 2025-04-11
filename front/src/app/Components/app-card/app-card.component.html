@@ -1,0 +1,25 @@
+<div class="card" *ngIf="data() as d">
+
+    <div class="info">
+      <h3>{{ d.firstName }} {{ d.lastName }}</h3>
+  
+      <p *ngIf="email">Email : {{ email }}</p>
+      <p *ngIf="role">Role : {{ role }}</p>
+  
+      <p *ngIf="birthDate">Date de naissance : {{ birthDate }}</p>
+      <p *ngIf="gender">Genre : {{ gender }}</p>
+  
+      <p>Status :
+        <span [class.active]="d.status === 'ACTIF'" [class.inactive]="d.status === 'INACTIF'">
+          {{ d.status }}
+        </span>
+      </p>
+    </div>
+  
+    <div class="actions">
+      <button (click)="edit.emit()">🛠️ Gérer</button>
+      <button (click)="toggle.emit()">🔁 Activer/Désactiver</button>
+    </div>
+  
+  </div>
+  

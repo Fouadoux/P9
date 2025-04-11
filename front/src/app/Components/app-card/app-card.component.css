@@ -1,0 +1,89 @@
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffffcc;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #007acc;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  span.active {
+    color: green;
+    font-weight: bold;
+  }
+  
+  span.inactive {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #007acc;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #005fa3;
+  }
+  
+  /* Responsive mobile */
+  @media (max-width: 768px) {
+    .card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .actions {
+      flex-direction: row;
+      gap: 1rem;
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+
+  .active {
+    color: green;
+  }
+  
+  .inactive {
+    color: red;
+  }
+  

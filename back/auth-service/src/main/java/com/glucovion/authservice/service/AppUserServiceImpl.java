@@ -4,6 +4,7 @@ import com.glucovion.authservice.dto.AppUserResponseDto;
 import com.glucovion.authservice.entity.AppUser;
 import com.glucovion.authservice.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 @Service
 @AllArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
@@ -30,6 +32,10 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public List<AppUser> findAll() {
         return appUserRepository.findAll();
+    }
+
+    public AppUser findById(Long id) {
+        return appUserRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     public AppUserResponseDto convertToDTO(AppUser appUser) {
@@ -62,11 +68,32 @@ public class AppUserServiceImpl implements AppUserService {
         return appUserResponseDtoList;
     }
 
-    public AppUserResponseDto updateAppUser(AppUserResponseDto appUserResponseDto) {
-        AppUser appUser=appUserRepository.findById(appUserResponseDto.getId()).orElseThrow(()->
-                new UsernameNotFoundException("user not found"));
+    public AppUserResponseDto updateAppUser(AppUserResponseDto dto) {
+        AppUser appUser = appUserRepository.findById(dto.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
-        AppUser userSave= appUserRepository.save(appUser);
-        return convertToDTO(userSave);
+        // 🔧 Mise à jour des champs
+        appUser.setFirstName(dto.getFirstName());
+        appUser.setLastName(dto.getLastName());
+        appUser.setEmail(dto.getEmail());
+        appUser.setRole(dto.getRole());
+        appUser.setActive(dto.isActive());
+
+        AppUser updatedUser = appUserRepository.save(appUser);
+        return convertToDTO(updatedUser);
     }
+
+    public AppUserResponseDto toggleActiveUser(Long id) {
+        AppUser appUser = appUserRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
+
+        log.info("status: {}", !appUser.isActive());
+        appUser.setActive(!appUser.isActive());
+        log.info("status: {}", !appUser.isActive());
+        AppUser updatedUser = appUserRepository.save(appUser);
+        return convertToDTO(updatedUser);
+    }
+
+
+
 }

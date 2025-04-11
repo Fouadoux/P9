@@ -1,0 +1,43 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 0.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  
+  input, select {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  input:disabled, select:disabled {
+    background-color: #f5f5f5;
+    color: #777;
+  }
+  
+  mat-dialog-actions {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  
+  button {
+    min-width: 100px;
+  }
+
+  .error{
+    color: red;
+  }

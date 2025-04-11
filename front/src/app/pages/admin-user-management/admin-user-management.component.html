@@ -1,0 +1,13 @@
+<div class="container">
+    <h2>Liste des utilisateurs</h2>
+  
+    <div class="user-list">
+      <app-app-card
+    *ngFor="let user of users()"
+    [data]="user"
+    (edit)="onEditUser(user)"
+    (toggle)="handleToggleActive(user)"
+/>
+  </div>
+</div>
+  

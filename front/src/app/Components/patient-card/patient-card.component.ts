@@ -1,18 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Gender } from '../../model/gender.model';
-
-
-export interface Patient{
-  id:string;
-  firstName:string;
-  lastName:string;
-  birthDate:string;
-  gender:Gender;
-  address:string;
-  phone:string;
-}
+import { Patient } from '../../model/patient.model';
 
 
 @Component({

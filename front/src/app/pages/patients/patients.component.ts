@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { SearchBarComponent } from '../../Components/search-bar/search-bar.component';
 import { PatientService } from '../../services/patient.service';
-import { Patient, PatientCardComponent } from '../../Components/patient-card/patient-card.component';
+import { PatientCardComponent } from '../../Components/patient-card/patient-card.component';
+import { Patient } from '../../model/patient.model';
 
 @Component({
   selector: 'app-patients',
@@ -27,7 +28,7 @@ export class PatientsComponent {
   constructor() {
     // 🔥 Appel API REST dès que le composant se charge
     effect(() => {
-      this.patientService.getPatients().subscribe(data => {
+      this.patientService.getPatientsActive().subscribe(data => {
         this.patients.set(data);
         this.isLoading.set(false); // ✅ Cache le message "Chargement..."
       }, error => {

@@ -40,9 +40,25 @@ export class LoginComponent {
         localStorage.setItem('token',res.token);
         localStorage.setItem('userEmail', res.email);
         localStorage.setItem('userRole', res.role);
+        localStorage.setItem('firstName', res.firstName);
+        localStorage.setItem('lastName', res.lastName);
+
+        if(res.role==='PENDING'){
+          this.router.navigate(['/register-success']);
+          return;
+        }
+        if(res.role==='ADMIN'){
+          this.router.navigate(['/admin/users']);
+          return;
+        }
         this.router.navigate(['/patients']);
       },
-      error: ()=>{
+      error: (err)=>{  
+      if (err.error?.error === 'DISABLED_ACCOUNT') {
+        this.router.navigate(['/account-disabled']);
+      }else if (err.error?.error === 'INVALID_PASSWORD') {
+        this.errorMessage.set("Mot de passe incorrects.")
+      }else
         this.errorMessage.set("Identifiants incorrects.")
       }
     });

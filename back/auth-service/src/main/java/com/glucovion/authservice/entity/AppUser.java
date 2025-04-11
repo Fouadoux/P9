@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users") // <-- pour éviter les conflits avec des mots réservés
+@Table(name = "users")
 public class AppUser implements UserDetails {
 
     @Id

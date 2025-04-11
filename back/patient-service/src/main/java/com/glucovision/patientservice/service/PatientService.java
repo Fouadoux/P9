@@ -1,17 +1,14 @@
 package com.glucovision.patientservice.service;
 
 import com.glucovision.patientservice.dto.PatientDTO;
-import com.glucovision.patientservice.model.Gender;
 import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.repository.PatientRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,9 +19,14 @@ public class PatientService {
     private PatientRepository patientRepository;
 
     //retourne une liste de patient
-    public List<Patient> findAll() {
+    public List<Patient> getAllPatients() {
         return patientRepository.findAll();
     }
+
+    public List<Patient> getAllActivePatients() {
+        return patientRepository.findByActiveTrue();
+    }
+
 
     // Ajouter un patient
     public Patient addPatient(PatientDTO patientDTO) {
@@ -42,6 +44,7 @@ public class PatientService {
         newPatient.setGender(patientDTO.getGender());
         newPatient.setAddress(patientDTO.getAddress());
         newPatient.setPhoneNumber(patientDTO.getPhoneNumber());
+        newPatient.setActive(true);
 
         return patientRepository.save(newPatient);
     }
@@ -68,6 +71,7 @@ public class PatientService {
             existingPatient.setGender(patientDTO.getGender());
             existingPatient.setAddress(patientDTO.getAddress());
             existingPatient.setPhoneNumber(patientDTO.getPhoneNumber());
+            existingPatient.setActive(patientDTO.isActive());
 
             // Sauvegarde le patient et convertit en DTO
             Patient updatedPatient = patientRepository.save(existingPatient);
@@ -84,6 +88,7 @@ public class PatientService {
         patientRepository.deleteById(id);
     }
 
+
     public PatientDTO convertToDTO(Patient patient) {
         log.info("Converting user '{}' to DTO.", patient.getId());
 
@@ -95,6 +100,7 @@ public class PatientService {
         dto.setGender(patient.getGender());
         dto.setAddress(patient.getAddress());
         dto.setPhoneNumber(patient.getPhoneNumber());
+        dto.setActive(patient.isActive());
 
         log.info("Patient '{}' converted to DTO successfully.", patient.getId());
         return dto;
@@ -108,6 +114,14 @@ public class PatientService {
                 .collect(Collectors.toList());
     }
 
-
+    public PatientDTO toggleActivePatient(long id) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Patient with ID " + id + " not found"));
+        log.info("statu : {}", patient.isActive());
+        patient.setActive(!patient.isActive());
+        log.info("statu : {}", patient.isActive());
+        Patient savedPatient = patientRepository.save(patient);
+        return convertToDTO(savedPatient);
+    }
 
 }

@@ -63,7 +63,7 @@ export class RegisterComponent {
         localStorage.setItem('token', res.token);
         localStorage.setItem('userEmail', res.email);
         localStorage.setItem('userRole', res.role);
-        this.router.navigate(['/patients']);
+        this.router.navigate(['/register-success']);
       },
       error: () => {
         this.errorMessage.set("Inscription impossible. Vérifie les infos.");

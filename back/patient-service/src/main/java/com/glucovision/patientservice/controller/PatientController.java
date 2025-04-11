@@ -4,16 +4,15 @@ import com.glucovision.patientservice.dto.PatientDTO;
 import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.service.PatientService;
 import jakarta.validation.Valid;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/patients")
 public class PatientController {
@@ -24,73 +23,86 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    // Ajouter un patient
     @PostMapping
     public ResponseEntity<Patient> createPatient(@Valid @RequestBody PatientDTO patient) {
+        log.info("POST /api/patients - Création d'un nouveau patient : {}", patient);
         Patient savedPatient = patientService.addPatient(patient);
+        log.info("Patient créé avec l'id : {}", savedPatient.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPatient);
     }
 
-
-    // Récupérer un patient par ID
     @GetMapping("/{id}")
     public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
+        log.info("GET /api/patients/{} - Récupération du patient", id);
         Patient patient = patientService.findPatientById(id);
-        PatientDTO patientDto=patientService.convertToDTO(patient);
+        PatientDTO patientDto = patientService.convertToDTO(patient);
+        log.info("Patient récupéré : {}", patientDto);
         return ResponseEntity.ok(patientDto);
     }
 
     @GetMapping("")
     public ResponseEntity<List<PatientDTO>> getPatients() {
-        List<Patient> patients=patientService.findAll();
-        List<PatientDTO> patientDtos=patientService.convertToDTOList(patients);
+        log.info("GET /api/patients - Récupération de tous les patients");
+        List<Patient> patients = patientService.getAllPatients();
+        List<PatientDTO> patientDtos = patientService.convertToDTOList(patients);
+        log.info("Nombre de patients récupérés : {}", patientDtos.size());
         return ResponseEntity.ok(patientDtos);
     }
 
-    // Récupérer un patient par son nom
-    @GetMapping("/name/{lastName}")
-    public ResponseEntity<PatientDTO> getPatientByName(@PathVariable String lastName) {
-        Patient patient = patientService.findPatientByName(lastName);
-        PatientDTO patientDto=patientService.convertToDTO(patient);
-
-        return patientDto != null ? ResponseEntity.ok(patientDto) : ResponseEntity.notFound().build();
+    @GetMapping("/active")
+    public ResponseEntity<List<PatientDTO>> getPatientsActive() {
+        log.info("GET /api/patients/active - Récupération des patients actifs");
+        List<Patient> patients = patientService.getAllActivePatients();
+        List<PatientDTO> patientDtos = patientService.convertToDTOList(patients);
+        log.info("Nombre de patients actifs récupérés : {}", patientDtos.size());
+        return ResponseEntity.ok(patientDtos);
     }
 
-    // Mettre à jour un patient
+    @GetMapping("/name/{lastName}")
+    public ResponseEntity<PatientDTO> getPatientByName(@PathVariable String lastName) {
+        log.info("GET /api/patients/name/{} - Récupération du patient par nom", lastName);
+        Patient patient = patientService.findPatientByName(lastName);
+
+        if (patient == null) {
+            log.warn("Patient avec le nom '{}' non trouvé", lastName);
+            return ResponseEntity.notFound().build();
+        }
+
+        PatientDTO patientDto = patientService.convertToDTO(patient);
+        log.info("Patient trouvé : {}", patientDto);
+        return ResponseEntity.ok(patientDto);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PatientDTO> updatePatient(
             @PathVariable Long id,
             @Valid @RequestBody PatientDTO patientDTO) {
 
+        log.info("PUT /api/patients/{} - Mise à jour du patient : {}", id, patientDTO);
         PatientDTO updatedPatient = patientService.updatePatient(id, patientDTO);
 
-        return updatedPatient != null
-                ? ResponseEntity.ok(updatedPatient)
-                : ResponseEntity.notFound().build();
+        if (updatedPatient == null) {
+            log.warn("Patient avec l'id '{}' non trouvé pour mise à jour", id);
+            return ResponseEntity.notFound().build();
+        }
+
+        log.info("Patient mis à jour : {}", updatedPatient);
+        return ResponseEntity.ok(updatedPatient);
     }
 
-    // Supprimer un patient
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
-        patientService.deletePatient(id);
-        return ResponseEntity.noContent().build();
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin-only")
+    public ResponseEntity<String> onlyAdmin() {
+        log.info("GET /api/patients/admin-only - Vérification accès ADMIN");
+        return ResponseEntity.ok("Accès ADMIN validé");
     }
 
-
-
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<String> handleNotFoundException(NoSuchElementException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/toggle/{id}")
+    public ResponseEntity<PatientDTO> togglePatient(@PathVariable Long id) {
+        log.info("PUT /api/patients/toggle/{} - Activation/Désactivation du patient", id);
+        PatientDTO patientDto = patientService.toggleActivePatient(id);
+        log.info("Nouveau statut du patient : {}", patientDto);
+        return ResponseEntity.ok().body(patientDto);
     }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage()));
-
-        return ResponseEntity.badRequest().body(errors);
-    }
-
 }

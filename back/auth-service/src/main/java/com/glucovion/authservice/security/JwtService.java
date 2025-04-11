@@ -25,7 +25,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .setSubject(userDetails.getUsername())
-                .claim("role", userDetails.getAuthorities().iterator().next().getAuthority()) // 🔥 Ajoute le rôle ici
+                .claim("role", userDetails.getAuthorities().iterator().next().getAuthority().replace("ROLE_", ""))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24h
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

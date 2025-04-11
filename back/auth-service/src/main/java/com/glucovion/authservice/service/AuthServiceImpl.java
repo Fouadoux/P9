@@ -4,6 +4,7 @@ import com.glucovion.authservice.dto.AppUserRegisterDto;
 import com.glucovion.authservice.dto.AuthResponseDto;
 import com.glucovion.authservice.dto.LoginRequestDto;
 import com.glucovion.authservice.entity.AppUser;
+import com.glucovion.authservice.exception.DisabledAccountException;
 import com.glucovion.authservice.repository.AppUserRepository;
 import com.glucovion.authservice.security.JwtService;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtService.generateToken(savedUser);
 
-        return new AuthResponseDto(token, savedUser.getEmail(), savedUser.getRole());
+        return new AuthResponseDto(token, savedUser.getFirstName(), savedUser.getLastName(), savedUser.getEmail(), savedUser.getRole());
     }
 
     @Override
@@ -53,10 +54,14 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Invalid password");
         }
+        if(!user.isActive()){
+            throw new DisabledAccountException("Ce compte est désactivé. Contacte un admin.");
+
+        }
 
         String token = jwtService.generateToken(user);
 
-        return new AuthResponseDto(token, user.getEmail(), user.getRole());
+        return new AuthResponseDto(token,user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole());
     }
 
 
