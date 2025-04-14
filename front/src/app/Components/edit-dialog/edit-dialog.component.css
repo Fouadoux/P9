@@ -41,3 +41,11 @@ form {
   .error{
     color: red;
   }
+
+  textarea {
+    width: 100%;
+    resize: vertical;
+    padding: 8px;
+    font-size: 14px;
+  }
+  

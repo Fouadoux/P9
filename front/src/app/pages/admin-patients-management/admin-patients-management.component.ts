@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EditDialogComponent } from '../../Components/edit-dialog/edit-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 
 
@@ -24,6 +25,7 @@ export class AdminPatientsManagementComponent {
   selectedPatient = signal<Patient | null>(null);
   showEditDialog = signal(false);
   private dialog = inject(MatDialog);
+  private router=inject(Router)
 
   validators = Validators;
 
@@ -87,5 +89,9 @@ export class AdminPatientsManagementComponent {
     });
   }
 
+  goToPatientNotes(patientId: number) {
+    this.router.navigate(['/admin/notes', patientId]);
+  }
+  
   
 }

@@ -7,6 +7,7 @@
         [data]="patient"
         (edit)="onEditPatient(patient)"
         (toggle)="handleToggleActive(patient)"
+        (note)="goToPatientNotes(patient.id)"
       ></app-app-card>
     </div>
   </div>

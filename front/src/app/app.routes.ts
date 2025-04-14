@@ -9,6 +9,7 @@ import { AdminUserManagementComponent } from './pages/admin-user-management/admi
 import { adminGuard } from './guards/admin.guard';
 import { AccountDisabledComponent } from './pages/account-disabled/account-disabled.component';
 import { AdminPatientsManagementComponent } from './pages/admin-patients-management/admin-patients-management.component';
+import { AdminNotesComponent } from './pages/admin-notes/admin-notes.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'patients/:id', component: PatientDetailsComponent, canActivate: [authGuard] },
 
   { path: 'admin/users', component: AdminUserManagementComponent, canActivate: [adminGuard] },
-  { path: 'admin/patients', component: AdminPatientsManagementComponent, canActivate: [adminGuard] }
+  { path: 'admin/patients', component: AdminPatientsManagementComponent, canActivate: [adminGuard] },
+  { path: 'admin/notes/:id', component: AdminNotesComponent, canActivate: [adminGuard] }
 
 ];

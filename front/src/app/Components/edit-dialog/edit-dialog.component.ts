@@ -26,7 +26,9 @@ export class EditDialogComponent<T extends Record<string, any>> {
 
   readonly roles = ['ADMIN', 'USER', 'PENDING'];
   readonly genders = ['MALE', 'FEMALE'];
-  readonly hiddenFields = ['id', 'status', 'active'];
+  readonly hiddenFields = ['id', 'status', 'active','patientId', 'creationDate', 'modificationDate'];
+  readonly fieldsOrder = this.formHelper.fieldsOrderMap[this.dialogData.type];
+
 
   ngOnInit() {
     this.form = this.formHelper.buildFormFromObject(this.dialogData.data, this.dialogData.type);  }
@@ -52,7 +54,8 @@ export class EditDialogComponent<T extends Record<string, any>> {
     this.dialogRef.close();
   }
 
-  fieldsOrder = this.dialogData.type === 'patient'
+ /* fieldsOrder = this.dialogData.type === 'patient'
   ? ['firstName', 'lastName', 'birthDate', 'gender', 'address', 'phone']
   : ['firstName', 'lastName', 'email', 'role'];
+  */
 }

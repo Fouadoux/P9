@@ -1,0 +1,18 @@
+<h2>Notes du patient {{ patientId() }}</h2>
+
+<button mat-flat-button color="primary" (click)="onAddNote()">
+  Ajouter une note
+</button>
+
+<ul>
+  <li *ngFor="let note of notes()">
+    {{ note.comments }}
+    <button mat-icon-button color="accent" (click)="onEditNote(note)">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </li>
+</ul>
+
+<div class="actions">
+    <button (click)="goBack()">⬅️ Retour</button>
+</div>

@@ -14,7 +14,12 @@
       </ng-container>
 
       <ng-template #textInput>
-        <input type="text" [formControlName]="key">
+        <ng-container *ngIf="key === 'comments'; else classicInput">
+          <textarea [formControlName]="key" rows="4"></textarea>
+        </ng-container>
+        <ng-template #classicInput>
+          <input type="text" [formControlName]="key">
+        </ng-template>
       </ng-template>
 
       <div class="error" *ngIf="form.get(key)?.hasError('required') && form.get(key)?.touched">

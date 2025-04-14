@@ -17,8 +17,19 @@
     </div>
   
     <div class="actions">
-      <button (click)="edit.emit()">🛠️ Gérer</button>
-      <button (click)="toggle.emit()">🔁 Activer/Désactiver</button>
+      <button mat-flat-button color="accent" (click)="edit.emit()">
+        <mat-icon>edit</mat-icon>&nbsp;Gérer
+      </button>
+      
+      <button mat-flat-button color="warn" (click)="toggle.emit()">
+        <mat-icon>autorenew</mat-icon>&nbsp;Activer/Désactiver
+      </button>
+      
+      <button mat-flat-button (click)="goToNotes()">
+        <mat-icon>note</mat-icon>
+        Notes
+      </button>
+      
     </div>
   
   </div>
