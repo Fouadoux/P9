@@ -1,52 +1,59 @@
 package com.glucovision.diabetesriskservice.controller;
 
+import com.glucovision.diabetesriskservice.dto.RiskDto;
 import com.glucovision.diabetesriskservice.model.RiskLevel;
 import com.glucovision.diabetesriskservice.service.RiskService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-public class RiskControllerTest {
+@ExtendWith(MockitoExtension.class)
+class RiskControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
+    @Mock
     private RiskService riskService;
 
-    @TestConfiguration
-    static class RiskServiceTestConfig {
-        @Bean
-        public RiskService riskService() {
-            return Mockito.mock(RiskService.class);
-        }
+    @InjectMocks
+    private RiskController riskController;
+
+    private final String patientId = "12345";
+
+    @Test
+    void getRiskLevel_shouldReturnRiskDtoWithCorrectValues() {
+        // Arrange
+        when(riskService.evaluateRiskLevel(patientId)).thenReturn(RiskLevel.BORDERLINE);
+
+        // Act
+        ResponseEntity<RiskDto> response = riskController.getRiskLevel(patientId);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCodeValue());
+
+        RiskDto riskDto = response.getBody();
+        assertNotNull(riskDto);
+        assertEquals(patientId, riskDto.getPatientId());
+        assertEquals(RiskLevel.BORDERLINE, riskDto.getRiskLevel());
+
+        verify(riskService, times(1)).evaluateRiskLevel(patientId);
     }
 
     @Test
-    void testEvaluateRisk_shouldReturnRiskLevel() throws Exception {
-        // Given
-        Long patientId = 1L;
-        RiskLevel riskLevel = RiskLevel.BORDERLINE;
+    void getRiskLevel_shouldCallServiceOnce() {
+        // Arrange
+        when(riskService.evaluateRiskLevel(patientId)).thenReturn(RiskLevel.BORDERLINE);
 
-        when(riskService.evaluateRiskLevel(patientId)).thenReturn(riskLevel);
+        // Act
+        riskController.getRiskLevel(patientId);
 
-        // When + Then
-        mockMvc.perform(get("/api/risk/patient/{patientId}", patientId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.riskLevel").value("BORDERLINE")); // ✅ on vérifie uniquement le champ
+        // Assert
+        verify(riskService, times(1)).evaluateRiskLevel(patientId);
     }
-
 }

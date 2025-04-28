@@ -16,7 +16,7 @@ import { PatientDetailsComponent } from '../../pages/patient-details/patient-det
 })
 export class PatientNoteComponent {
 
-  patientId=input<number|null>();
+  patientId=input<string|null>();
   notes=signal<Note[]>([]);
   noteService=inject(NoteService);
   showDialog =signal(false);
@@ -43,7 +43,7 @@ export class PatientNoteComponent {
     });
   }
 
-  handleNoteSubmit(noteData: { patientId: number; comments: string }) {
+  handleNoteSubmit(noteData: { patientId: string; comments: string }) {
     this.noteService.addNoteByPatientId(noteData).subscribe({
       next: () => {
         this.showDialog.set(false);

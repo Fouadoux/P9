@@ -13,8 +13,12 @@ public class NoteDataService {
 
     private final NoteClient noteClient;
 
-    public List<NoteDto> getNoteDtoList(Long id) {
-       return noteClient.getNoteListe(id);
+    public List<NoteDto> getNoteDtoList(String id) {
+
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("L'ID du patient ne peut pas être null ou vide");
+        }
+        return noteClient.getNoteListe(id);
     }
 
 }

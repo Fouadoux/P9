@@ -7,20 +7,29 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+    public CustomRoleConverter() {}
 
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
-        String role = jwt.getClaimAsString("role");
+        List<String> roles = jwt.getClaimAsStringList("roles");
 
-        System.out.println("🔐 JWT ROLE trouvé : " + role);
+        //System.out.println("🔐 JWT ROLES trouvés : " + roles);
 
-        if (role == null || role.isBlank()) {
+        if (roles == null || roles.isEmpty()) {
             return List.of();
         }
 
-        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
-
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
     }
+
+
+
+
+
+
 }

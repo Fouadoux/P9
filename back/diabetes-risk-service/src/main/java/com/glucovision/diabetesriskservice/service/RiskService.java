@@ -56,7 +56,7 @@ public class RiskService {
         return risk;
     }
 
-    public RiskLevel evaluateRiskLevel(Long id) {
+    public RiskLevel evaluateRiskLevel(String id) {
         List<NoteDto> noteDtoList = noteService.getNoteDtoList(id);
         PatientDto patientDto = patientService.getPatient(id);
         int age = calculateAge(patientDto);
@@ -102,6 +102,7 @@ public class RiskService {
         if (age > 30 && triggerCount >= 8) {
             return RiskLevel.EARLY_ONSET;
         }
+
         return RiskLevel.NONE;
     }
 

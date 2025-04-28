@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RiskDto {
-    private Long patientId;
+    private String patientId;
     private RiskLevel riskLevel;
 }

@@ -63,10 +63,10 @@ export class AdminPatientsManagementComponent {
   
 
   handleToggleActive(patient: Patient) {
-    this.patientService.toggleActivePatient(patient.id).subscribe({
+    this.patientService.toggleActivePatient(patient.uid).subscribe({
       next: (res) => {
         const patients = this.patients().map(p =>
-          p.id === res.id ? res : p
+          p.uid === res.uid ? res : p
         );
         this.patients.set(patients);
       },
@@ -78,7 +78,7 @@ export class AdminPatientsManagementComponent {
     this.patientService.updatePatient(updatedPatient).subscribe({
       next: (res) => {
         const patients = this.patients().map(p =>
-          p.id === res.id ? res : p
+          p.uid === res.uid ? res : p
         );
         this.patients.set(patients);
         this.showEditDialog.set(false);
@@ -89,9 +89,8 @@ export class AdminPatientsManagementComponent {
     });
   }
 
-  goToPatientNotes(patientId: number) {
-    this.router.navigate(['/admin/notes', patientId]);
+  goToPatientNotes(patient: Patient) {
+    this.router.navigate(['/admin/notes', patient.uid]);
   }
-  
   
 }

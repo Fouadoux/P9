@@ -22,7 +22,7 @@ export class PatientDetailsComponent {
   private router=inject(Router);
   risk = signal<DiabetesRisk | null>(null);
   patient=signal<Patient | null>(null)
-  patientId = signal<number | null>(Number(this.route.snapshot.paramMap.get('id')));
+  patientId = signal<string | null>(this.route.snapshot.paramMap.get('id'));
   private riskService = inject(RiskService);
   private dialog = inject(MatDialog);
 
@@ -32,7 +32,7 @@ export class PatientDetailsComponent {
     effect(() => {
       const id = this.route.snapshot.paramMap.get('id');
       if (id) {
-        const numId= Number(id)
+        const numId= String(id)
         this.patientId.set(numId)
         this.patientService.getPatientById(id).subscribe({
           next: (data) => this.patient.set(data),

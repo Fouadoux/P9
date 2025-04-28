@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NoteDto {
-    private Long patientId;
+    private String patientId;
     private String comments;
 }

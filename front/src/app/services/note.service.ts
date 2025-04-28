@@ -5,31 +5,46 @@ import { Note } from '../model/note.model';
 
 @Injectable({ providedIn: 'root' })
 export class NoteService {
-  private apiUrl = 'http://localhost:8080/api/notes'; // via le Gateway
+  private apiUrl = 'http://localhost:8080/api/notes';
 
   constructor(private http: HttpClient) {}
 
-  getNotesByPatientId(patientId: number): Observable<Note[]> {
+  getNotesByPatientId(patientId: string): Observable<Note[]> {
     return this.http.get<Note[]>(`${this.apiUrl}/patient/${patientId}`);
   }
 
-  addNoteByPatientId(data: { patientId: number; comments: string }): Observable<Note> {
+  addNoteByPatientId(data: { patientId: string; comments: string }): Observable<Note> {
     return this.http.post<Note>(`${this.apiUrl}`, data);
   }
 
   updateNote(data: Note): Observable<Note> {
     return this.http.put<Note>(
-      `${this.apiUrl}?patientId=${data.patientId}&creationDate=${data.creationDate}&comments=${encodeURIComponent(data.comments)}`,
-      null
+      `${this.apiUrl}`,
+      data
+    );
+  }
+  
+  deleteNote(data: Note): Observable<Note> {
+    return this.http.delete<Note>(
+      `${this.apiUrl}`,
+      { 
+        body: data
+      }
     );
   }
 
-  deleteNote(data: Note): Observable<Note> {
-    return this.http.delete<Note>(
-      `${this.apiUrl}?patientId=${data.patientId}&creationDate=${data.creationDate}`
+  updateNoteAdmin(data: Note): Observable<Note> {
+    return this.http.put<Note>(
+      `${this.apiUrl}/admin/update`,
+      data
+    );
+  }
+
+  deleteNoteAdmin(note: Note): Observable<Note[]> {
+    return this.http.delete<Note[]>(
+      `${this.apiUrl}/admin/delete`,
+      { body: note }
     );
   }
   
-  
-  // Tu pourras ajouter addNote, updateNote, deleteNote plus tard
 }

@@ -9,7 +9,7 @@ export class RiskService {
   
   constructor(private http: HttpClient) {}
 
-  getRiskLevelByPatientId(id: number): Observable<DiabetesRisk> {
+  getRiskLevelByPatientId(id: string): Observable<DiabetesRisk> {
     return this.http.get<DiabetesRisk>(`${this.apiUrl}/patient/${id}`);
   }
 }

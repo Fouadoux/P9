@@ -1,5 +1,5 @@
 export interface Note {
-    patientId: number;
+    patientId: string;
     comments: string;
     creationDate?: string;       
     modificationDate?: string;

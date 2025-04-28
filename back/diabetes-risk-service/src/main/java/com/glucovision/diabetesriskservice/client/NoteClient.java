@@ -12,5 +12,5 @@ import java.util.List;
 public interface NoteClient {
 
     @GetMapping("/api/notes/patient/{id}")
-    List<NoteDto> getNoteListe(@PathVariable Long id);
+    List<NoteDto> getNoteListe(@PathVariable String id);
 }

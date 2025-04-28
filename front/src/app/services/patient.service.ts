@@ -26,11 +26,15 @@ export class PatientService{
       }
 
       updatePatient(patient: Patient): Observable<Patient> {
-        return this.http.put<Patient>(`${this.apiUrl}/${patient.id}`, patient);
+        return this.http.put<Patient>(`${this.apiUrl}/${patient.uid}`, patient);
       }
 
-      toggleActivePatient(id: number): Observable<Patient> {
+      toggleActivePatient(id: string): Observable<Patient> {
         return this.http.put<Patient>(`${this.apiUrl}/toggle/${id}`, null);
+      }
+
+      getAddPatient(patient:Patient): Observable<Patient>{
+        return this.http.post<Patient>(`${this.apiUrl}`, patient);
       }
       
 

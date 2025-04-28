@@ -7,13 +7,14 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Log4j2
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 public class AppUserController {
 
     private final AppUserService appUserService;
@@ -32,6 +33,7 @@ public class AppUserController {
         return ResponseEntity.ok(appUserResponseDtoList);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<AppUserResponseDto> getById(@PathVariable Long id) {
         log.info("GET /api/users/{} - Récupération de l'utilisateur", id);

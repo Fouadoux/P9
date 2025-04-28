@@ -2,6 +2,7 @@ package com.glucovision.noteservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,12 +25,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2->oauth2.jwt(jwr-> jwr.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/api/notes/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN","ROLE_INTERNAL_SERVICE")
+                        .requestMatchers(HttpMethod.POST, "/api/notes/**")
+                        .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/notes/**")
+                        .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/notes/**")
+                        .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwr -> jwr.jwtAuthenticationConverter(jwtAuthenticationConverter)));
         return http.build();
-
-
-
     }
 
     @Bean
@@ -45,4 +53,6 @@ public class SecurityConfig {
         SecretKey key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(key).build();
     }
+
+
 }

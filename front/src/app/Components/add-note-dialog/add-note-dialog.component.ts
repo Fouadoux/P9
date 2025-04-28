@@ -10,8 +10,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddNoteDialogComponent {
 
-  patientId=input<number|null>(null);
-  comment=output<{patientId:number,comments:string}>();
+  patientId=input<string|null>(null);
+  comment=output<{patientId:string,comments:string}>();
   text=signal<string>('');
   close = output<void>();
 

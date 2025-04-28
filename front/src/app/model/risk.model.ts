@@ -1,4 +1,4 @@
 export interface DiabetesRisk {
-    patientId: number;
+    patientId: string;
     riskLevel: 'NONE' | 'BORDERLINE' | 'IN_DANGER' | 'EARLY_ONSET';
   }

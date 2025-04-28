@@ -18,7 +18,21 @@
           <textarea [formControlName]="key" rows="4"></textarea>
         </ng-container>
         <ng-template #classicInput>
-          <input type="text" [formControlName]="key">
+          <ng-container *ngIf="key === 'birthDate'; else defaultTextInput">
+            <mat-form-field appearance="fill" class="full-width">
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [formControlName]="key"
+                placeholder="DD-MM-YYYY"
+              >
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </ng-container>
+          <ng-template #defaultTextInput>
+            <input type="text" [formControlName]="key">
+          </ng-template>
         </ng-template>
       </ng-template>
 

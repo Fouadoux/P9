@@ -8,9 +8,9 @@
       @if (notes().length > 0) {
         @for (note of notes(); track note.creationDate) {
           <div class="note-card">
-            <p><strong>Date de création :</strong> {{ note.creationDate | date: 'short' }}</p>
+            <p><strong>Date de création :</strong> {{ note.creationDate |  date:'dd/MM/yyyy à HH:mm' }}</p>
             @if(note.modificationDate !=null){
-              <p><strong>Date de modification :</strong> {{ note.modificationDate | date: 'short' }}</p>
+              <p><strong>Date de modification :</strong> {{ note.modificationDate |  date:'dd/MM/yyyy à HH:mm' }}</p>
             }
             <p class="note-preview">{{ note.comments }}</p>
             <div class="note-actions">

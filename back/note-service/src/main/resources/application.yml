@@ -14,3 +14,9 @@ logging:
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
 
+internal:
+  api:
+    key: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
+
+patient-service:
+  url: http://localhost:8085

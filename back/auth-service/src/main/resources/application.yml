@@ -14,3 +14,11 @@ spring:
 
 server:
   port: 8087
+
+  internal:
+    api:
+      key: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
+
+jwt:
+  secret:
+    key: 2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf

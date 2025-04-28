@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Log4j2
 @RestController
@@ -27,12 +28,12 @@ public class PatientController {
     public ResponseEntity<Patient> createPatient(@Valid @RequestBody PatientDTO patient) {
         log.info("POST /api/patients - Création d'un nouveau patient : {}", patient);
         Patient savedPatient = patientService.addPatient(patient);
-        log.info("Patient créé avec l'id : {}", savedPatient.getId());
+        log.info("Patient créé avec l'id : {}", savedPatient.getUid());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPatient);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
+    public ResponseEntity<PatientDTO> getPatientById(@Valid @PathVariable UUID id) {
         log.info("GET /api/patients/{} - Récupération du patient", id);
         Patient patient = patientService.findPatientById(id);
         PatientDTO patientDto = patientService.convertToDTO(patient);
@@ -75,7 +76,7 @@ public class PatientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PatientDTO> updatePatient(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody PatientDTO patientDTO) {
 
         log.info("PUT /api/patients/{} - Mise à jour du patient : {}", id, patientDTO);
@@ -91,18 +92,22 @@ public class PatientController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin-only")
-    public ResponseEntity<String> onlyAdmin() {
-        log.info("GET /api/patients/admin-only - Vérification accès ADMIN");
-        return ResponseEntity.ok("Accès ADMIN validé");
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/toggle/{id}")
-    public ResponseEntity<PatientDTO> togglePatient(@PathVariable Long id) {
+    public ResponseEntity<PatientDTO> togglePatient(@PathVariable UUID id) {
         log.info("PUT /api/patients/toggle/{} - Activation/Désactivation du patient", id);
         PatientDTO patientDto = patientService.toggleActivePatient(id);
         log.info("Nouveau statut du patient : {}", patientDto);
         return ResponseEntity.ok().body(patientDto);
+    }
+
+    @GetMapping("/{uid}/exists")
+    public boolean isActivePatient(@PathVariable String uid) {
+        return patientService.ifActiveOrExistingPatient(UUID.fromString(uid));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
+        patientService.deletePatient(id);
+        return ResponseEntity.noContent().build();
     }
 }

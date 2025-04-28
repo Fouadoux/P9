@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -18,16 +19,26 @@ import java.time.LocalDate;
 public class PatientDTO {
 
 
-    public PatientDTO(Long id, String firstName, String lastName, LocalDate birthDate, Gender gender) {
-        this.id = id;
+    public PatientDTO(UUID uid, String firstName, String lastName, LocalDate birthDate, Gender gender) {
+        this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
     }
+    public PatientDTO(UUID uid, String firstName, String lastName, LocalDate birthDate, Gender gender,String address,String phone) {
+        this.uid = uid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.address = address;
+        this.phone=phone;
+    }
+
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)  // Empêche la modification de l'ID
-    private Long id;
+    private UUID uid;
 
     @NotBlank(message = "First name is required")
     @Size(max = 50, message = "Le prénom ne doit pas dépasser 50 caractères")
@@ -44,7 +55,7 @@ public class PatientDTO {
     private Gender gender;
 
     private String address;
-    private String phoneNumber;
+    private String phone;
     private boolean active;
 
     public PatientStatus getStatus() {

@@ -25,13 +25,13 @@ public class NoteController {
     private final NoteService noteService;
 
     @PostMapping
-    public ResponseEntity<NoteDto> addNote(@Valid @RequestBody NoteDto noteDto) {
+    public ResponseEntity<?> addNote(@Valid @RequestBody NoteDto noteDto) {
         NoteDto note = noteService.addNote(noteDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(note);
     }
 
     @GetMapping("/patient/{id}")
-    public ResponseEntity<List<NoteDto>> findById(@PathVariable Long id) {
+    public ResponseEntity<List<NoteDto>> findById(@PathVariable String id) {
         List<NoteDto> noteDtoList =noteService.findAllByPatientId(id);
 
         if (noteDtoList.isEmpty()) {
@@ -41,13 +41,10 @@ public class NoteController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateNote(
-            @RequestParam Long patientId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime creationDate,
-            @RequestParam String comments) {
+    public ResponseEntity<?> updateNote(@RequestBody @Valid NoteDto noteDto) {
 
         try {
-            NoteDto updatedNote = noteService.updateNote(patientId, creationDate, comments);
+            NoteDto updatedNote = noteService.updateNote(noteDto);
             return ResponseEntity.ok(updatedNote);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -59,12 +56,10 @@ public class NoteController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteNote(
-            @RequestParam Long patientId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime creationDate) {
+    public ResponseEntity<?> deleteNote(@RequestBody @Valid NoteDto noteDto) {
 
         try {
-             noteService.deleteNote(patientId, creationDate);
+             noteService.deleteNote(noteDto);
             return ResponseEntity.noContent().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -75,9 +70,38 @@ public class NoteController {
         }
     }
 
+
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin-only")
-    public ResponseEntity<String> onlyAdmin() {
-        return ResponseEntity.ok("Accès ADMIN validé");
+    @PutMapping("/admin/update")
+    public ResponseEntity<?> updateNoteAdmin(@RequestBody @Valid NoteDto noteDto) {
+
+        try {
+            NoteDto updatedNote = noteService.updateNoteForAdmin(noteDto);
+            return ResponseEntity.ok(updatedNote);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponse("Note non trouvée."));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ErrorResponse(e.getMessage()));
+        }
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/admin/delete")
+    public ResponseEntity<?> deleteNoteAdmin(@RequestBody @Valid NoteDto noteDto) {
+
+        try {
+            noteService.deleteNoteForAdmin(noteDto);
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponse("Note non trouvée."));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
 }

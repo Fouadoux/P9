@@ -1,207 +1,206 @@
 package com.glucovision.noteservice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.glucovision.noteservice.dto.NoteDto;
+import com.glucovision.noteservice.exception.ErrorResponse;
+import com.glucovision.noteservice.exception.GlobalExceptionHandler;
+import com.glucovision.noteservice.exception.PatientNotFoundException;
 import com.glucovision.noteservice.service.NoteService;
+import com.glucovision.noteservice.service.PatientDataService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(NoteController.class)
-@Import(NoteControllerTest.MockConfig.class)
+@AutoConfigureMockMvc
+@Import(GlobalExceptionHandler.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class NoteControllerTest {
 
-    @Autowired
+
     private MockMvc mockMvc;
 
-    @Autowired
+    @Mock
     private NoteService noteService;
 
-    @TestConfiguration
-    static class MockConfig {
-        @Bean
-        public NoteService noteService() {
-            return Mockito.mock(NoteService.class);
-        }
-    }
+    @InjectMocks
+    private NoteController noteController;
 
-                            //addNote
-    @Test
-    void TestAddNote() throws Exception {
-        NoteDto outputDto = new NoteDto(1L, "Test comment", LocalDateTime.now());
+    private NoteDto noteDto;
 
-        when(noteService.addNote(any(NoteDto.class))).thenReturn(outputDto);
-
-        mockMvc.perform(post("/notes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                            {
-                              "patientId": 1,
-                              "comments": "Test comment"
-                            }
-                            """))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.patientId").value(1))
-                .andExpect(jsonPath("$.comments").value("Test comment"));
+    @BeforeEach
+    void setUp() {
+        noteDto = new NoteDto();
+        noteDto.setPatientId("patient123");
+        noteDto.setComments("Test comment");
+        noteDto.setCreationDate(LocalDateTime.now());
     }
 
     @Test
-    void testAddNote_fail_NoComment() throws Exception {
-        String invalidJson = """
-        {
-          "patientId": 1,
-          "comments": ""
-        }
-        """;
+    void addNote_ShouldReturnCreatedResponse() {
+        when(noteService.addNote(any(NoteDto.class))).thenReturn(noteDto);
 
-        mockMvc.perform(post("/notes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.comments").value("Comment is required"));
+        ResponseEntity<?> response = noteController.addNote(noteDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(noteDto, response.getBody());
+        verify(noteService, times(1)).addNote(noteDto);
     }
 
     @Test
-    void testAddNote_fail_NoPatientId() throws Exception {
-        String invalidJson = """
-        {
-          "comments": "test"
-        }
-        """;
+    void findById_ShouldReturnListOfNotes() {
+        List<NoteDto> notes = Collections.singletonList(noteDto);
+        when(noteService.findAllByPatientId("patient123")).thenReturn(notes);
 
-        mockMvc.perform(post("/notes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.patientId").value("PatientId is required"));
-    }
+        ResponseEntity<List<NoteDto>> response = noteController.findById("patient123");
 
-
-                            //find note
-
-    @Test
-    void testFindByPatientId_success() throws Exception {
-        NoteDto noteDto1 = new NoteDto(1L, "Test comment 1", LocalDateTime.now());
-        NoteDto noteDto2 = new NoteDto(1L, "Test comment 2", LocalDateTime.now());
-
-        List<NoteDto> noteDtos = Arrays.asList(noteDto1, noteDto2);
-
-        when(noteService.findAllByPatientId(1L)).thenReturn(noteDtos);
-
-        mockMvc.perform(get("/notes/patient/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].comments").value("Test comment 1"))
-                .andExpect(jsonPath("$[1].comments").value("Test comment 2"));
-
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(notes, response.getBody());
     }
 
     @Test
-    void testFindByPatientId_fail_NotFound() throws Exception {
+    void findById_ShouldReturnNotFoundWhenEmpty() {
+        when(noteService.findAllByPatientId("patient123")).thenReturn(Collections.emptyList());
 
-        Long nonExistentId = 99L;
-        when(noteService.findAllByPatientId(nonExistentId))
-                .thenThrow(new NoSuchElementException("No notes found for patientId: " + nonExistentId));
+        ResponseEntity<List<NoteDto>> response = noteController.findById("patient123");
 
-        mockMvc.perform(get("/notes/patient/{patientId}", nonExistentId))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("No notes found for patientId: 99"));
-
-    }
-
-                                        // Update
-                                        @Test
-                                        void testUpdateNote_Success() throws Exception {
-                                            NoteDto updatedNote = new NoteDto(1L, "updated comment", LocalDateTime.now());
-
-                                            when(noteService.updateNote(anyLong(), any(LocalDateTime.class), anyString()))
-                                                    .thenReturn(updatedNote);
-
-                                            mockMvc.perform(put("/notes")
-                                                            .param("patientId", "1")
-                                                            .param("creationDate", "2025-03-27T10:00:00")
-                                                            .param("comments", "updated comment"))
-                                                    .andExpect(status().isOk())
-                                                    .andExpect(jsonPath("$.comments").value("updated comment"));
-                                        }
-
-    @Test
-    void testUpdateNote_NotFound() throws Exception {
-        when(noteService.updateNote(anyLong(), any(LocalDateTime.class), anyString()))
-                .thenThrow(new NoSuchElementException());
-
-        mockMvc.perform(put("/notes")
-                        .param("patientId", "1")
-                        .param("creationDate", "2025-03-27T10:00:00")
-                        .param("comments", "new comment"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Note non trouvée."));
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     @Test
-    void testUpdateNote_TooOld() throws Exception {
-        when(noteService.updateNote(anyLong(), any(LocalDateTime.class), anyString()))
-                .thenThrow(new IllegalStateException("Modification interdite"));
+    void updateNote_ShouldReturnUpdatedNote() {
+        when(noteService.updateNote(any(NoteDto.class))).thenReturn(noteDto);
 
-        mockMvc.perform(put("/notes")
-                        .param("patientId", "1")
-                        .param("creationDate", "2025-03-25T10:00:00")
-                        .param("comments", "new comment"))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.error").value("Modification interdite"));
-    }
+        ResponseEntity<?> response = noteController.updateNote(noteDto);
 
-                                    //delete
-
-    @Test
-    void testDeleteNote_Success() throws Exception {
-        doNothing().when(noteService).deleteNote(anyLong(), any(LocalDateTime.class));
-
-        mockMvc.perform(delete("/notes")
-                        .param("patientId", "1")
-                        .param("creationDate", "2025-03-27T10:00:00"))
-                .andExpect(status().isNoContent());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(noteDto, response.getBody());
     }
 
     @Test
-    void testDeleteNote_NotFound() throws Exception {
-        doThrow(new NoSuchElementException()).when(noteService).deleteNote(anyLong(), any(LocalDateTime.class));
+    void updateNote_ShouldHandleNoSuchElementException() {
+        when(noteService.updateNote(any(NoteDto.class)))
+                .thenThrow(new NoSuchElementException("Note non trouvée."));
 
-        mockMvc.perform(delete("/notes")
-                        .param("patientId", "1")
-                        .param("creationDate", "2025-03-27T10:00:00"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Note non trouvée."));
+        ResponseEntity<?> response = noteController.updateNote(noteDto);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
     }
 
     @Test
-    void testDeleteNote_TooOld() throws Exception {
-        doThrow(new IllegalStateException("Suppression interdite")).when(noteService)
-                .deleteNote(anyLong(), any(LocalDateTime.class));
+    void updateNote_ShouldHandleIllegalStateException() {
+        when(noteService.updateNote(any(NoteDto.class)))
+                .thenThrow(new IllegalStateException("Modification expired"));
 
-        mockMvc.perform(delete("/notes")
-                        .param("patientId", "1")
-                        .param("creationDate", "2025-03-25T10:00:00"))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.error").value("Suppression interdite"));
+        ResponseEntity<?> response = noteController.updateNote(noteDto);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("Modification expired", ((ErrorResponse) response.getBody()).getError());
     }
 
+    @Test
+    void deleteNote_ShouldReturnNoContent() {
+        doNothing().when(noteService).deleteNote(any(NoteDto.class));
+
+        ResponseEntity<?> response = noteController.deleteNote(noteDto);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void deleteNote_ShouldHandleNoSuchElementException() {
+        doThrow(new NoSuchElementException("Note non trouvée."))
+                .when(noteService).deleteNote(any(NoteDto.class));
+
+        ResponseEntity<?> response = noteController.deleteNote(noteDto);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
+    }
+
+    @Test
+    void deleteNote_ShouldHandleIllegalStateException() {
+        doThrow(new IllegalStateException("Deletion expired"))
+                .when(noteService).deleteNote(any(NoteDto.class));
+
+        ResponseEntity<?> response = noteController.deleteNote(noteDto);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("Deletion expired", ((ErrorResponse) response.getBody()).getError());
+    }
+
+    @Test
+    void updateNoteAdmin_ShouldReturnUpdatedNote() {
+        when(noteService.updateNoteForAdmin(any(NoteDto.class))).thenReturn(noteDto);
+
+        ResponseEntity<?> response = noteController.updateNoteAdmin(noteDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(noteDto, response.getBody());
+    }
+
+    @Test
+    void updateNoteAdmin_ShouldHandleNoSuchElementException() {
+        when(noteService.updateNoteForAdmin(any(NoteDto.class)))
+                .thenThrow(new NoSuchElementException("Note non trouvée."));
+
+        ResponseEntity<?> response = noteController.updateNoteAdmin(noteDto);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
+    }
+
+    @Test
+    void deleteNoteAdmin_ShouldReturnNoContent() {
+        doNothing().when(noteService).deleteNoteForAdmin(any(NoteDto.class));
+
+        ResponseEntity<?> response = noteController.deleteNoteAdmin(noteDto);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void deleteNoteAdmin_ShouldHandleNoSuchElementException() {
+        doThrow(new NoSuchElementException("Note non trouvée."))
+                .when(noteService).deleteNoteForAdmin(any(NoteDto.class));
+
+        ResponseEntity<?> response = noteController.deleteNoteAdmin(noteDto);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
+    }
 }

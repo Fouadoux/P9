@@ -8,5 +8,7 @@
 
     <div class="patient-list">
       <app-patient-card *ngFor="let patient of filteredPatients()" [patient]="patient"></app-patient-card>
+      <app-patient-card [isEmpty]="true"></app-patient-card>
     </div>
+    
   </div>

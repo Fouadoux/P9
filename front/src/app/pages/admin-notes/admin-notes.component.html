@@ -1,18 +1,20 @@
-<h2>Notes du patient {{ patientId() }}</h2>
+<h2>
+  Notes du patient : {{ patient()?.firstName }} {{ patient()?.lastName }}
+</h2>
 
 <button mat-flat-button color="primary" (click)="onAddNote()">
   Ajouter une note
 </button>
 
-<ul>
-  <li *ngFor="let note of notes()">
-    {{ note.comments }}
-    <button mat-icon-button color="accent" (click)="onEditNote(note)">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </li>
-</ul>
+<div class="note-list">
+  <app-app-card
+    *ngFor="let note of notes()"
+    [data]="note"
+    (edit)="onEditNote(note)"
+    (deleted)="onDeleteNote(note)"
+  ></app-app-card>
+</div>
 
 <div class="actions">
-    <button (click)="goBack()">⬅️ Retour</button>
+  <button (click)="goBack()">⬅️ Retour</button>
 </div>

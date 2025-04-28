@@ -8,12 +8,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Data
 @Document(collection = "history")
 public class Note {
 
-    public Note(Long patientId, String comments, LocalDateTime creationDate) {
+    public Note(String patientId, String comments, LocalDateTime creationDate) {
         this.patientId = patientId;
         this.comments = comments;
         this.creationDate = creationDate;
@@ -25,7 +26,7 @@ public class Note {
     @Id
     private String id;
 
-    private Long patientId;
+    private String patientId;
 
     private String comments;
 

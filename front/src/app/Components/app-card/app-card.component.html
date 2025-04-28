@@ -1,36 +1,53 @@
-<div class="card" *ngIf="data() as d">
+<div class="card" *ngIf="data()">
 
-    <div class="info">
-      <h3>{{ d.firstName }} {{ d.lastName }}</h3>
-  
-      <p *ngIf="email">Email : {{ email }}</p>
-      <p *ngIf="role">Role : {{ role }}</p>
-  
-      <p *ngIf="birthDate">Date de naissance : {{ birthDate }}</p>
-      <p *ngIf="gender">Genre : {{ gender }}</p>
-  
-      <p>Status :
-        <span [class.active]="d.status === 'ACTIF'" [class.inactive]="d.status === 'INACTIF'">
-          {{ d.status }}
-        </span>
-      </p>
-    </div>
-  
-    <div class="actions">
-      <button mat-flat-button color="accent" (click)="edit.emit()">
-        <mat-icon>edit</mat-icon>&nbsp;Gérer
-      </button>
-      
-      <button mat-flat-button color="warn" (click)="toggle.emit()">
-        <mat-icon>autorenew</mat-icon>&nbsp;Activer/Désactiver
-      </button>
-      
-      <button mat-flat-button (click)="goToNotes()">
-        <mat-icon>note</mat-icon>
-        Notes
-      </button>
-      
-    </div>
-  
+  <div class="info" *ngIf="user">
+    <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+    <p>Email : {{ user.email }}</p>
+    <p>Rôle : {{ user.role }}</p>
+    <p>Status :
+      <span [class.active]="user.status === 'ACTIF'" [class.inactive]="user.status === 'INACTIF'">
+        {{ user.status }}
+      </span>
+    </p>
   </div>
-  
+
+  <div class="info" *ngIf="patient">
+    <h3>{{ patient.firstName }} {{ patient.lastName }}</h3>
+    <p>Date de naissance : {{ patient.birthDate | date:'dd/MM/yyyy' }}</p>
+    <p>Genre : {{ patient.gender }}</p>
+    <p>Status :
+      <span [class.active]="patient.status === 'ACTIF'" [class.inactive]="patient.status === 'INACTIF'">
+        {{ patient.status }}
+      </span>
+    </p>
+  </div>
+
+  <div class="info" *ngIf="noteItem">
+    <p><strong>Commentaires :</strong> {{ noteItem.comments }}</p>
+    <p><strong>Créée le :</strong> {{ noteItem.creationDate | date:'dd/MM/yyyy à HH:mm' }}</p>
+    <p *ngIf="noteItem.modificationDate">
+      <strong>Modifiée le :</strong> {{ noteItem.modificationDate | date:'dd/MM/yyyy à HH:mm' }}
+    </p>
+  </div>
+
+  <div class="actions">
+    <button mat-flat-button color="accent" (click)="edit.emit()">
+      <mat-icon>edit</mat-icon>&nbsp;Gérer
+    </button>
+
+    <button *ngIf="patient || user" mat-flat-button color="warn" (click)="toggle.emit()">
+      <mat-icon>autorenew</mat-icon>&nbsp;Activer/Désactiver
+    </button>
+
+    <button *ngIf="patient" mat-flat-button (click)="goToNotes()">
+      <mat-icon>note</mat-icon>
+      Notes
+    </button>
+
+    <button *ngIf="noteItem" mat-flat-button (click)="deleted.emit()">
+      <mat-icon>delete</mat-icon>
+      Supprimer
+    </button>
+  </div>
+
+</div>

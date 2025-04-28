@@ -9,4 +9,9 @@ spring:
     web-application-type: reactive  # ✅ Requis pour Spring Cloud Gateway (WebFlux)
 
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration  # ✅ Désactive Spring Security auto-configurée (utile en dev)
+    exclude: org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
+
+
+jwt:
+  secret:
+    key: 2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf

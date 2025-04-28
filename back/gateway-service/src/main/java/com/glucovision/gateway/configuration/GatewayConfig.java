@@ -18,7 +18,7 @@ public class GatewayConfig {
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("patient-route",r -> r.path("/api/patients/**").uri("http://localhost:8085"))
-                .route("history_route",r -> r.path("/api/notes/**").uri("http://localhost:8082"))
+                .route("note-route",r -> r.path("/api/notes/**").uri("http://localhost:8082"))
                 .route("diabetes_risk_route",r->r.path("/api/risk/**").uri("http://localhost:8084"))
                 .route("auth-service",r -> r.path("/api/auth/**","/api/users/**").uri("http://localhost:8087"))
                 .build();

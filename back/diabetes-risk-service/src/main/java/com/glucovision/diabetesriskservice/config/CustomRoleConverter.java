@@ -13,7 +13,7 @@ public class CustomRoleConverter implements Converter<Jwt, Collection<GrantedAut
 
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
-        String role = jwt.getClaimAsString("role");
+        String role = jwt.getClaimAsString("roles");
 
         System.out.println("🔐 JWT ROLE trouvé : " + role);
 

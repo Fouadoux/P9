@@ -1,10 +1,10 @@
 import { Gender } from "./gender.model";
 
 export interface Patient{
-    id:number;
+    uid:string;
     firstName:string;
     lastName:string;
-    birthDate:string;
+    birthDate:Date|null;
     gender:Gender;
     address:string;
     phone:string;

@@ -6,10 +6,12 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { routes } from './app/app.routes';
 import { inject } from '@angular/core';
 import { authInterceptor } from './app/services/auth.interceptor';
+import { DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor]))
+    provideHttpClient(withInterceptors([authInterceptor])),
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
   ]
 }).catch(err => console.error(err));

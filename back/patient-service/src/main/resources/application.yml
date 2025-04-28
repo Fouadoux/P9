@@ -23,4 +23,8 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     # database-platform: org.hibernate.dialect.MySQL5InnoDBDialect (décommenter si nécessaire)
 
+internal:
+  api:
+    key: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
+
 

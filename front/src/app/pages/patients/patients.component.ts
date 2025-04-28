@@ -4,11 +4,12 @@ import { SearchBarComponent } from '../../Components/search-bar/search-bar.compo
 import { PatientService } from '../../services/patient.service';
 import { PatientCardComponent } from '../../Components/patient-card/patient-card.component';
 import { Patient } from '../../model/patient.model';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-patients',
   standalone: true,
-  imports: [CommonModule,SearchBarComponent,PatientCardComponent],
+  imports: [CommonModule,SearchBarComponent,PatientCardComponent,MatNativeDateModule ],
   templateUrl: './patients.component.html',
   styleUrl: './patients.component.css'
 })
@@ -17,7 +18,7 @@ export class PatientsComponent {
 
   patients = signal<Patient[]>([]);
   searchQuery = signal<string>('');
-  isLoading = signal<boolean>(true); // ✅ Gère l'affichage du chargement
+  isLoading = signal<boolean>(true); 
 
   filteredPatients = computed(() =>
     this.patients().filter(patient =>
@@ -26,7 +27,6 @@ export class PatientsComponent {
   );
 
   constructor() {
-    // 🔥 Appel API REST dès que le composant se charge
     effect(() => {
       this.patientService.getPatientsActive().subscribe(data => {
         this.patients.set(data);

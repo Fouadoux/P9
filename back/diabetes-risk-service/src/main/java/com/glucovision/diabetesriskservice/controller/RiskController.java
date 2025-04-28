@@ -17,17 +17,11 @@ public class RiskController {
 
     private final RiskService service;
 
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/patient/{id}")
-    public ResponseEntity<RiskDto> getRiskLevel(@PathVariable Long id) {
+    public ResponseEntity<RiskDto> getRiskLevel(@PathVariable String id) {
         RiskDto riskDto = new RiskDto(id, service.evaluateRiskLevel(id));
         return ResponseEntity.ok(riskDto);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin-only")
-    public ResponseEntity<String> onlyAdmin() {
-        return ResponseEntity.ok("Accès ADMIN validé");
     }
 
 }

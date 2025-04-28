@@ -30,17 +30,17 @@ public class RiskServiceTest {
     public void testEvaluateRiskLevel_shouldReturnNone_whenNoTriggerTerms() {
         // Given
         Long patientId = 1L;
-        PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(45), "M");
+        PatientDto patient = new PatientDto("1", LocalDate.now().minusYears(45), "M");
         List<NoteDto> notes = List.of(
-                new NoteDto(patientId, "Le patient va bien."),
-                new NoteDto(patientId, "Aucun symptôme notable.")
+                new NoteDto("1", "Le patient va bien."),
+                new NoteDto("1", "Aucun symptôme notable.")
         );
 
-        when(patientDataService.getPatient(patientId)).thenReturn(patient);
-        when(noteDataService.getNoteDtoList(patientId)).thenReturn(notes);
+        when(patientDataService.getPatient("1")).thenReturn(patient);
+        when(noteDataService.getNoteDtoList("1")).thenReturn(notes);
 
         // When
-        RiskLevel result = riskService.evaluateRiskLevel(patientId);
+        RiskLevel result = riskService.evaluateRiskLevel("1");
 
         // Then
         assertEquals(RiskLevel.NONE, result);
@@ -49,7 +49,7 @@ public class RiskServiceTest {
     @Test
     public void testEvaluateRiskLevel_shouldReturnBorderline_whenAgeAbove30_and2To5Triggers() {
         // Given
-        Long patientId = 2L;
+        String patientId = "1";
         PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(45), "F");
         List<NoteDto> notes = List.of(
                 new NoteDto(patientId, "Le patient présente des vertiges et du cholestérol élevé."),
@@ -70,7 +70,7 @@ public class RiskServiceTest {
     @Test
     public void testEvaluateRiskLevel_shouldReturnInDanger_whenMaleUnder30_and3To4Triggers() {
         // Given
-        Long patientId = 3L;
+        String patientId = "3";
         PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(25), "M");
         List<NoteDto> notes = List.of(
                 new NoteDto(patientId, "Le patient est fumeur, présente une taille anormale et a du cholestérol.")
@@ -90,7 +90,7 @@ public class RiskServiceTest {
     @Test
     public void testEvaluateRiskLevel_shouldReturnEarlyOnset_whenMaleUnder30_and5OrMoreTriggers() {
         // Given
-        Long patientId = 4L;
+        String patientId = "4";
         PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(28), "Male");
         List<NoteDto> notes = List.of(
                 new NoteDto(patientId, "Fumeur avec un taux élevé de cholestérol et une taille anormale."),
@@ -111,7 +111,7 @@ public class RiskServiceTest {
     @Test
     public void testEvaluateRiskLevel_shouldReturnInDanger_whenFemaleUnder30_and4To6Triggers() {
         // Given
-        Long patientId = 5L;
+        String patientId = "5";
         PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(29), "F");
         List<NoteDto> notes = List.of(
                 new NoteDto(patientId, "La patiente est fumeuse, présente une taille anormale."),
@@ -132,7 +132,7 @@ public class RiskServiceTest {
     @Test
     public void testEvaluateRiskLevel_shouldReturnEarlyOnset_whenFemaleUnder30_and7OrMoreTriggers() {
         // Given
-        Long patientId = 6L;
+        String patientId = "6";
         PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(25), "Female");
         List<NoteDto> notes = List.of(
                 new NoteDto(patientId, "Fumeuse avec cholestérol, vertiges, taille anormale."),
@@ -148,6 +148,55 @@ public class RiskServiceTest {
 
         // Then
         assertEquals(RiskLevel.EARLY_ONSET, result);
+    }
+
+    @Test
+    public void testEvaluateRiskLevel_shouldReturnNone_whenExactly1Trigger() {
+        String patientId = "7";
+        PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(40), "M");
+        List<NoteDto> notes = List.of(
+                new NoteDto(patientId, "Le patient a un taux de cholestérol élevé.")
+        );
+
+        when(patientDataService.getPatient(patientId)).thenReturn(patient);
+        when(noteDataService.getNoteDtoList(patientId)).thenReturn(notes);
+
+        assertEquals(RiskLevel.NONE, riskService.evaluateRiskLevel(patientId));
+    }
+
+    @Test
+    public void testEvaluateRiskLevel_shouldReturnInDanger_when6TriggersAndOver30() {
+        String patientId = "8";
+        PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(35), "F");
+        List<NoteDto> notes = List.of(
+                new NoteDto(patientId, "Cholestérol, vertiges, taille, poids, fumeuse, microalbumine")
+        );
+
+        when(patientDataService.getPatient(patientId)).thenReturn(patient);
+        when(noteDataService.getNoteDtoList(patientId)).thenReturn(notes);
+
+        assertEquals(RiskLevel.IN_DANGER, riskService.evaluateRiskLevel(patientId));
+    }
+
+    @Test
+    public void testEvaluateRiskLevel_shouldDetectTriggers_caseInsensitive() {
+        String patientId = "9";
+        PatientDto patient = new PatientDto(patientId, LocalDate.now().minusYears(25), "M");
+        List<NoteDto> notes = List.of(
+                new NoteDto(patientId, "Patient fumeur avec cholestÉrol et hémoglobine a1c")
+                // Doit détecter: FUMEUR, CHOLESTÉROL, HÉMOGLOBINE A1C
+        );
+
+        when(patientDataService.getPatient(patientId)).thenReturn(patient);
+        when(noteDataService.getNoteDtoList(patientId)).thenReturn(notes);
+
+        assertEquals(RiskLevel.IN_DANGER, riskService.evaluateRiskLevel(patientId));
+    }
+
+    @Test
+    public void testCalculateAge_shouldReturnCorrectAge() {
+        PatientDto patient = new PatientDto("10", LocalDate.now().minusYears(25).minusMonths(6), "M");
+        assertEquals(25, riskService.calculateAge(patient));
     }
 
 

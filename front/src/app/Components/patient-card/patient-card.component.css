@@ -26,3 +26,23 @@
   font-size: 0.95rem;
   color: #555;
 }
+
+.empty-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  cursor: pointer;
+}
+
+.plus {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.add-text {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}

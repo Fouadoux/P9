@@ -9,42 +9,51 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "patients") // Table MySQL
+@Table(name = "patients")
 public class Patient {
-    public Patient() {
-    }
 
-    public Patient(Long id, String firstName, String lastName, String birthDate, Gender gender, String address, String phoneNumber) {
-        this.id = id;
+    public Patient() {}
+
+    public Patient(String firstName, String lastName, String birthDate, Gender gender, String address, String phone) {
+        this.uid = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = parseDate(birthDate);
         this.gender = gender;
         this.address = address;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
+        this.active = true;
     }
-    public Patient(Long id, String firstName, String lastName, String birthDate, Gender gender) {
-        this.id = id;
+
+    public Patient(UUID id,String firstName, String lastName, String birthDate, Gender gender, String address, String phone, boolean active) {
+        this.uid=id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = parseDate(birthDate);
         this.gender = gender;
+        this.address = address;
+        this.phone = phone;
+        this.active = active;
     }
 
-    private LocalDate parseDate(String date) {
+
+
+
+    public LocalDate parseDate(String date) {
         DateTimeFormatter[] formatters = {
                 DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-                DateTimeFormatter.ofPattern("dd-MM-yyy")
+                DateTimeFormatter.ofPattern("dd-MM-yyyy")
         };
 
         for (DateTimeFormatter formatter : formatters) {
-            try{
+            try {
                 return LocalDate.parse(date, formatter);
-            }catch (Exception ignored) {}
+            } catch (Exception ignored) {}
         }
 
         throw new RuntimeException("Could not parse date " + date);
@@ -53,6 +62,11 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+
+    @Column(unique = true, nullable = false, updatable = false)
+    private UUID uid;
 
     @Column(name = "first_name", nullable = false)
     @NotBlank(message = "First name is required")
@@ -74,10 +88,9 @@ public class Patient {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "phone")
+    private String phone;
 
     @Column(nullable = false)
     private boolean active;
-
 }
