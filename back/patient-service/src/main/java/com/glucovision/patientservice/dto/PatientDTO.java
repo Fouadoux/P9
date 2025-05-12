@@ -19,14 +19,15 @@ import java.util.UUID;
 public class PatientDTO {
 
 
-    public PatientDTO(UUID uid, String firstName, String lastName, LocalDate birthDate, Gender gender) {
+    public PatientDTO(String uid, String firstName, String lastName, LocalDate birthDate, Gender gender) {
         this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
     }
-    public PatientDTO(UUID uid, String firstName, String lastName, LocalDate birthDate, Gender gender,String address,String phone) {
+
+    public PatientDTO(String uid, String firstName, String lastName, LocalDate birthDate, Gender gender,String address,String phone) {
         this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -37,8 +38,7 @@ public class PatientDTO {
     }
 
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)  // Empêche la modification de l'ID
-    private UUID uid;
+    private String uid;
 
     @NotBlank(message = "First name is required")
     @Size(max = 50, message = "Le prénom ne doit pas dépasser 50 caractères")
@@ -56,7 +56,7 @@ public class PatientDTO {
 
     private String address;
     private String phone;
-    private boolean active;
+    private Boolean active = true;
 
     public PatientStatus getStatus() {
 

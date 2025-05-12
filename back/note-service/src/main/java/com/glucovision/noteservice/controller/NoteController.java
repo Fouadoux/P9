@@ -33,10 +33,6 @@ public class NoteController {
     @GetMapping("/patient/{id}")
     public ResponseEntity<List<NoteDto>> findById(@PathVariable String id) {
         List<NoteDto> noteDtoList =noteService.findAllByPatientId(id);
-
-        if (noteDtoList.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(noteDtoList);
     }
 

@@ -1,0 +1,20 @@
+# Dossiers à ignorer
+node_modules
+dist
+.angular
+.vscode
+
+# Fichiers inutiles pour Docker
+Dockerfile
+.dockerignore
+README.md
+.git
+.gitignore
+.editorconfig
+npm-debug.log
+*.log
+
+# Fichiers de config IDE
+*.iml
+*.sublime*
+*.swp

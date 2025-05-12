@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
-@Document(collection = "history")
+@Document(collection = "note")
 public class Note {
 
     public Note(String patientId, String comments, LocalDateTime creationDate) {

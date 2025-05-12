@@ -3,7 +3,9 @@ package com.glucovion.authservice.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
@@ -14,19 +16,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
 @Log4j2
 @Service
 public class JwtService {
 
-
-    //private static final String SECRET_KEY = "2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf";
-    @Value("${jwt.secret.key}")
-    private String SECRET_KEY;
-
     final Key signingKey;
 
-    public JwtService() {
-        this.signingKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    @Autowired
+    public JwtService(@Value("${jwt.secret.key}") String secretKey) {
+        if (secretKey == null || secretKey.trim().isEmpty()) {
+            throw new IllegalArgumentException("JWT secret key cannot be null or empty");
+        }
+        this.signingKey = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     public String extractUsername(String token) {

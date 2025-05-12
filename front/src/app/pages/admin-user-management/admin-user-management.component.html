@@ -1,6 +1,16 @@
 <div class="container">
-    <h2>Liste des utilisateurs</h2>
+
+  <h2>Liste des utilisateurs</h2>
+
+  <div class="back-button-container">
+    <button mat-stroked-button color="primary" (click)="goTo('admin')">
+      ⬅️ Retour accueil admin
+    </button>
+  </div>
+
   
+
+
     <div class="user-list">
       <app-app-card
     *ngFor="let user of users()"

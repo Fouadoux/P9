@@ -1,15 +1,19 @@
 server:
-  port: 8084
+  port: 8080
 
 spring:
   application:
     name: diabetes-risk-service
 
 patient-service:
-  url: http://localhost:8085
+  url: http://patient-service:8080
 
 note-service:
-  url: http://localhost:8082
+  url: http://note-service:8080
+
+auth-service:
+  url: http://auth-service:8080
+
 
 internal:
   api:

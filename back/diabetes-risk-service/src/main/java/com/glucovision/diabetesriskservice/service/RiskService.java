@@ -2,7 +2,7 @@ package com.glucovision.diabetesriskservice.service;
 
 import com.glucovision.diabetesriskservice.dto.NoteDto;
 import com.glucovision.diabetesriskservice.dto.PatientDto;
-import com.glucovision.diabetesriskservice.dto.RiskDto;
+import com.glucovision.diabetesriskservice.exception.PatientNotFoundException;
 import com.glucovision.diabetesriskservice.model.RiskLevel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,8 +57,17 @@ public class RiskService {
     }
 
     public RiskLevel evaluateRiskLevel(String id) {
-        List<NoteDto> noteDtoList = noteService.getNoteDtoList(id);
+
         PatientDto patientDto = patientService.getPatient(id);
+        if (patientDto == null) {
+            throw new PatientNotFoundException("Patient not found with ID: " + id);
+        }
+
+        List<NoteDto> noteDtoList = noteService.getNoteDtoList(id);
+        if (noteDtoList.isEmpty()) {
+            return RiskLevel.NONE;
+        }
+
         int age = calculateAge(patientDto);
         int triggerCount = calculateRisk(noteDtoList);
 

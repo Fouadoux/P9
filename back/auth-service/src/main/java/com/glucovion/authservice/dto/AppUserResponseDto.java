@@ -15,7 +15,7 @@ public class AppUserResponseDto {
     private String firstName;
     private String email;
     private AppRole role;
-    private boolean active;
+    private Boolean active=true;
 
     public AppUsersStatus getStatus() {
         return active ? AppUsersStatus.ACTIF : AppUsersStatus.INACTIF;

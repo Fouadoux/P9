@@ -6,6 +6,7 @@ import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.repository.PatientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
@@ -23,11 +24,12 @@ public class PatientService {
 
     //retourne une liste de patient
     public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+
+        return patientRepository.findAll(Sort.by("lastName").and(Sort.by("firstName")));
     }
 
     public List<Patient> getAllActivePatients() {
-        return patientRepository.findByActiveTrue();
+        return patientRepository.findByActiveTrue(Sort.by("lastName").and(Sort.by("firstName")));
     }
 
 
@@ -35,7 +37,7 @@ public class PatientService {
     public Patient addPatient(PatientDTO patientDTO) {
 
         Patient newPatient = new Patient();
-        newPatient.setUid(UUID.randomUUID());
+        newPatient.setUid(String.valueOf(UUID.randomUUID()));
         newPatient.setFirstName(patientDTO.getFirstName());
         newPatient.setLastName(patientDTO.getLastName());
         newPatient.setBirthDate(patientDTO.getBirthDate());
@@ -55,14 +57,14 @@ public class PatientService {
     }
 
     // Mettre à jour un patient
-    public PatientDTO updatePatient(UUID id, PatientDTO patientDTO) {
-        return patientRepository.findByUid(id)
+    public PatientDTO updatePatient(String uid, PatientDTO patientDTO) {
+        return patientRepository.findByUid(uid)
                 .map(existingPatient -> {
                     updateFields(existingPatient, patientDTO);
                     Patient updatedPatient = patientRepository.save(existingPatient);
                     return convertToDTO(updatedPatient);
                 })
-                .orElseThrow(() -> new PatientNotFoundException(id));
+                .orElseThrow(() -> new PatientNotFoundException(uid));
     }
 
     private void updateFields(Patient patient, PatientDTO dto) {
@@ -72,16 +74,16 @@ public class PatientService {
         patient.setGender(dto.getGender());
         patient.setAddress(dto.getAddress());
         patient.setPhone(dto.getPhone());
-        patient.setActive(dto.isActive());
+        patient.setActive(dto.getActive());
     }
 
 
     // Supprimer un patient
-    public void deletePatient(UUID id) {
-        if (!patientRepository.existsByUid(id)) {
-            throw new PatientNotFoundException(id);
+    public void deletePatient(String uid) {
+        if (!patientRepository.existsByUid(uid)) {
+            throw new PatientNotFoundException(uid);
         }
-        patientRepository.deleteByUid(id);
+        patientRepository.deleteByUid(uid);
     }
 
 
@@ -96,7 +98,7 @@ public class PatientService {
         dto.setGender(patient.getGender());
         dto.setAddress(patient.getAddress());
         dto.setPhone(patient.getPhone());
-        dto.setActive(patient.isActive());
+        dto.setActive(patient.getActive());
 
         log.info("Patient '{}' converted to DTO successfully.", dto.getUid());
         return dto;
@@ -110,24 +112,24 @@ public class PatientService {
                 .collect(Collectors.toList());
     }
 
-    public PatientDTO toggleActivePatient(UUID id) {
+    public PatientDTO toggleActivePatient(String id) {
         Patient patient = patientRepository.findByUid(id)
                 .orElseThrow(() -> new PatientNotFoundException(id));
-        log.info("statu : {}", patient.isActive());
-        patient.setActive(!patient.isActive());
-        log.info("statu : {}", patient.isActive());
+        log.info("statu : {}", patient.getActive());
+        patient.setActive(!patient.getActive());
+        log.info("statu : {}", patient.getActive());
         Patient savedPatient = patientRepository.save(patient);
         return convertToDTO(savedPatient);
     }
 
-    public Patient findPatientById(UUID id) {
-        return patientRepository.findByUid(id)
-                .orElseThrow(() -> new PatientNotFoundException(id));
+    public Patient findPatientById(String uid) {
+        return patientRepository.findByUid(uid)
+                .orElseThrow(() -> new PatientNotFoundException(uid));
     }
 
-    public boolean ifActiveOrExistingPatient(UUID id) {
-        Patient patient = findPatientById(id);
-        return patient.isActive();
+    public boolean ifActiveOrExistingPatient(String uid) {
+        Patient patient = findPatientById(uid);
+        return patient.getActive();
     }
 
 }

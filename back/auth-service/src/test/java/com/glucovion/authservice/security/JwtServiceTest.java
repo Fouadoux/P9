@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
@@ -15,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JwtServiceTest {
 
+
     private JwtService jwtService;
     private AppUser user;
 
     @BeforeEach
     void setUp() {
-        jwtService = new JwtService();
-
+        jwtService = new JwtService("01234567890123456789012345678901");
         user = new AppUser();
         user.setId(1L);
         user.setEmail("test@example.com");
@@ -66,7 +67,7 @@ class JwtServiceTest {
     @Test
     void isTokenValid_ShouldReturnFalse_ForInvalidToken() {
         // Arrange
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        String token = "eyJhbGciOiJIUzI1piIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
         // Act & Assert
         assertFalse(jwtService.isTokenValid(token, user));

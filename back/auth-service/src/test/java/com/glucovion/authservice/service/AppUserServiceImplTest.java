@@ -158,7 +158,7 @@ public class AppUserServiceImplTest {
 
         assertEquals("Updated", result.getFirstName());
         assertEquals("updated@example.com", result.getEmail());
-        assertFalse(result.isActive());
+        assertFalse(result.getActive());
     }
 
     // Tests pour toggleActiveUser()
@@ -170,10 +170,10 @@ public class AppUserServiceImplTest {
 
         AppUserResponseDto result = appUserService.toggleActiveUser(1L);
 
-        assertFalse(result.isActive()); // Vérifie le basculement true -> false
+        assertFalse(result.getActive()); // Vérifie le basculement true -> false
 
         // Second appel pour tester false -> true
         result = appUserService.toggleActiveUser(1L);
-        assertTrue(result.isActive());
+        assertTrue(result.getActive());
     }
 }

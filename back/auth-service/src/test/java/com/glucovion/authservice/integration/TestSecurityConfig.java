@@ -32,18 +32,18 @@ public class TestSecurityConfig {
         );
     }
 
+    @Primary  // Surcharge du JwtService pour les tests
     @Bean
-    @Primary  // Surcharge éventuelle du JwtService pour les tests
     public JwtService testJwtService() {
-        return new JwtService() {
+        return new JwtService("test-secret-key-at-least-32-characters-long") {
             // Implémentation simplifiée ou mock pour les tests
             @Override
             public String generateToken(UserDetails userDetails) {
                 return "mock-token";
             }
 
-            //@Override
-            public boolean validateToken(String token) {
+            @Override
+            public boolean isTokenValid(String token, UserDetails userDetails) {
                 return true;
             }
         };

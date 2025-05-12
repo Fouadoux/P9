@@ -1,0 +1,92 @@
+
+services:
+  # ======================== FRONTEND ========================
+  frontend:
+    build: ./front
+    ports:
+      - "4200:80"
+    depends_on:
+      - gateway-service
+
+  # ======================== BACKEND =========================
+  gateway-service:
+    build: ./back/gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth-service
+      - patient-service
+      - note-service
+      - diabetes-risk-service
+
+  auth-service:
+    build: ./back/auth-service
+    ports:
+      - "8088:8080"
+    depends_on:
+      - mysql-auth
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-auth:3306/glucovision-auth-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootroot
+
+  patient-service:
+    build: ./back/patient-service
+    ports:
+      - "8085:8080"
+    depends_on:
+      - mysql-patient
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-patient:3306/glucovision-patient-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootroot
+
+  note-service:
+    build: ./back/note-service
+    ports:
+      - "8086:8080"
+    depends_on:
+      - mongodb-note
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb-note:27017/glucovision-note-db
+
+  diabetes-risk-service:
+    build: ./back/diabetes-risk-service
+    ports:
+      - "8087:8080"
+    depends_on:
+      - note-service
+      - patient-service
+
+  # ======================== DATABASES =========================
+  mysql-auth:
+    image: mysql:8.0.36
+    volumes:
+      - mysql-auth-data:/var/lib/mysql
+      - ./back/auth-service/sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: glucovision-auth-db
+  mysql-patient:
+    image: mysql:8.0.36
+    volumes:
+      - mysql-patient-data:/var/lib/mysql
+      - ./back/patient-service/sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: glucovision-patient-db
+
+  mongodb-note:
+    image: mongo:6.0
+    volumes:
+      - mongodb-note-data:/data/db
+      - ./back\note-service\mongo-init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: glucovision-note-db
+
+volumes:
+  mysql-auth-data:
+  mysql-patient-data:
+  mongodb-note-data:

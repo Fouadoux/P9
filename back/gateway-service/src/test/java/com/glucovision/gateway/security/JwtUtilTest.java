@@ -26,7 +26,7 @@ public class JwtUtilTest {
         // Génère un token valide avec la même clé que celle configurée
         validToken = Jwts.builder()
                 .setSubject("user@example.com")
-                .claim("role", "ROLE_USER")
+                .claim("roles", "ROLE_USER")
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
     }
@@ -42,4 +42,29 @@ public class JwtUtilTest {
     void testInvalidToken() {
         assertFalse(jwtUtil.isTokenValid("token-invalide"));
     }
+
+    @Test
+    void tokenMissingRoleClaim() {
+        String token = Jwts.builder()
+                .setSubject("user@example.com")
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
+                .compact();
+
+        assertThrows(RuntimeException.class, () -> jwtUtil.extractRole(token));
+    }
+
+    @Test
+    void tokenWithInvalidSignature() {
+        // Clé de 32 caractères → 256 bits
+        String fakeKey = "0123456789abcdef0123456789abcdef";
+
+        String invalidToken = Jwts.builder()
+                .setSubject("user@example.com")
+                .claim("roles", "ROLE_USER")
+                .signWith(Keys.hmacShaKeyFor(fakeKey.getBytes()))
+                .compact();
+
+        assertFalse(jwtUtil.isTokenValid(invalidToken));
+    }
+
 }

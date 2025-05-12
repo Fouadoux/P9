@@ -1,22 +1,17 @@
 server:
-  port: 8082
+  port: 8080
 
 spring:
   application:
     name: note-service
-
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/glucovision-history-db
-
-logging:
-  level:
-    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
-
 
 internal:
   api:
     key: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
 
 patient-service:
-  url: http://localhost:8085
+  url: http://patient-service:8080
+
+auth-service:
+  url: http://auth-service:8080
+

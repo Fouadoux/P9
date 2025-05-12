@@ -32,10 +32,10 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPatient);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PatientDTO> getPatientById(@Valid @PathVariable UUID id) {
-        log.info("GET /api/patients/{} - Récupération du patient", id);
-        Patient patient = patientService.findPatientById(id);
+    @GetMapping("/{uid}")
+    public ResponseEntity<PatientDTO> getPatientById(@Valid @PathVariable String uid) {
+        log.info("GET /api/patients/{} - Récupération du patient", uid);
+        Patient patient = patientService.findPatientById(uid);
         PatientDTO patientDto = patientService.convertToDTO(patient);
         log.info("Patient récupéré : {}", patientDto);
         return ResponseEntity.ok(patientDto);
@@ -76,7 +76,7 @@ public class PatientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PatientDTO> updatePatient(
-            @PathVariable UUID id,
+            @PathVariable String id,
             @Valid @RequestBody PatientDTO patientDTO) {
 
         log.info("PUT /api/patients/{} - Mise à jour du patient : {}", id, patientDTO);
@@ -93,7 +93,7 @@ public class PatientController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/toggle/{id}")
-    public ResponseEntity<PatientDTO> togglePatient(@PathVariable UUID id) {
+    public ResponseEntity<PatientDTO> togglePatient(@PathVariable String id) {
         log.info("PUT /api/patients/toggle/{} - Activation/Désactivation du patient", id);
         PatientDTO patientDto = patientService.toggleActivePatient(id);
         log.info("Nouveau statut du patient : {}", patientDto);
@@ -102,11 +102,11 @@ public class PatientController {
 
     @GetMapping("/{uid}/exists")
     public boolean isActivePatient(@PathVariable String uid) {
-        return patientService.ifActiveOrExistingPatient(UUID.fromString(uid));
+        return patientService.ifActiveOrExistingPatient(uid);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
+    public ResponseEntity<Void> deletePatient(@PathVariable String id) {
         patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
     }

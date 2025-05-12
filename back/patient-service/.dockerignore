@@ -1,0 +1,13 @@
+# Dossier de build Maven
+target/
+
+# Git
+.git/
+.gitignore
+
+# Fichiers temporaires ou inutiles
+*.log
+*.md
+.idea/
+.vscode/
+*.iml

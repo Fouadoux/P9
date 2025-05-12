@@ -1,0 +1,20 @@
+security:
+  enabled: false
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: dummy
+          uri: http://localhost
+          predicates:
+            - Path=/test
+
+  main:
+    allow-bean-definition-overriding: true
+
+glucovision:
+  jwt:
+    secret: secretkeyfortest
+    expiration: 3600000
+    header: Authorization

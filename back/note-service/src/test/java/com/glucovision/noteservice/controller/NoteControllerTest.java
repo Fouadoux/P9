@@ -89,16 +89,6 @@ class NoteControllerTest {
     }
 
     @Test
-    void findById_ShouldReturnNotFoundWhenEmpty() {
-        when(noteService.findAllByPatientId("patient123")).thenReturn(Collections.emptyList());
-
-        ResponseEntity<List<NoteDto>> response = noteController.findById("patient123");
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
-    }
-
-    @Test
     void updateNote_ShouldReturnUpdatedNote() {
         when(noteService.updateNote(any(NoteDto.class))).thenReturn(noteDto);
 

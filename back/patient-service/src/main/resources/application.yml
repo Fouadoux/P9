@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8080
 
 spring:
   application:
@@ -9,19 +9,18 @@ spring:
       accept-case-insensitive-enums: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/glucovision-patient-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    url: jdbc:mysql://mysql-patient:3306/glucovision-patient-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update  # Mettre à jour le schéma de la DB à chaque démarrage
-    show-sql: true  # Afficher les requêtes SQL générées
+      ddl-auto: validate
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-    # database-platform: org.hibernate.dialect.MySQL5InnoDBDialect (décommenter si nécessaire)
 
 internal:
   api:

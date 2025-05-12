@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ import static com.glucovision.patientservice.model.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("test")  // Charge application-test.properties
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class PatientServiceTest {
 
@@ -36,13 +37,15 @@ class PatientServiceTest {
 
     @Test
     public void testGetAllPatients() {
+        Sort expectedSort = Sort.by("lastName").and(Sort.by("firstName"));
+
         List<Patient> patients= List.of(
                 new Patient(),
                 new Patient(),
                 new Patient()
                 );
 
-        when(patientRepository.findAll()).thenReturn(patients);
+        when(patientRepository.findAll(expectedSort)).thenReturn(patients);
 
         List<Patient> result= patientService.getAllPatients();
         assertNotNull(result);
@@ -68,7 +71,7 @@ class PatientServiceTest {
 
     @Test
     public void testAddPatient() {
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         LocalDate birthDate= LocalDate.of(1980, 12, 3);
         PatientDTO patientDTO= new PatientDTO(id,"John","Doe",birthDate,MALE,"place monge","111-222-333");
         Patient patient= new Patient();
@@ -92,7 +95,7 @@ class PatientServiceTest {
     @Test
     void testFindPatientByUid_Found() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
 
         Patient patient = new Patient();
         patient.setUid(id);
@@ -112,7 +115,7 @@ class PatientServiceTest {
     @Test
     void testFindPatientById_NotFound() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
 
         when(patientRepository.findByUid(id)).thenReturn(Optional.empty());
 
@@ -127,7 +130,7 @@ class PatientServiceTest {
     @Test
     void testDeletePatient_Success() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         when(patientRepository.existsByUid(id)).thenReturn(true);
         doNothing().when(patientRepository).deleteByUid(id);
 
@@ -141,7 +144,7 @@ class PatientServiceTest {
     @Test
     void testDeletePatient_NotFound() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         when(patientRepository.existsByUid(id)).thenReturn(false);
 
         // Act & Assert
@@ -156,7 +159,7 @@ class PatientServiceTest {
     @Test
     void testUpdatePatient_Success() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         LocalDate birthDate = LocalDate.of(1990, 5, 15);
 
         Patient existingPatient = new Patient();
@@ -183,7 +186,7 @@ class PatientServiceTest {
         assertEquals("NewFirstName", result.getFirstName());
         assertEquals("NewLastName", result.getLastName());
         assertEquals(birthDate.plusYears(1), result.getBirthDate());
-        assertFalse(result.isActive());
+        assertFalse(result.getActive());
         verify(patientRepository, times(1)).findByUid(id);
         verify(patientRepository, times(1)).save(existingPatient);
     }
@@ -191,7 +194,7 @@ class PatientServiceTest {
     @Test
     void testUpdatePatient_NotFound() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         when(patientRepository.findByUid(id)).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -206,38 +209,45 @@ class PatientServiceTest {
         // Arrange
         Patient activePatient1 = new Patient();
         activePatient1.setActive(true);
+        activePatient1.setFirstName("Alice");
+        activePatient1.setLastName("OldLastName");
         Patient activePatient2 = new Patient();
         activePatient2.setActive(true);
+        activePatient2.setFirstName("Bob");
+        activePatient2.setLastName("NewLastName");
         List<Patient> activePatients = List.of(activePatient1, activePatient2);
+        Sort expectedSort = Sort.by("lastName").and(Sort.by("firstName"));
 
-        when(patientRepository.findByActiveTrue()).thenReturn(activePatients);
+        when(patientRepository.findByActiveTrue(expectedSort)).thenReturn(activePatients);
 
         // Act
         List<Patient> result = patientService.getAllActivePatients();
 
         // Assert
         assertEquals(2, result.size());
-        assertTrue(result.stream().allMatch(Patient::isActive));
-        verify(patientRepository, times(1)).findByActiveTrue();
+        assertTrue(result.stream().allMatch(Patient::getActive));
+        verify(patientRepository, times(1)).findByActiveTrue(expectedSort);
     }
 
     @Test
     void testGetAllActivePatients_ReturnsEmptyListWhenNoActivePatients() {
         // Arrange
-        when(patientRepository.findByActiveTrue()).thenReturn(List.of());
+        Sort expectedSort = Sort.by("lastName").and(Sort.by("firstName"));
+
+        when(patientRepository.findByActiveTrue(expectedSort)).thenReturn(List.of());
 
         // Act
         List<Patient> result = patientService.getAllActivePatients();
 
         // Assert
         assertTrue(result.isEmpty());
-        verify(patientRepository, times(1)).findByActiveTrue();
+        verify(patientRepository, times(1)).findByActiveTrue(expectedSort);
     }
 
     @Test
     void testConvertToDTO() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         LocalDate birthDate = LocalDate.now();
         Patient patient = new Patient();
         patient.setUid(id);
@@ -260,16 +270,16 @@ class PatientServiceTest {
         assertEquals(MALE, result.getGender());
         assertEquals("123 Main St", result.getAddress());
         assertEquals("555-1234", result.getPhone());
-        assertTrue(result.isActive());
+        assertTrue(result.getActive());
     }
 
     @Test
     void testConvertToDTOList() {
         // Arrange
         Patient patient1 = new Patient();
-        patient1.setUid(UUID.randomUUID());
+        patient1.setUid(String.valueOf(UUID.randomUUID()));
         Patient patient2 = new Patient();
-        patient2.setUid(UUID.randomUUID());
+        patient2.setUid(String.valueOf(UUID.randomUUID()));
         List<Patient> patients = List.of(patient1, patient2);
 
         // Act
@@ -284,7 +294,7 @@ class PatientServiceTest {
     @Test
     void testToggleActivePatient_FromActiveToInactive() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         Patient patient = new Patient();
         patient.setUid(id);
         patient.setActive(true);
@@ -296,7 +306,7 @@ class PatientServiceTest {
         PatientDTO result = patientService.toggleActivePatient(id);
 
         // Assert
-        assertFalse(result.isActive());
+        assertFalse(result.getActive());
         verify(patientRepository, times(1)).findByUid(id);
         verify(patientRepository, times(1)).save(patient);
     }
@@ -304,7 +314,7 @@ class PatientServiceTest {
     @Test
     void testToggleActivePatient_FromInactiveToActive() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         Patient patient = new Patient();
         patient.setUid(id);
         patient.setActive(false);
@@ -316,7 +326,7 @@ class PatientServiceTest {
         PatientDTO result = patientService.toggleActivePatient(id);
 
         // Assert
-        assertTrue(result.isActive());
+        assertTrue(result.getActive());
         verify(patientRepository, times(1)).findByUid(id);
         verify(patientRepository, times(1)).save(patient);
     }
@@ -324,7 +334,7 @@ class PatientServiceTest {
     @Test
     void testToggleActivePatient_PatientNotFound() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         when(patientRepository.findByUid(id)).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -337,7 +347,7 @@ class PatientServiceTest {
     @Test
     void testIfActiveOrExistingPatient_ReturnsTrueWhenActive() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         Patient activePatient = new Patient();
         activePatient.setUid(id);
         activePatient.setActive(true);
@@ -354,7 +364,7 @@ class PatientServiceTest {
     @Test
     void testIfActiveOrExistingPatient_ReturnsFalseWhenInactive() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         Patient inactivePatient = new Patient();
         inactivePatient.setUid(id);
         inactivePatient.setActive(false);
@@ -371,7 +381,7 @@ class PatientServiceTest {
     @Test
     void testIfActiveOrExistingPatient_ThrowsWhenPatientNotFound() {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         when(patientRepository.findByUid(id)).thenReturn(Optional.empty());
 
         // Act & Assert

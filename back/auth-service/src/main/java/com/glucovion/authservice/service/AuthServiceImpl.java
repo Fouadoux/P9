@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Invalid password");
         }
-        if(!user.isActive()){
+        if(!user.getActive()){
             throw new DisabledAccountException("Ce compte est désactivé. Contacte un admin.");
 
         }

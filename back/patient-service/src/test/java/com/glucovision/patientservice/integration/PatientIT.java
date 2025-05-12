@@ -1,5 +1,6 @@
 package com.glucovision.patientservice.integration;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.glucovision.patientservice.dto.PatientDTO;
 import com.glucovision.patientservice.model.Patient;
@@ -19,7 +20,6 @@ import java.util.UUID;
 
 import static com.glucovision.patientservice.model.Gender.FEMALE;
 import static com.glucovision.patientservice.model.Gender.MALE;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +38,7 @@ public class PatientIT {
 
     @Autowired
     private PatientRepository patientRepository;
+
 
     @BeforeEach
     void clearDatabase() {
@@ -99,7 +100,7 @@ public class PatientIT {
     void shouldUpdatePatient() throws Exception {
         // Test PUT avec ROLE_USER
         Patient patient = new Patient();
-        patient.setUid(UUID.randomUUID());
+        patient.setUid(String.valueOf(UUID.randomUUID()));
         patient.setFirstName("Alice");
         patient.setLastName("Martin");
         patient.setBirthDate(LocalDate.of(1990, 1, 1));

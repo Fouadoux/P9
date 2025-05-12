@@ -52,7 +52,7 @@ public class PatientControllerTest {
 
     @Test
     void testDeletePatient_Success() throws Exception {
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         doNothing().when(patientService).deletePatient(id);
 
         mockMvc.perform(delete("/api/patients/{id}", id))
@@ -61,7 +61,7 @@ public class PatientControllerTest {
 
     @Test
     void testDeletePatient_NotFound() throws Exception {
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         doThrow(new NoSuchElementException("Patient with ID " + id + " not found"))
                 .when(patientService).deletePatient(id);
 
@@ -100,7 +100,7 @@ public class PatientControllerTest {
 
     @Test
     void testGetPatientById_Found() throws Exception {
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         Patient patient = new Patient();
         patient.setUid(id);
         patient.setFirstName("John");
@@ -111,29 +111,15 @@ public class PatientControllerTest {
         when(patientService.findPatientById(id)).thenReturn(patient);
         when(patientService.convertToDTO(patient)).thenReturn(patientDto);
 
-        mockMvc.perform(get("/api/patients/{id}", id))
+        mockMvc.perform(get("/api/patients/{uid}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("John"));
     }
 
-  /*  @Test
-    void testGetPatientById_NotFound() throws Exception {
-        UUID id = UUID.randomUUID();
-        when(patientService.findPatientById(id))
-                .thenThrow(new NoSuchElementException("Patient with ID " + id + " not found"));
-
-        mockMvc.perform(get("/api/patients/{id}", id))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Patient with ID " + id + " not found"));
-    }
-
-   */
-
     @Test
     void testAddPatient_Valid() throws Exception {
         Patient patient = new Patient();
-        patient.setId(1L);
-        patient.setUid(UUID.randomUUID());
+        patient.setUid(String.valueOf(UUID.randomUUID()));
         patient.setFirstName("Alice");
         patient.setLastName("Doe");
         patient.setGender(FEMALE);
@@ -190,7 +176,7 @@ public class PatientControllerTest {
 
     @Test
     void testGetPatientById_NotFound() throws Exception {
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         when(patientService.findPatientById(id)).thenThrow(new PatientNotFoundException(id));
 
         mockMvc.perform(get("/api/patients/{id}", id))
@@ -200,8 +186,8 @@ public class PatientControllerTest {
     @Test
     void testGetPatientsActive() throws Exception {
         // Arrange
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
+        String id1 = String.valueOf(UUID.randomUUID());
+        String id2 = String.valueOf(UUID.randomUUID());
         LocalDate birthDate = LocalDate.of(1990, 5, 15);
 
         Patient patient1 = new Patient();
@@ -256,7 +242,7 @@ public class PatientControllerTest {
     @Test
     void testUpdatePatient_Success() throws Exception {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         LocalDate birthDate = LocalDate.of(1990, 5, 15);
 
         PatientDTO updateDTO = new PatientDTO();
@@ -301,7 +287,7 @@ public class PatientControllerTest {
     @Test
     void testUpdatePatient_NotFound() throws Exception {
         // Arrange
-        UUID id = UUID.randomUUID();
+        String id = String.valueOf(UUID.randomUUID());
         LocalDate birthDate = LocalDate.of(1990, 5, 15);
 
         PatientDTO updateDTO = new PatientDTO();
@@ -351,8 +337,8 @@ public class PatientControllerTest {
     @Test
     void testGetPatients() throws Exception {
         // Arrange
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
+        String id1 = String.valueOf(UUID.randomUUID());
+        String id2 = String.valueOf(UUID.randomUUID());
         LocalDate birthDate = LocalDate.of(1990, 5, 15);
 
         Patient patient1 = new Patient();
@@ -406,7 +392,7 @@ public class PatientControllerTest {
     @Test
     public void togglePatient_shouldActivateInactivePatientAndReturnDTO() {
         // Arrange
-        UUID patientId = UUID.randomUUID();
+        String patientId = String.valueOf(UUID.randomUUID());
         LocalDate birthDate = LocalDate.of(1990, 5, 15);
 
         // Patient initial (inactif)
@@ -446,7 +432,7 @@ public class PatientControllerTest {
         assertEquals(birthDate, responseBody.getBirthDate());
         assertEquals(FEMALE, responseBody.getGender());
 
-        assertTrue(responseBody.isActive());
+        assertTrue(responseBody.getActive());
 
         verify(patientService, times(1)).toggleActivePatient(patientId);
     }

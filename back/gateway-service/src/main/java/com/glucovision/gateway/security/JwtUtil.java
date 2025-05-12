@@ -43,7 +43,10 @@ public class JwtUtil {
     }
 
     public String extractRole(String token) {
-        return getClaims(token).get("role", String.class);
+        Claims claims = getClaims(token);
+        String role = claims.get("roles", String.class);
+        if (role == null) throw new RuntimeException("Role manquant dans le token");
+        return role;
     }
 
 }

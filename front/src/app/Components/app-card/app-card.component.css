@@ -63,27 +63,3 @@
     background-color: #005fa3;
   }
   
-  /* Responsive mobile */
-  @media (max-width: 768px) {
-    .card {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-  
-    .actions {
-      flex-direction: row;
-      gap: 1rem;
-      width: 100%;
-      justify-content: flex-end;
-    }
-  }
-
-  .active {
-    color: green;
-  }
-  
-  .inactive {
-    color: red;
-  }
-  

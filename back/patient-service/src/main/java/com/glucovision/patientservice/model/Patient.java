@@ -20,7 +20,7 @@ public class Patient {
     public Patient() {}
 
     public Patient(String firstName, String lastName, String birthDate, Gender gender, String address, String phone) {
-        this.uid = UUID.randomUUID();
+        this.uid =  UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = parseDate(birthDate);
@@ -30,8 +30,8 @@ public class Patient {
         this.active = true;
     }
 
-    public Patient(UUID id,String firstName, String lastName, String birthDate, Gender gender, String address, String phone, boolean active) {
-        this.uid=id;
+    public Patient(String uid,String firstName, String lastName, String birthDate, Gender gender, String address, String phone, boolean active) {
+        this.uid = (uid != null && !uid.isBlank()) ? uid : UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = parseDate(birthDate);
@@ -42,31 +42,9 @@ public class Patient {
     }
 
 
-
-
-    public LocalDate parseDate(String date) {
-        DateTimeFormatter[] formatters = {
-                DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-                DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        };
-
-        for (DateTimeFormatter formatter : formatters) {
-            try {
-                return LocalDate.parse(date, formatter);
-            } catch (Exception ignored) {}
-        }
-
-        throw new RuntimeException("Could not parse date " + date);
-    }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-
-
     @Column(unique = true, nullable = false, updatable = false)
-    private UUID uid;
+    private String uid;
 
     @Column(name = "first_name", nullable = false)
     @NotBlank(message = "First name is required")
@@ -86,11 +64,25 @@ public class Patient {
     private Gender gender;
 
     @Column(name = "address")
-    private String address;
+    private String address="";
 
     @Column(name = "phone")
-    private String phone;
+    private String phone="";
 
     @Column(nullable = false)
-    private boolean active;
+    private Boolean active = true;
+
+    private static final DateTimeFormatter[] FORMATTERS = {
+            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+            DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    };
+
+    public LocalDate parseDate(String date) {
+        for (DateTimeFormatter formatter : FORMATTERS) {
+            try {
+                return LocalDate.parse(date, formatter);
+            } catch (Exception ignored) {}
+        }
+        throw new RuntimeException("Could not parse date: " + date);
+    }
 }

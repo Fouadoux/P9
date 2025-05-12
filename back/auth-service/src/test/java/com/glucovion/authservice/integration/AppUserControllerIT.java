@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.glucovion.authservice.entity.AppRole.ADMIN;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -73,6 +74,12 @@ class AppUserControllerIT {
         Long id = 1L;
         AppUser appUser = new AppUser();
         AppUserResponseDto appUserResponseDto = new AppUserResponseDto();
+        appUserResponseDto.setId(1L);
+        appUserResponseDto.setFirstName("John");
+        appUserResponseDto.setLastName("Doe");
+        appUserResponseDto.setEmail("john.doe@example.com");
+        appUserResponseDto.setRole(ADMIN);
+        appUserResponseDto.setActive(true);
 
         when(appUserService.findById(id)).thenReturn(appUser);
         when(appUserService.convertToDTO(appUser)).thenReturn(appUserResponseDto);

@@ -47,7 +47,7 @@ public class AppUser implements UserDetails {
     private AppRole role;
 
     @Column(name = "active", nullable = false)
-    private boolean active;
+    private Boolean active=true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

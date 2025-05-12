@@ -93,4 +93,7 @@ export class AdminPatientsManagementComponent {
     this.router.navigate(['/admin/notes', patient.uid]);
   }
   
+  goTo(path: string) {
+    this.router.navigate([`/${path}`]);
+  }
 }

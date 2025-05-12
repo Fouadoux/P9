@@ -46,7 +46,7 @@ public class AppUserServiceImpl implements AppUserService {
         appUserResponseDto.setFirstName(appUser.getFirstName());
         appUserResponseDto.setLastName(appUser.getLastName());
         appUserResponseDto.setRole(appUser.getRole());
-        appUserResponseDto.setActive(appUser.isActive());
+        appUserResponseDto.setActive(appUser.getActive());
         return appUserResponseDto;
     }
 
@@ -56,7 +56,7 @@ public class AppUserServiceImpl implements AppUserService {
         appUser.setFirstName(appUserResponseDto.getFirstName());
         appUser.setLastName(appUserResponseDto.getLastName());
         appUser.setRole(appUserResponseDto.getRole());
-        appUser.setActive(appUserResponseDto.isActive());
+        appUser.setActive(appUserResponseDto.getActive());
         return appUser;
     }
 
@@ -77,7 +77,7 @@ public class AppUserServiceImpl implements AppUserService {
         appUser.setLastName(dto.getLastName());
         appUser.setEmail(dto.getEmail());
         appUser.setRole(dto.getRole());
-        appUser.setActive(dto.isActive());
+        appUser.setActive(dto.getActive());
 
         AppUser updatedUser = appUserRepository.save(appUser);
         return convertToDTO(updatedUser);
@@ -87,13 +87,10 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser appUser = appUserRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
-        log.info("status: {}", !appUser.isActive());
-        appUser.setActive(!appUser.isActive());
-        log.info("status: {}", !appUser.isActive());
+        log.info("status: {}", !appUser.getActive());
+        appUser.setActive(!appUser.getActive());
+        log.info("status: {}", !appUser.getActive());
         AppUser updatedUser = appUserRepository.save(appUser);
         return convertToDTO(updatedUser);
     }
-
-
-
 }

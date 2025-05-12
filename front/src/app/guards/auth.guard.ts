@@ -16,8 +16,6 @@ export const authGuard: CanActivateFn = () => {
     router.navigate(['/register-success']);
     return false;
   }
-
   
-
   return true;
 };

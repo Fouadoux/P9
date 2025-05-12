@@ -31,6 +31,8 @@ export class PatientsComponent {
       this.patientService.getPatientsActive().subscribe(data => {
         this.patients.set(data);
         this.isLoading.set(false); // ✅ Cache le message "Chargement..."
+            console.log('patients:', this.patients());
+
       }, error => {
         console.error('Erreur lors du chargement des patients', error);
         this.isLoading.set(false);

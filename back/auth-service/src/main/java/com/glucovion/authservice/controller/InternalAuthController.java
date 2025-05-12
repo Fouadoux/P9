@@ -1,7 +1,6 @@
 package com.glucovion.authservice.controller;
 
 import com.glucovion.authservice.security.JwtService;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ public class InternalAuthController {
                                   @Value("${server.internal.api.key}") String internalApiKey) {
         this.jwtService = jwtService;
         this.internalApiKey = internalApiKey;
-        log.info(" ---------------------------------------- internal api key : {}", internalApiKey);
     }
 
 

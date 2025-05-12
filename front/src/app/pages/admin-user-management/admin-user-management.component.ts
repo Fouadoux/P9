@@ -7,6 +7,7 @@ import { AppCardComponent } from '../../Components/app-card/app-card.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditDialogComponent } from '../../Components/edit-dialog/edit-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user-management',
@@ -23,6 +24,7 @@ export class AdminUserManagementComponent {
   selectedUser = signal<AppUserResponse | null>(null);
   showEditDialog = signal(false);
   private dialog=inject(MatDialog)
+  private router=inject(Router)
 
   validators=Validators;
 
@@ -87,7 +89,9 @@ handleToggleActive(user: AppUserResponse) {
 }
 
 
-
+goTo(path: string) {
+  this.router.navigate([`/${path}`]);
+}
 
  
 

@@ -1,6 +1,12 @@
 <div class="container">
     <h2>Liste des patients</h2>
   
+    <div class="back-button-container">
+      <button mat-stroked-button color="primary" (click)="goTo('admin')">
+        ⬅️ Retour accueil admin
+      </button>
+    </div>
+
     <div class="user-list">
       <app-app-card
         *ngFor="let patient of patients()"
