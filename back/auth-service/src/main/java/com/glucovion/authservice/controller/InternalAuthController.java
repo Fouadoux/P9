@@ -1,36 +1,55 @@
 package com.glucovion.authservice.controller;
 
 import com.glucovion.authservice.security.JwtService;
-import lombok.extern.log4j.Log4j2;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-@Log4j2
+/**
+ * Controller responsible for handling internal authentication requests between microservices.
+ * This endpoint is protected using an internal API key and should never be exposed to public clients.
+ */
+@Slf4j
 @RestController
 @RequestMapping("/internal-auth")
 public class InternalAuthController {
 
- //   @Value("${server.internal.api.key}")
     private final String internalApiKey;
-
     private final JwtService jwtService;
 
+    /**
+     * Constructs the InternalAuthController with required dependencies.
+     *
+     * @param jwtService      Service used to generate JWT tokens.
+     * @param internalApiKey  Secret API key used to authenticate internal service calls.
+     */
     public InternalAuthController(JwtService jwtService,
-                                  @Value("${server.internal.api.key}") String internalApiKey) {
+                                  @Value("${internal.api.key}") String internalApiKey) {
         this.jwtService = jwtService;
         this.internalApiKey = internalApiKey;
     }
 
-
+    /**
+     * Generates a JWT token with the "INTERNAL_SERVICE" role for use in inter-service communication.
+     *
+     * @param apiKey   The internal API key provided in the request header.
+     * @param request  The HTTP request, used to log the origin IP.
+     * @return A signed JWT token with internal service privileges.
+     * @throws RuntimeException if the provided API key is invalid.
+     */
     @PostMapping("/internal-token")
-    public String generateInternalToken(@RequestHeader("Internal-Api-Key") String apiKey) {
-        log.info("API KEY reçue : {}", apiKey);
-        if(!apiKey.equals(internalApiKey)) {
-            throw new RuntimeException("Invalid internal api key");
+    public String generateInternalToken(@RequestHeader("Internal-Api-Key") String apiKey,
+                                        HttpServletRequest request) {
+        log.info("[POST] Internal token requested from IP: {}", request.getRemoteAddr());
+
+        if (!apiKey.equals(internalApiKey)) {
+            log.warn("❌ Invalid internal API key attempt from IP: {}", request.getRemoteAddr());
+            throw new RuntimeException("Invalid internal API key");
         }
-        return jwtService.generateTokenWithRole("INTERNAL_SERVICE");
+
+        String token = jwtService.generateTokenWithRole("INTERNAL_SERVICE");
+        log.info("✅ Internal JWT token generated successfully");
+        return token;
     }
-
-
-
 }

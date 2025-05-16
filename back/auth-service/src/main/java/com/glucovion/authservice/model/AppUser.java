@@ -1,4 +1,4 @@
-package com.glucovion.authservice.entity;
+package com.glucovion.authservice.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

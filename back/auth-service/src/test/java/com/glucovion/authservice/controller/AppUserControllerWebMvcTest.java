@@ -1,6 +1,5 @@
-package com.glucovion.authservice.integration;
+package com.glucovion.authservice.controller;
 
-import com.glucovion.authservice.controller.AppUserController;
 import com.glucovion.authservice.dto.AppUserResponseDto;
 import com.glucovion.authservice.model.AppUser;
 import com.glucovion.authservice.service.AppUserService;
@@ -24,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AppUserController.class)
 @Import(TestSecurityConfig.class)
-class AppUserControllerIT {
+class AppUserControllerWebMvcTest {
 
     @Autowired
     private MockMvc mockMvc;

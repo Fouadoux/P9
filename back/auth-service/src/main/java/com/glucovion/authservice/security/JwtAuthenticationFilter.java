@@ -1,30 +1,45 @@
 package com.glucovion.authservice.security;
 
-import com.glucovion.authservice.service.impl.AppUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Security filter that intercepts HTTP requests to validate JWT tokens.
+ * <p>
+ * Extracts the token from the Authorization header, validates it,
+ * and sets the authenticated user in the security context.
+ * </p>
+ *
+ * <p>Only runs once per request (extends {@link OncePerRequestFilter}).</p>
+ */
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
-    //private final AppUserDetailsService userDetailsService;
     private final JwtService jwtService;
 
+    /**
+     * Extracts and validates JWT token from the Authorization header.
+     * If valid, sets authentication in the security context.
+     *
+     * @param request     the incoming HTTP request
+     * @param response    the outgoing HTTP response
+     * @param filterChain the filter chain
+     * @throws ServletException in case of servlet errors
+     * @throws IOException      in case of I/O errors
+     */
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -35,17 +50,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        // Vérifie que le header commence par "Bearer "
+        // Check if the header is missing or malformed
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Extrait le token sans le préfixe "Bearer "
+        // Extract token without "Bearer " prefix
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
 
-        // Si l'utilisateur n'est pas encore authentifié
+        // Proceed only if user is not already authenticated
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
@@ -56,8 +71,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         userDetails.getAuthorities()
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // Met à jour le contexte de sécurité
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }

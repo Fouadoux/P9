@@ -1,14 +1,13 @@
 package com.glucovion.authservice.security;
 
 
-import com.glucovion.authservice.entity.AppRole;
-import com.glucovion.authservice.entity.AppUser;
+import com.glucovion.authservice.model.AppRole;
+import com.glucovion.authservice.model.AppUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 

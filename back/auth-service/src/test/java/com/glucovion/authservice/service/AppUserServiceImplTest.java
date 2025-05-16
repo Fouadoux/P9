@@ -1,8 +1,8 @@
 package com.glucovion.authservice.service;
 
 import com.glucovion.authservice.dto.AppUserResponseDto;
-import com.glucovion.authservice.entity.AppUser;
-import com.glucovion.authservice.entity.AppRole;
+import com.glucovion.authservice.model.AppUser;
+import com.glucovion.authservice.model.AppRole;
 import com.glucovion.authservice.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

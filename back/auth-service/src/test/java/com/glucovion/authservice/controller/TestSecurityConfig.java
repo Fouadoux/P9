@@ -1,4 +1,4 @@
-package com.glucovion.authservice.integration;
+package com.glucovion.authservice.controller;
 
 import com.glucovion.authservice.config.SecurityConfig;
 import com.glucovion.authservice.security.JwtService;

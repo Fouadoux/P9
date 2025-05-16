@@ -3,7 +3,7 @@ package com.glucovion.authservice.service;
 import com.glucovion.authservice.dto.AppUserRegisterDto;
 import com.glucovion.authservice.dto.AuthResponseDto;
 import com.glucovion.authservice.dto.LoginRequestDto;
-import com.glucovion.authservice.entity.AppUser;
+import com.glucovion.authservice.model.AppUser;
 import com.glucovion.authservice.exception.DisabledAccountException;
 import com.glucovion.authservice.repository.AppUserRepository;
 import com.glucovion.authservice.security.JwtService;
@@ -17,8 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static com.glucovion.authservice.entity.AppRole.PENDING;
-import static com.glucovion.authservice.entity.AppRole.USER;
+import static com.glucovion.authservice.model.AppRole.PENDING;
+import static com.glucovion.authservice.model.AppRole.USER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

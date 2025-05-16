@@ -1,5 +1,6 @@
 package com.glucovion.authservice.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,15 +23,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DisabledAccountException.class)
     public ResponseEntity<Map<String, String>> handleDisabledAccountException(DisabledAccountException ex) {
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
                 Map.of("error", "DISABLED_ACCOUNT", "details", ex.getMessage())
         );
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler(org.springframework.security.authentication.BadCredentialsException.class)
     public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                Map.of("error", "INVALID_CREDENTIALS", "details", ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(IllegalArgumentException .class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgumentException (IllegalArgumentException  ex) {
         return ResponseEntity.badRequest().body(
-                Map.of("error", "INVALID_PASSWORD", "details", ex.getMessage())
+                Map.of("error", "ILLEGAL_ARGUMENT", "details", ex.getMessage())
         );
     }
 
