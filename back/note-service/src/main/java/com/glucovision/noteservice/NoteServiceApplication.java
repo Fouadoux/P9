@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients
 
-//test n°3
+//test n°4
 public class NoteServiceApplication {
 
 	public static void main(String[] args) {
