@@ -37,5 +37,5 @@ jobs:
         distribution: 'temurin'
 
     - name: Build and run tests
-      working-directory: note-service
+      working-directory: back/note-service
       run: mvn clean verify

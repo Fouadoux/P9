@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients
 
-//test ci correction du workflow
+//test n°3
 public class NoteServiceApplication {
 
 	public static void main(String[] args) {
