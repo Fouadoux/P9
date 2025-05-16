@@ -110,14 +110,22 @@ public class RiskService {
 
     private boolean isInDanger(PatientDto patientDto, int age, int triggerCount) {
         String gender = patientDto.getGender().toUpperCase();
-        if (gender.equals("M") || gender.equals("MALE")) {
-            return age < 30 && triggerCount >= 3 && triggerCount < 5;
+
+        if (age > 30) {
+            return triggerCount == 6 || triggerCount == 7;
         }
-        if (gender.equals("F") || gender.equals("FEMALE")) {
-            return age < 30 && triggerCount >= 4 && triggerCount < 7;
+
+        if ((gender.equals("M") || gender.equals("MALE")) && age < 30) {
+            return triggerCount >= 3 && triggerCount < 5;
         }
-        return age > 30 && (triggerCount == 6 || triggerCount == 7);
+
+        if ((gender.equals("F") || gender.equals("FEMALE")) && age < 30) {
+            return triggerCount >= 4 && triggerCount < 7;
+        }
+
+        return false;
     }
+
 
     private boolean isEarlyOnset(PatientDto patientDto, int age, int triggerCount) {
         String gender = patientDto.getGender().toUpperCase();

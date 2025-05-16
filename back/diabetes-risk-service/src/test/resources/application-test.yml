@@ -33,3 +33,6 @@ note-service:
 internal:
   api:
     key: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
+
+jwt:
+  secret: c64f6aa4e8934c8cb22c8f21e7b3e9df3b1cc4ffb24e4e1a9c9c09c76a69db01
