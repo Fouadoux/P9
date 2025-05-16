@@ -3,7 +3,7 @@ name: CI Note Service
 on:
   push:
     paths:
-      - 'note-service/**'
+      - 'back/note-service/**'
     branches: [main, dev]
 
 jobs:
