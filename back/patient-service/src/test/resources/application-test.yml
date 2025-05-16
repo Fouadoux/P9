@@ -7,14 +7,16 @@ spring:
 
   sql:
     init:
-      mode: always  # Toujours exécuter schema-h2.sql
-      schema-locations: classpath:schema-h2.sql  # Chemin du script SQL
+      mode: always
+      schema-locations: classpath:schema-h2.sql
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: none  # Empêcher Hibernate de créer/détruire la BDD si on utilise schema-h2.sql
-    show-sql: true  # Afficher les requêtes SQL pour le debug
-    defer-datasource-initialization: true  # Assurer que la BDD est prête avant l'initialisation
+      ddl-auto: none
+    show-sql: true
+    defer-datasource-initialization: true
 
+jwt:
+  secret: c64f6aa4e8934c8cb22c8f21e7b3e9df3b1cc4ffb24e4e1a9c9c09c76a69db01
 

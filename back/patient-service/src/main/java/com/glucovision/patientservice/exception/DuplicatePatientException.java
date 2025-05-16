@@ -1,4 +1,11 @@
 package com.glucovision.patientservice.exception;
 
-public class DuplicatePatientException {
+/**
+ * Thrown when attempting to create a patient that already exists
+ * based on unique identity constraints.
+ */
+public class DuplicatePatientException extends RuntimeException {
+    public DuplicatePatientException(String message) {
+        super(message);
+    }
 }

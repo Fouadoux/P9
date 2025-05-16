@@ -1,6 +1,7 @@
 package com.glucovision.patientservice.service;
 
 import com.glucovision.patientservice.dto.PatientDTO;
+import com.glucovision.patientservice.exception.DuplicatePatientException;
 import com.glucovision.patientservice.exception.PatientNotFoundException;
 import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.repository.PatientRepository;
@@ -14,11 +15,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.glucovision.patientservice.model.Gender.FEMALE;
 import static com.glucovision.patientservice.model.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -70,7 +69,7 @@ class PatientServiceTest {
     }
 
     @Test
-    public void testAddPatient() {
+    public void testAddPatient() throws DuplicatePatientException {
         String id = String.valueOf(UUID.randomUUID());
         LocalDate birthDate= LocalDate.of(1980, 12, 3);
         PatientDTO patientDTO= new PatientDTO(id,"John","Doe",birthDate,MALE,"place monge","111-222-333");
@@ -124,7 +123,7 @@ class PatientServiceTest {
             patientService.findPatientById(id);
         });
 
-        assertEquals("Le patient avec l'id "+id+" est inexistant ou inactif.", exception.getMessage());
+        assertEquals("Patient with ID '"+id+"' does not exist or is inactive.", exception.getMessage());
     }
 
     @Test
@@ -152,7 +151,7 @@ class PatientServiceTest {
             patientService.deletePatient(id);
         });
 
-        assertEquals("Le patient avec l'id "+id+" est inexistant ou inactif.", exception.getMessage());
+        assertEquals("Patient with ID '"+id+"' does not exist or is inactive.", exception.getMessage());
         verify(patientRepository, never()).deleteById(anyLong());
     }
 
@@ -345,7 +344,7 @@ class PatientServiceTest {
     }
 
     @Test
-    void testIfActiveOrExistingPatient_ReturnsTrueWhenActive() {
+    void testIsActiveOrExistingPatient_ReturnsTrueWhenActive() {
         // Arrange
         String id = String.valueOf(UUID.randomUUID());
         Patient activePatient = new Patient();
@@ -355,14 +354,14 @@ class PatientServiceTest {
         when(patientRepository.findByUid(id)).thenReturn(Optional.of(activePatient));
 
         // Act
-        boolean result = patientService.ifActiveOrExistingPatient(id);
+        boolean result = patientService.isActive(id);
 
         // Assert
         assertTrue(result);
     }
 
     @Test
-    void testIfActiveOrExistingPatient_ReturnsFalseWhenInactive() {
+    void testIsActive_ReturnsFalseWhenInactive() {
         // Arrange
         String id = String.valueOf(UUID.randomUUID());
         Patient inactivePatient = new Patient();
@@ -372,21 +371,21 @@ class PatientServiceTest {
         when(patientRepository.findByUid(id)).thenReturn(Optional.of(inactivePatient));
 
         // Act
-        boolean result = patientService.ifActiveOrExistingPatient(id);
+        boolean result = patientService.isActive(id);
 
         // Assert
         assertFalse(result);
     }
 
     @Test
-    void testIfActiveOrExistingPatient_ThrowsWhenPatientNotFound() {
+    void testIsActiveNotFound() {
         // Arrange
         String id = String.valueOf(UUID.randomUUID());
         when(patientRepository.findByUid(id)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(PatientNotFoundException.class, () -> {
-            patientService.ifActiveOrExistingPatient(id);
+            patientService.isActive(id);
         });
     }
 

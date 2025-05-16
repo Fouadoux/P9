@@ -6,24 +6,40 @@ spring:
     name: patient-service
   jackson:
     mapper:
-      accept-case-insensitive-enums: true
+      accept-case-insensitive-enums: true  # Allows case-insensitive enum values in JSON (e.g., "male", "MALE", etc.)
 
   datasource:
-    url: jdbc:mysql://mysql-patient:3306/glucovision-patient-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: root
-    password: rootroot
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
   jpa:
     hibernate:
-      ddl-auto: validate
-    show-sql: true
+      ddl-auto: validate  # Validate the schema against entity mappings at startup
+    show-sql: true        # Display SQL queries in the console
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-internal:
-  api:
-    key: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
+jwt:
+  secret: ${JWT_SECRET}  # Secret key for JWT token validation (injected from environment variable)
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info  # Exposes actuator endpoints for health and info
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
+# Custom API metadata
+info:
+  title: GlucoVision API
+  version: v1
+  description: API for managing patients.
