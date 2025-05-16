@@ -106,7 +106,7 @@ class NoteControllerTest {
         ResponseEntity<?> response = noteController.updateNote(noteDto);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
+        assertEquals("Note not found.", ((ErrorResponse) response.getBody()).getError());
     }
 
     @Test
@@ -138,7 +138,7 @@ class NoteControllerTest {
         ResponseEntity<?> response = noteController.deleteNote(noteDto);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
+        assertEquals("Note not found.", ((ErrorResponse) response.getBody()).getError());
     }
 
     @Test
@@ -165,12 +165,12 @@ class NoteControllerTest {
     @Test
     void updateNoteAdmin_ShouldHandleNoSuchElementException() {
         when(noteService.updateNoteForAdmin(any(NoteDto.class)))
-                .thenThrow(new NoSuchElementException("Note non trouvée."));
+                .thenThrow(new NoSuchElementException("Note not found."));
 
         ResponseEntity<?> response = noteController.updateNoteAdmin(noteDto);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
+        assertEquals("Note not found.", ((ErrorResponse) response.getBody()).getError());
     }
 
     @Test
@@ -185,12 +185,12 @@ class NoteControllerTest {
 
     @Test
     void deleteNoteAdmin_ShouldHandleNoSuchElementException() {
-        doThrow(new NoSuchElementException("Note non trouvée."))
+        doThrow(new NoSuchElementException("Note not found."))
                 .when(noteService).deleteNoteForAdmin(any(NoteDto.class));
 
         ResponseEntity<?> response = noteController.deleteNoteAdmin(noteDto);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Note non trouvée.", ((ErrorResponse) response.getBody()).getError());
+        assertEquals("Note not found.", ((ErrorResponse) response.getBody()).getError());
     }
 }

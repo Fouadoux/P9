@@ -2,7 +2,7 @@ package com.glucovion.authservice.integration;
 
 import com.glucovion.authservice.controller.AppUserController;
 import com.glucovion.authservice.dto.AppUserResponseDto;
-import com.glucovion.authservice.entity.AppUser;
+import com.glucovion.authservice.model.AppUser;
 import com.glucovion.authservice.service.AppUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.glucovion.authservice.entity.AppRole.ADMIN;
+import static com.glucovion.authservice.model.AppRole.ADMIN;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AppUserController.class)
-@Import(TestSecurityConfig.class)  // Importe la config de test qui elle-même importe la config prod
+@Import(TestSecurityConfig.class)
 class AppUserControllerIT {
 
     @Autowired

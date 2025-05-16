@@ -1,5 +1,6 @@
 package com.glucovision.noteservice.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,30 +17,66 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Configures the Spring Security settings for the Note Service.
+ * <p>
+ * This includes:
+ * <ul>
+ *   <li>Authorization rules based on HTTP methods and user roles</li>
+ *   <li>CSRF protection disabled (suitable for stateless APIs)</li>
+ *   <li>JWT token decoding and custom role conversion</li>
+ * </ul>
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private final String jwtSecret;
+
+    /**
+     * Injects the secret key used for JWT validation.
+     *
+     * @param jwtSecret the secret used to decode HMAC-based JWTs
+     */
+    public SecurityConfig(@Value("${jwt.secret}") String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
+    /**
+     * Defines the main security filter chain, setting up route-based authorization
+     * and configuring JWT authentication.
+     *
+     * @param http the HTTP security builder
+     * @param jwtAuthenticationConverter custom converter for extracting roles from JWT
+     * @return the configured {@link SecurityFilterChain}
+     * @throws Exception if the configuration fails
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/notes/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN","ROLE_INTERNAL_SERVICE")
+                        .requestMatchers(HttpMethod.GET, "/api/notes/**")
+                        .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN", "ROLE_INTERNAL_SERVICE")
                         .requestMatchers(HttpMethod.POST, "/api/notes/**")
                         .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/notes/**")
                         .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/notes/**")
                         .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwr -> jwr.jwtAuthenticationConverter(jwtAuthenticationConverter)));
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
         return http.build();
     }
 
+    /**
+     * Provides a custom {@link JwtAuthenticationConverter} using {@link CustomRoleConverter}
+     * to extract and map roles from the JWT.
+     *
+     * @return the configured {@code JwtAuthenticationConverter}
+     */
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
@@ -47,12 +84,14 @@ public class SecurityConfig {
         return converter;
     }
 
+    /**
+     * Configures the JWT decoder using an HMAC secret.
+     *
+     * @return the {@link JwtDecoder} for validating and parsing JWT tokens
+     */
     @Bean
     public JwtDecoder jwtDecoder() {
-        String secret = "2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf";
-        SecretKey key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+        SecretKey key = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(key).build();
     }
-
-
 }

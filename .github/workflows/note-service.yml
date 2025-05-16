@@ -1,0 +1,40 @@
+name: CI Note Service
+
+on:
+  push:
+    paths:
+      - 'note-service/**'
+    branches: [main, dev]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/testdb
+      JWT_SECRET: c64f6aa4e8934c8cb22c8f21e7b3e9df3b1cc4ffb24e4e1a9c9c09c76a69db01
+      INTERNAL_API_KEY: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+
+    - name: Build and run tests
+      working-directory: note-service
+      run: mvn clean verify

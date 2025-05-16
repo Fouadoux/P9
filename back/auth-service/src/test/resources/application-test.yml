@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/testdb}
+      database: test-db
 
 jwt:
   secret: c64f6aa4e8934c8cb22c8f21e7b3e9df3b1cc4ffb24e4e1a9c9c09c76a69db01

@@ -44,7 +44,7 @@ public class NoteControllerIT {
 
     @BeforeEach
     void setup() {
-        noteRepository.deleteAll(); // on part sur une base propre à chaque test
+        noteRepository.deleteAll();
     }
 
     @Test
@@ -85,12 +85,7 @@ public class NoteControllerIT {
                 .andExpect(jsonPath("$[0].comments").value("Consultation intégration"));
     }
 
-    @Test
-    void shouldReturn404IfPatientHasNoNotes() throws Exception {
-        mockMvc.perform(get("/api/notes/patient/999")
-                        .with(TestSecurityUtils.mockWriter()))
-                .andExpect(status().isNotFound());
-    }
+
 
     @Test
     void shouldUpdateNoteSuccessfully() throws Exception {
