@@ -14,7 +14,29 @@ note-service:
 auth-service:
   url: http://auth-service:8080
 
+jwt:
+  secret: ${JWT_SECRET}  # Secret key for JWT token validation (injected from environment variable)
 
 internal:
   api:
     key: GLUCOVISION-INTERNAL-KEY-9b7e85f1-74ac-4b34-8f13-270b3fd6e1d7
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
+# Personnalisation des infos
+info:
+  title: GlucoVision API
+  version: v1
+  description: API de gestion des notes.
