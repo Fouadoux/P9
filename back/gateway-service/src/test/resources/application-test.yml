@@ -13,8 +13,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-glucovision:
-  jwt:
-    secret: secretkeyfortest
-    expiration: 3600000
-    header: Authorization
+
+
+jwt:
+  secret: 2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf

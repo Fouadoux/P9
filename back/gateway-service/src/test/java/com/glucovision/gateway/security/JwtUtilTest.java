@@ -10,20 +10,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "jwt.secret=2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf"
+})
 public class JwtUtilTest {
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Value("${jwt.secret.key}")
+    @Value("${jwt.secret}")
     private String secretKey;
 
     private String validToken;
 
     @BeforeEach
     void setUp() {
-        // Génère un token valide avec la même clé que celle configurée
         validToken = Jwts.builder()
                 .setSubject("user@example.com")
                 .claim("roles", "ROLE_USER")
