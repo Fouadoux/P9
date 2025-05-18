@@ -24,7 +24,7 @@ class GatewaySecurityEnabledTest {
 
     @Test
     void unauthorizedWithoutToken() {
-        System.out.println("-------------GatewaySecurityEnabledTest--------------------");
+        System.out.println("-----------GatewaySecurityEnabledTest------------------");
         System.out.println("Profil actif = " + System.getProperty("spring.profiles.active"));
 
         webClient.get()
