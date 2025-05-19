@@ -3,19 +3,35 @@ import { Component, computed, effect, input, output, signal } from '@angular/cor
 import { FormsModule } from '@angular/forms';
 import { Note } from '../../model/note.model';
 
+/**
+ * Dialog component that allows a user to modify an existing medical note.
+ * 
+ * Uses Angular signals to manage the note comment content in real-time.
+ * Emits the updated note via `noteModifier`, and closes the dialog via `close`.
+ */
 @Component({
   selector: 'app-note-modif-dialog',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './note-modif-dialog.component.html',
   styleUrl: './note-modif-dialog.component.css'
 })
 export class NoteModifDialogComponent {
 
-  note=input<Note|null>()
-  noteModifier=output<Note|null>()
-  close=output<void>()
-  text=signal<string>('')
+  /** Input signal representing the note to edit */
+  note = input<Note | null>();
 
+  /** Output event emitted with the updated note object */
+  noteModifier = output<Note | null>();
+
+  /** Output event emitted to close the dialog */
+  close = output<void>();
+
+  /** Signal for binding the comment text inside the textarea */
+  text = signal<string>('');
+
+  /**
+   * On component init or note update, syncs the text field with the current note's comment.
+   */
   constructor() {
     effect(() => {
       if (this.note()) {
@@ -24,14 +40,16 @@ export class NoteModifDialogComponent {
     });
   }
 
- 
-  
-  save(){
-    if(this.text().trim() !=''){
-      if (this.note()){
-        const newNote: Note={ 
+  /**
+   * Saves the edited note by emitting an updated Note object,
+   * and closes the dialog.
+   */
+  save() {
+    if (this.text().trim() !== '') {
+      if (this.note()) {
+        const newNote: Note = {
           ...this.note()!,
-          comments:this.text()
+          comments: this.text()
         };
         this.noteModifier.emit(newNote);
         this.close.emit();
@@ -39,9 +57,12 @@ export class NoteModifDialogComponent {
     }
   }
 
+  /**
+   * Updates the text signal when the user types in the textarea.
+   * @param event Input event from the textarea.
+   */
   updateText(event: Event) {
     const value = (event.target as HTMLTextAreaElement).value;
     this.text.set(value);
   }
-  
 }

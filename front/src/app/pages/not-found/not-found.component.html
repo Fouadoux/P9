@@ -1,11 +1,12 @@
-<div class="not-found-container">
-  <h1 class="error-code">404</h1>
-  <h2 class="error-message">Oups ! Cette page n’existe pas.</h2>
-  <p class="error-description">
-    Il semble que vous soyez perdu… mais pas de panique, GlucoVision vous remet sur le bon chemin.
-  </p>
-
-  <button mat-flat-button color="primary" routerLink="/patients">
-    Retour à l'accueil
-  </button>
-</div>
+<mat-card class="not-found-card">
+  <mat-card-title>😵 Oups, page introuvable !</mat-card-title>
+  <mat-card-content>
+    <p>On dirait que cette page a disparu dans les méandres du système GlucoVision.</p>
+    <p>Vous pouvez revenir à l'accueil en cliquant ci-dessous 👇</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="redirect()">
+      Retour à l'accueil
+    </button>
+  </mat-card-actions>
+</mat-card>

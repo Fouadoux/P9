@@ -8,22 +8,43 @@ import { Gender } from '../../model/gender.model';
 import { PatientService } from '../../services/patient.service';
 import { MatNativeDateModule } from '@angular/material/core';
 
+/**
+ * Component representing a single patient card.
+ * 
+ * Displays patient information and allows navigation to patient details.
+ * If used in "empty" mode, opens a dialog to create a new patient.
+ */
 @Component({
   selector: 'app-patient-card',
   standalone: true,
-  imports: [CommonModule,MatNativeDateModule],
+  imports: [CommonModule, MatNativeDateModule],
   templateUrl: './patient-card.component.html',
   styleUrls: ['./patient-card.component.css']
 })
 export class PatientCardComponent {
+
+  /** Patient data passed to the component */
   patient = input<Patient>();
+
+  /** If true, renders the card as a placeholder for adding a new patient */
   isEmpty = input<boolean>(false);
 
+  /** Injected Material dialog service */
   dialog = inject(MatDialog);
+
+  /** Injected patient service for API operations */
   patientService = inject(PatientService);
 
+  /**
+   * Injected Angular Router used to navigate to patient details.
+   * @param router Router instance for navigation
+   */
   constructor(private router: Router) {}
 
+  /**
+   * Navigates to the patient's detail page if the card is populated.
+   * If the card is marked as empty, triggers the patient creation dialog instead.
+   */
   goToDetails() {
     if (this.isEmpty()) {
       this.addPatient(); 
@@ -36,6 +57,10 @@ export class PatientCardComponent {
     }
   }
 
+  /**
+   * Opens a dialog to create a new patient.
+   * On successful creation, redirects to the newly created patient's detail page.
+   */
   addPatient() {
     const newPatient: Partial<Patient> = {
       firstName: '',
@@ -48,23 +73,27 @@ export class PatientCardComponent {
 
     this.dialog
       .open(EditDialogComponent, {
-        data: { data: newPatient, type: 'patient',title: 'Ajouter un patient' },
+        data: {
+          data: newPatient,
+          type: 'patient',
+          title: 'Ajouter un patient'
+        },
         width: '500px'
       })
       .afterClosed()
       .subscribe((result) => {
         if (result) {
-          console.log('Nouveau patient à sauvegarder 🚀:', result);
+          console.log('🚀 New patient to save:', result);
           this.patientService.getAddPatient(result).subscribe({
             next: (createdPatient) => {
-              console.log('✅ Patient ajouté avec succès :', createdPatient);
+              console.log('✅ Patient successfully created:', createdPatient);
               this.router.navigate(['/patients', createdPatient.uid]);
             },
             error: (err) => {
-              console.error('❌ Erreur lors de l\'ajout du patient :', err);
+              console.error('❌ Error while creating patient:', err);
             },
             complete: () => {
-              console.log('ℹ️ Requête d\'ajout de patient terminée.');
+              console.log('ℹ️ Patient creation request completed.');
             }
           });
         }

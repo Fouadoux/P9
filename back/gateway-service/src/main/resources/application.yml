@@ -15,6 +15,7 @@ spring:
 jwt:
   secret: ${JWT_SECRET}  # Secret key for JWT token validation (injected from environment variable)
 
+
 management:
   endpoints:
     web:

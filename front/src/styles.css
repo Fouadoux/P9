@@ -1,11 +1,17 @@
 html, body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, #e3f2ff, #ffffff);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  min-height: 100vh;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #e3f2ff, #ffffff);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'LocalRoboto', "Helvetica Neue", sans-serif;
+}
+
+
+@font-face {
+  font-family: 'LocalRoboto';
+  src: url('assets/fonts/roboto/roboto-regular.woff2') format('woff2');
+  font-weight: 400;
+}

@@ -1,42 +1,70 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Patient } from "../model/patient.model";
 
-@Injectable({
-    providedIn:'root'
-})
-export class PatientService{
+/**
+ * Service responsible for managing patient-related operations.
+ * Includes methods for retrieving, adding, updating, and toggling the activation state of patients.
+ */
+@Injectable({ providedIn: 'root' })
+export class PatientService {
 
-    private apiUrl='http://localhost:8080/api/patients';
+  /** Base URL for patient API endpoints */
+  private apiUrl = 'http://localhost:8080/api/patients';
 
-    
-    private http = inject(HttpClient);
-    
-      getPatients(): Observable<Patient[]> {
-        return this.http.get<Patient[]>(this.apiUrl);
-      }
+  /** Injects the Angular HttpClient via the inject() function */
+  private http = inject(HttpClient);
 
-      getPatientsActive(): Observable<Patient[]> {
-        return this.http.get<Patient[]>(`${this.apiUrl}/active`);
-      }
+  /**
+   * Retrieves all patients from the backend (active and inactive).
+   * @returns An Observable emitting an array of Patient objects.
+   */
+  getPatients(): Observable<Patient[]> {
+    return this.http.get<Patient[]>(this.apiUrl);
+  }
 
-      getPatientById(id:string):Observable<Patient>{
-        return this.http.get<Patient>(`${this.apiUrl}/${id}`);
-      }
+  /**
+   * Retrieves only the patients whose accounts are marked as active.
+   * @returns An Observable emitting an array of active Patient objects.
+   */
+  getPatientsActive(): Observable<Patient[]> {
+    return this.http.get<Patient[]>(`${this.apiUrl}/active`);
+  }
 
-      updatePatient(patient: Patient): Observable<Patient> {
-        return this.http.put<Patient>(`${this.apiUrl}/${patient.uid}`, patient);
-      }
+  /**
+   * Fetches a single patient by their unique identifier (UUID).
+   * @param id The UUID of the patient.
+   * @returns An Observable emitting the Patient object.
+   */
+  getPatientById(id: string): Observable<Patient> {
+    return this.http.get<Patient>(`${this.apiUrl}/${id}`);
+  }
 
-      toggleActivePatient(id: string): Observable<Patient> {
-        return this.http.put<Patient>(`${this.apiUrl}/toggle/${id}`, null);
-      }
+  /**
+   * Updates an existing patient's data.
+   * @param patient The Patient object containing updated data.
+   * @returns An Observable emitting the updated Patient object.
+   */
+  updatePatient(patient: Patient): Observable<Patient> {
+    return this.http.put<Patient>(`${this.apiUrl}/${patient.uid}`, patient);
+  }
 
-      getAddPatient(patient:Patient): Observable<Patient>{
-        return this.http.post<Patient>(`${this.apiUrl}`, patient);
-      }
-      
+  /**
+   * Toggles the active status of a patient (activate or deactivate).
+   * @param id The UUID of the patient whose status is to be toggled.
+   * @returns An Observable emitting the updated Patient object.
+   */
+  toggleActivePatient(id: string): Observable<Patient> {
+    return this.http.put<Patient>(`${this.apiUrl}/toggle/${id}`, null);
+  }
 
-
+  /**
+   * Adds a new patient to the database.
+   * @param patient The Patient object containing the data to be added.
+   * @returns An Observable emitting the newly created Patient object.
+   */
+  getAddPatient(patient: Patient): Observable<Patient> {
+    return this.http.post<Patient>(`${this.apiUrl}`, patient);
+  }
 }

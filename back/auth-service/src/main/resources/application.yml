@@ -32,7 +32,9 @@ management:
 springdoc:
   api-docs:
     enabled: true
+    path: /v3/api-docs
   swagger-ui:
+    enabled: true
     path: /swagger-ui.html
   default-produces-media-type: application/json
   default-consumes-media-type: application/json
@@ -40,5 +42,5 @@ springdoc:
 info:
   title: GlucoVision API
   version: v1
-  description: API de gestion des utilisateurs.
+  description: User and Security Management API
 

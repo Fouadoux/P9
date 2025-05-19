@@ -1,0 +1,53 @@
+.success-container {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #e3f2fd; /* bleu très clair */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.success-container h2 {
+  color: #1565c0; /* bleu primaire profond */
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.success-container p {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+.admin-card {
+  cursor: pointer;
+  background-color: #1976d2; /* bleu bouton */
+  color: white;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.admin-card:hover {
+  background-color: #0d47a1; /* bleu foncé au hover */
+}
+
+mat-card-title {
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Animation douce à l'ouverture */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

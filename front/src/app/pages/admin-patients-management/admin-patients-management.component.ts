@@ -3,13 +3,16 @@ import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../model/patient.model';
 import { AppCardComponent } from "../../Components/app-card/app-card.component";
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { EditDialogComponent } from '../../Components/edit-dialog/edit-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-
-
+/**
+ * Admin component responsible for managing patients in the application.
+ * Allows administrators to view all patients, edit their information,
+ * toggle activation status, and navigate to their medical notes.
+ */
 @Component({
   selector: 'app-admin-patients-management',
   imports: [CommonModule, AppCardComponent, MatDialogModule],
@@ -18,17 +21,36 @@ import { Router } from '@angular/router';
 })
 export class AdminPatientsManagementComponent {
 
+  /** Injected patient service for backend communication */
   private patientService = inject(PatientService);
-  patients = signal<Patient[]>([]);
-  isLoading = signal<boolean>(true);
-  public fb = inject(FormBuilder);
-  selectedPatient = signal<Patient | null>(null);
-  showEditDialog = signal(false);
-  private dialog = inject(MatDialog);
-  private router=inject(Router)
 
+  /** Signal holding all patients (active and inactive) */
+  patients = signal<Patient[]>([]);
+
+  /** Signal indicating loading state */
+  isLoading = signal<boolean>(true);
+
+  /** Angular FormBuilder (in case forms are needed) */
+  public fb = inject(FormBuilder);
+
+  /** Currently selected patient for editing */
+  selectedPatient = signal<Patient | null>(null);
+
+  /** Controls visibility of the edit dialog */
+  showEditDialog = signal(false);
+
+  /** Angular Material dialog service */
+  private dialog = inject(MatDialog);
+
+  /** Angular router for navigation */
+  private router = inject(Router);
+
+  /** Validators exposed for template-driven forms (if needed) */
   validators = Validators;
 
+  /**
+   * Constructor sets up effect to fetch all patients on component initialization.
+   */
   constructor() {
     effect(() => {
       this.patientService.getPatients().subscribe({
@@ -37,13 +59,17 @@ export class AdminPatientsManagementComponent {
           this.isLoading.set(false);
         },
         error: (err) => {
-          console.error('Erreur chargement patients', err);
+          console.error('Error loading patients', err);
           this.isLoading.set(false);
         }
       });
     });
   }
 
+  /**
+   * Opens a modal dialog to edit the given patient.
+   * @param patient The patient to edit.
+   */
   onEditPatient(patient: Patient) {
     const dialogRef = this.dialog.open(EditDialogComponent<Patient>, {
       data: {
@@ -53,46 +79,61 @@ export class AdminPatientsManagementComponent {
       },
       width: '500px'
     });
-  
+
     dialogRef.afterClosed().subscribe((result: Patient | null) => {
       if (result) {
         this.handlePatientSave(result);
       }
     });
   }
-  
 
+  /**
+   * Toggles the active status of a patient.
+   * @param patient The patient whose status should be changed.
+   */
   handleToggleActive(patient: Patient) {
     this.patientService.toggleActivePatient(patient.uid).subscribe({
       next: (res) => {
-        const patients = this.patients().map(p =>
+        const updated = this.patients().map(p =>
           p.uid === res.uid ? res : p
         );
-        this.patients.set(patients);
+        this.patients.set(updated);
       },
-      error: (err) => console.error('Erreur changement statut', err)
+      error: (err) => console.error('Error toggling patient status', err)
     });
   }
 
+  /**
+   * Sends updated patient data to the backend and updates local state.
+   * @param updatedPatient The updated patient object.
+   */
   handlePatientSave(updatedPatient: Patient) {
     this.patientService.updatePatient(updatedPatient).subscribe({
       next: (res) => {
-        const patients = this.patients().map(p =>
+        const updated = this.patients().map(p =>
           p.uid === res.uid ? res : p
         );
-        this.patients.set(patients);
+        this.patients.set(updated);
         this.showEditDialog.set(false);
       },
       error: (err) => {
-        console.error('❌ Erreur mise à jour patient', err);
+        console.error('❌ Error updating patient', err);
       }
     });
   }
 
+  /**
+   * Navigates to the patient's note management page.
+   * @param patient The patient whose notes should be managed.
+   */
   goToPatientNotes(patient: Patient) {
     this.router.navigate(['/admin/notes', patient.uid]);
   }
-  
+
+  /**
+   * Navigates to a specified route.
+   * @param path Route path to navigate to.
+   */
   goTo(path: string) {
     this.router.navigate([`/${path}`]);
   }

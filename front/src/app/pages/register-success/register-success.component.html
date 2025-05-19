@@ -1,5 +1,8 @@
 <div class="success-container">
     <h2>✅ Inscription réussie</h2>
     <p>Votre compte sera activé sous 24 à 48 heures par un administrateur.</p>
-    <a routerLink="/login">Retour à la connexion</a>
+    
+    <mat-card class="admin-card" (click)="goTo('/login')">
+        <mat-card-title>Retour à l'accueil</mat-card-title>
+      </mat-card>
   </div>

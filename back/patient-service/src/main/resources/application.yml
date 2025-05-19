@@ -33,7 +33,9 @@ management:
 springdoc:
   api-docs:
     enabled: true
+    path: /v3/api-docs
   swagger-ui:
+    enabled: true
     path: /swagger-ui.html
   default-produces-media-type: application/json
   default-consumes-media-type: application/json

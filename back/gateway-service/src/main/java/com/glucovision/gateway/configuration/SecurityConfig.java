@@ -38,7 +38,11 @@ public class SecurityConfig {
                                 "/actuator/**",
                                 "/api/patients/**",
                                 "/api/notes/**",
-                                "/api/risk/**"
+                                "/api/risk/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/actuator/**"
                         )
                         .permitAll()
                         .anyExchange()
