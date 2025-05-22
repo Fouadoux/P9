@@ -5,6 +5,7 @@ import com.glucovision.patientservice.model.PatientStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,6 +60,7 @@ public class PatientDTO {
     private String address;
 
     @Schema(description = "Phone number of the patient", example = "+33 6 12 34 56 78")
+    @Pattern(regexp = "^$|\\d{10}", message = "Le numéro de téléphone doit contenir exactement 10 chiffres ou être vide.")
     private String phone;
 
     @Schema(description = "Whether the patient is active", example = "true", defaultValue = "true")

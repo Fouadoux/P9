@@ -30,7 +30,7 @@ public class CustomRoleConverter implements Converter<Jwt, Collection<GrantedAut
         List<String> roles = jwt.getClaimAsStringList("roles");
 
         if (roles == null || roles.isEmpty()) {
-            log.warn("[ROLE CONVERTER] No roles found in token for subject: {}", jwt.getSubject());
+            log.info("[ROLE CONVERTER] No roles found in token for subject: {}", jwt.getSubject());
             return List.of();
         }
 
@@ -38,7 +38,7 @@ public class CustomRoleConverter implements Converter<Jwt, Collection<GrantedAut
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
 
-        log.debug("[ROLE CONVERTER] Roles extracted for subject {}: {}", jwt.getSubject(), roles);
+        log.info("[ROLE CONVERTER] Roles extracted for subject {}: {}", jwt.getSubject(), roles);
         return authorities;
     }
 }

@@ -3,6 +3,7 @@ package com.glucovion.authservice.dto;
 import com.glucovion.authservice.validation.StrictEmail;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 /**
@@ -27,5 +28,9 @@ public class AppUserRegisterDto {
 
     @NotBlank(message = "Password is required")
     @Schema(description = "User's password (plain text, will be encrypted)", example = "P@ssw0rd123", required = true)
+    @Pattern(
+            regexp = "^(?=.*[!@#$%^&*(),.?\":{}|<>])[A-Za-z\\d!@#$%^&*(),.?\":{}|<>]{9,}$",
+            message = "Le mot de passe doit contenir au moins 9 caractères et un caractère spécial."
+    )
     private String password;
 }

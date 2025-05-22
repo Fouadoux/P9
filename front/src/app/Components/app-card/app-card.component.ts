@@ -133,4 +133,13 @@ export class AppCardComponent {
   get noteItem(): Note | null {
     return this.isNote ? this.data() as Note : null;
   }
+
+
+  translateGender(gender: string): string {
+  switch (gender) {
+    case 'MALE': return 'Homme';
+    case 'FEMALE': return 'Femme';
+    default: return gender;
+  }
+}
 }

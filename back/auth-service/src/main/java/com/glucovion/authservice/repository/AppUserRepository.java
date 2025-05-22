@@ -3,6 +3,8 @@ package com.glucovion.authservice.repository;
 import com.glucovion.authservice.model.AppUser;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -29,4 +31,11 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
      * @return true if a user with this email exists, false otherwise
      */
     boolean existsByEmail(@Email(message = "Invalid email format") @NotBlank(message = "Email is required") String email);
+    Page<AppUser> findByLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase (
+            String nameQuery,
+            String emailQuery,
+            Pageable pageable
+    );
+
+
 }

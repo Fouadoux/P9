@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.glucovision.patientservice.model.Gender.FEMALE;
 import static com.glucovision.patientservice.model.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -25,8 +26,6 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class PatientServiceTest {
-
-
 
     @Mock
     private PatientRepository patientRepository;
@@ -56,7 +55,7 @@ class PatientServiceTest {
         Patient patient= new Patient();
         when(patientRepository.findByLastName("Doe")).thenReturn(Optional.of(patient));
 
-        Patient result = patientService.findPatientByName("Doe");
+        Patient result = patientService.findPatientActiveByName("Doe");
         assertNotNull(result);
         assertEquals(patient.getUid(), result.getUid());
         assertEquals(patient.getLastName(), result.getLastName());
@@ -65,7 +64,7 @@ class PatientServiceTest {
     @Test
     public void testFindByLastName_NotFound() {
         when(patientRepository.findByLastName(null)).thenReturn(Optional.empty());
-        assertThrows(RuntimeException.class, ()->patientService.findPatientByName("Doe"));
+        assertThrows(RuntimeException.class, ()->patientService.findPatientActiveByName("Doe"));
     }
 
     @Test
@@ -204,44 +203,55 @@ class PatientServiceTest {
     }
 
     @Test
-    void testGetAllActivePatients_ReturnsOnlyActivePatients() {
+    void testGetAllActivePatientsPaginated_ReturnsPageOfDTOs() {
         // Arrange
         Patient activePatient1 = new Patient();
+        activePatient1.setUid("1");
         activePatient1.setActive(true);
         activePatient1.setFirstName("Alice");
-        activePatient1.setLastName("OldLastName");
+        activePatient1.setLastName("Dupont");
+
         Patient activePatient2 = new Patient();
+        activePatient2.setUid("2");
         activePatient2.setActive(true);
         activePatient2.setFirstName("Bob");
-        activePatient2.setLastName("NewLastName");
-        List<Patient> activePatients = List.of(activePatient1, activePatient2);
-        Sort expectedSort = Sort.by("lastName").and(Sort.by("firstName"));
+        activePatient2.setLastName("Martin");
 
-        when(patientRepository.findByActiveTrue(expectedSort)).thenReturn(activePatients);
+        List<Patient> activePatientList = List.of(activePatient1, activePatient2);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<Patient> mockPage = new PageImpl<>(activePatientList, pageable, activePatientList.size());
+
+        when(patientRepository.findByActiveTrue(pageable)).thenReturn(mockPage);
 
         // Act
-        List<Patient> result = patientService.getAllActivePatients();
+        Page<PatientDTO> result = patientService.getAllActivePatientsPaginated(pageable);
 
         // Assert
-        assertEquals(2, result.size());
-        assertTrue(result.stream().allMatch(Patient::getActive));
-        verify(patientRepository, times(1)).findByActiveTrue(expectedSort);
+        assertEquals(2, result.getContent().size());
+        assertEquals("Alice", result.getContent().get(0).getFirstName());
+        assertEquals("Bob", result.getContent().get(1).getFirstName());
+        verify(patientRepository, times(1)).findByActiveTrue(pageable);
     }
+
 
     @Test
-    void testGetAllActivePatients_ReturnsEmptyListWhenNoActivePatients() {
+    void testGetAllActivePatientsPaginated_ReturnsEmptyPageWhenNoActivePatients() {
         // Arrange
-        Sort expectedSort = Sort.by("lastName").and(Sort.by("firstName"));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<Patient> emptyPage = new PageImpl<>(List.of(), pageable, 0);
 
-        when(patientRepository.findByActiveTrue(expectedSort)).thenReturn(List.of());
+        when(patientRepository.findByActiveTrue(pageable)).thenReturn(emptyPage);
 
         // Act
-        List<Patient> result = patientService.getAllActivePatients();
+        Page<PatientDTO> result = patientService.getAllActivePatientsPaginated(pageable);
 
         // Assert
+        assertNotNull(result);
         assertTrue(result.isEmpty());
-        verify(patientRepository, times(1)).findByActiveTrue(expectedSort);
+        assertEquals(0, result.getTotalElements());
+        verify(patientRepository, times(1)).findByActiveTrue(pageable);
     }
+
 
     @Test
     void testConvertToDTO() {
@@ -389,8 +399,96 @@ class PatientServiceTest {
         });
     }
 
+    @Test
+    void testGetAllActivePatients_ReturnsEmptyListWhenNoActivePatients() {
+        // Arrange
+        Sort expectedSort = Sort.by("lastName").and(Sort.by("firstName"));
 
+        when(patientRepository.findByActiveTrue(expectedSort)).thenReturn(List.of());
 
+        // Act
+        List<Patient> result = patientService.getAllActivePatients();
+
+        // Assert
+        assertTrue(result.isEmpty());
+        verify(patientRepository, times(1)).findByActiveTrue(expectedSort);
+    }
+
+    @Test
+    void testGetAllActivePatients_ReturnsOnlyActivePatients() {
+        // Arrange
+        Patient activePatient1 = new Patient();
+        activePatient1.setActive(true);
+        activePatient1.setFirstName("Alice");
+        activePatient1.setLastName("OldLastName");
+        Patient activePatient2 = new Patient();
+        activePatient2.setActive(true);
+        activePatient2.setFirstName("Bob");
+        activePatient2.setLastName("NewLastName");
+        List<Patient> activePatients = List.of(activePatient1, activePatient2);
+        Sort expectedSort = Sort.by("lastName").and(Sort.by("firstName"));
+
+        when(patientRepository.findByActiveTrue(expectedSort)).thenReturn(activePatients);
+
+        // Act
+        List<Patient> result = patientService.getAllActivePatients();
+
+        // Assert
+        assertEquals(2, result.size());
+        assertTrue(result.stream().allMatch(Patient::getActive));
+        verify(patientRepository, times(1)).findByActiveTrue(expectedSort);
+    }
+
+    @Test
+    void testFindPatientActiveByNamePaginated_ReturnsMatchingDTOs() {
+        // Arrange
+        String lastName = "Doe";
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Patient patient = new Patient();
+        patient.setUid("123");
+        patient.setFirstName("Alice");
+        patient.setLastName("Doe");
+        patient.setBirthDate(LocalDate.of(1990, 1, 1));
+        patient.setGender(FEMALE);
+        patient.setActive(true);
+
+        List<Patient> patientList = List.of(patient);
+        Page<Patient> mockPage = new PageImpl<>(patientList, pageable, 1);
+
+        when(patientRepository.findByActiveTrueAndLastNameContainingIgnoreCase(lastName, pageable))
+                .thenReturn(mockPage);
+
+        // Act
+        Page<PatientDTO> result = patientService.findPatientActiveByNamePaginated(lastName, pageable);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getContent().size());
+        assertEquals("Alice", result.getContent().get(0).getFirstName());
+        assertEquals("Doe", result.getContent().get(0).getLastName());
+        verify(patientRepository, times(1)).findByActiveTrueAndLastNameContainingIgnoreCase(lastName, pageable);
+    }
+
+    @Test
+    void testFindPatientActiveByNamePaginated_ReturnsEmptyPage() {
+        // Arrange
+        String lastName = "NonExistant";
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Patient> emptyPage = new PageImpl<>(List.of(), pageable, 0);
+
+        when(patientRepository.findByActiveTrueAndLastNameContainingIgnoreCase(lastName, pageable))
+                .thenReturn(emptyPage);
+
+        // Act
+        Page<PatientDTO> result = patientService.findPatientActiveByNamePaginated(lastName, pageable);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        assertEquals(0, result.getTotalElements());
+        verify(patientRepository, times(1)).findByActiveTrueAndLastNameContainingIgnoreCase(lastName, pageable);
+    }
 
 
 }

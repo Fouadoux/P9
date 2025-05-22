@@ -10,6 +10,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -124,4 +128,56 @@ public class AppUserController {
         log.info("✅ User status updated: {}", dto);
         return ResponseEntity.ok().body(dto);
     }
+
+    /**
+     * Searches users by last name or email (case-insensitive) and returns paginated results.
+     *
+     * @param name  Substring to search for in last names or emails.
+     * @param page  Page number (0-based).
+     * @param size  Number of elements per page.
+     * @return Paginated list of matching users (DTOs).
+     */
+    @Operation(summary = "Search users by name or email (paginated)",
+            description = "Allows admin to search users by partial match on last name or email.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Search results successfully retrieved"),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Requires ADMIN role")
+    })
+    @GetMapping("/search")
+    public ResponseEntity<Page<AppUserResponseDto>> searchByLastName(
+            @RequestParam String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info("[GET] Searching users with query='{}' [page={}, size={}]", name, page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<AppUserResponseDto> appUserResponseDtos = appUserService.searchUsersPaginated(name, pageable);
+        log.info("✅ {} user(s) matched search query '{}'", appUserResponseDtos.getTotalElements(), name);
+        return ResponseEntity.ok(appUserResponseDtos);
+    }
+
+    /**
+     * Retrieves all users with pagination support.
+     *
+     * @param page Page number (0-based).
+     * @param size Number of elements per page.
+     * @return Paginated list of all users (DTOs).
+     */
+    @Operation(summary = "Get all users (paginated)",
+            description = "Retrieves the full list of users with pagination.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Users successfully retrieved"),
+            @ApiResponse(responseCode = "403", description = "Forbidden - Requires ADMIN role")
+    })
+    @GetMapping("/page")
+    public ResponseEntity<Page<AppUserResponseDto>> getAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info("[GET] Retrieving all users (paginated) [page={}, size={}]", page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<AppUserResponseDto> appUserResponseDtos = appUserService.findAllPaginated(pageable);
+        log.info("✅ {} user(s) retrieved from page {}", appUserResponseDtos.getTotalElements(), page);
+        return ResponseEntity.ok(appUserResponseDtos);
+    }
+
+
 }

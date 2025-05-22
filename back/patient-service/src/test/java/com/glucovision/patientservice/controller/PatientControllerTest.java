@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +80,7 @@ public class PatientControllerTest {
         PatientDTO patientDto = new PatientDTO();
         patientDto.setLastName(name);
 
-        when(patientService.findPatientByName(name)).thenReturn(patient);
+        when(patientService.findPatientActiveByName(name)).thenReturn(patient);
         when(patientService.convertToDTO(patient)).thenReturn(patientDto);
 
         mockMvc.perform(get("/api/patients/name/{name}", name))
@@ -90,7 +91,7 @@ public class PatientControllerTest {
     @Test
     void testGetPatientByName_NotFound() throws Exception {
         String name = "Doe";
-        when(patientService.findPatientByName(name))
+        when(patientService.findPatientActiveByName(name))
                 .thenThrow(new NoSuchElementException("Patient with name " + name + " not found"));
 
         mockMvc.perform(get("/api/patients/name/{name}", name))
@@ -184,59 +185,43 @@ public class PatientControllerTest {
     }
 
     @Test
-    void testGetPatientsActive() throws Exception {
+    void testGetActivePatientsPaginated_ReturnsPagedDTOs() throws Exception {
         // Arrange
-        String id1 = String.valueOf(UUID.randomUUID());
-        String id2 = String.valueOf(UUID.randomUUID());
+        String id1 = UUID.randomUUID().toString();
+        String id2 = UUID.randomUUID().toString();
         LocalDate birthDate = LocalDate.of(1990, 5, 15);
 
-        Patient patient1 = new Patient();
-        patient1.setUid(id1);
-        patient1.setFirstName("Alice");
-        patient1.setLastName("Doe");
-        patient1.setBirthDate(birthDate);
-        patient1.setGender(FEMALE);
-        patient1.setActive(true);
+        PatientDTO dto1 = new PatientDTO();
+        dto1.setUid(id1);
+        dto1.setFirstName("Alice");
+        dto1.setLastName("Doe");
+        dto1.setBirthDate(birthDate);
+        dto1.setGender(FEMALE);
+        dto1.setActive(true);
 
-        Patient patient2 = new Patient();
-        patient2.setUid(id2);
-        patient2.setFirstName("Bob");
-        patient2.setLastName("Smith");
-        patient2.setBirthDate(birthDate);
-        patient2.setGender(MALE);
-        patient2.setActive(true);
+        PatientDTO dto2 = new PatientDTO();
+        dto2.setUid(id2);
+        dto2.setFirstName("Bob");
+        dto2.setLastName("Smith");
+        dto2.setBirthDate(birthDate);
+        dto2.setGender(MALE);
+        dto2.setActive(true);
 
-        List<Patient> patients = List.of(patient1, patient2);
+        List<PatientDTO> dtoList = List.of(dto1, dto2);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<PatientDTO> page = new PageImpl<>(dtoList, pageable, dtoList.size());
 
-        PatientDTO patientDTO1 = new PatientDTO();
-        patientDTO1.setUid(id1);
-        patientDTO1.setFirstName("Alice");
-        patientDTO1.setLastName("Doe");
-        patientDTO1.setBirthDate(birthDate);
-        patientDTO1.setGender(FEMALE);
-        patientDTO1.setActive(true);
-
-        PatientDTO patientDTO2 = new PatientDTO();
-        patientDTO2.setUid(id2);
-        patientDTO2.setFirstName("Bob");
-        patientDTO2.setLastName("Smith");
-        patientDTO2.setBirthDate(birthDate);
-        patientDTO2.setGender(MALE);
-        patientDTO2.setActive(true);
-
-        List<PatientDTO> patientDTOs = List.of(patientDTO1, patientDTO2);
-
-        when(patientService.getAllActivePatients()).thenReturn(patients);
-        when(patientService.convertToDTOList(patients)).thenReturn(patientDTOs);
+        when(patientService.getAllActivePatientsPaginated(pageable)).thenReturn(page);
 
         // Act & Assert
-        mockMvc.perform(get("/api/patients/active")
+        mockMvc.perform(get("/api/patients/active/page?page=0&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].firstName").value("Alice"))
-                .andExpect(jsonPath("$[1].firstName").value("Bob"));
+                .andExpect(jsonPath("$.content.length()").value(2))
+                .andExpect(jsonPath("$.content[0].firstName").value("Alice"))
+                .andExpect(jsonPath("$.content[1].firstName").value("Bob"));
     }
+
 
 
     @Test
@@ -436,4 +421,54 @@ public class PatientControllerTest {
 
         verify(patientService, times(1)).toggleActivePatient(patientId);
     }
+
+    @Test
+    void testSearchActivePatientsByName_ReturnsPagedDTOs() throws Exception {
+        // Arrange
+        String name = "Doe";
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("lastName").and(Sort.by("firstName")));
+
+        PatientDTO dto = new PatientDTO();
+        dto.setUid(UUID.randomUUID().toString());
+        dto.setFirstName("Alice");
+        dto.setLastName("Doe");
+        dto.setBirthDate(LocalDate.of(1990, 1, 1));
+        dto.setGender(FEMALE);
+        dto.setActive(true);
+
+        Page<PatientDTO> page = new PageImpl<>(List.of(dto), pageable, 1);
+
+        when(patientService.findPatientActiveByNamePaginated(name, pageable)).thenReturn(page);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/patients/active/search")
+                        .param("name", name)
+                        .param("page", "0")
+                        .param("size", "10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].firstName").value("Alice"))
+                .andExpect(jsonPath("$.content[0].lastName").value("Doe"));
+    }
+
+    @Test
+    void testSearchActivePatientsByName_ReturnsEmptyPage() throws Exception {
+        // Arrange
+        String name = "Inexistant";
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<PatientDTO> emptyPage = new PageImpl<>(List.of(), pageable, 0);
+
+        when(patientService.findPatientActiveByNamePaginated(name, pageable)).thenReturn(emptyPage);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/patients/active/search")
+                        .param("name", name)
+                        .param("page", "0")
+                        .param("size", "10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(0));
+    }
+
 }

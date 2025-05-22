@@ -7,6 +7,9 @@ import com.glucovision.patientservice.model.Patient;
 import com.glucovision.patientservice.repository.PatientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +48,23 @@ public class PatientService {
         log.debug("Fetching all active patients (sorted by last name, first name).");
         return patientRepository.findByActiveTrue(Sort.by("lastName").and(Sort.by("firstName")));
     }
+
+    public Page<PatientDTO> getAllActivePatientsPage(Pageable pageable) {
+        log.debug("Fetching all active patients (sorted by last name, first name).");
+        Page<Patient> activePatients = patientRepository.findAll(pageable);
+        List<PatientDTO> dtoList = convertToDTOList(activePatients.getContent());
+        return new PageImpl<>(dtoList, pageable, activePatients.getTotalElements());
+    }
+
+
+    public Page<PatientDTO> getAllActivePatientsPaginated(Pageable pageable) {
+        log.debug("Fetching all active patients (sorted by last name, first name).");
+        Page<Patient> activePatients = patientRepository.findByActiveTrue(pageable);
+        List<PatientDTO> dtoList = convertToDTOList(activePatients.getContent());
+        return new PageImpl<>(dtoList, pageable, activePatients.getTotalElements());
+    }
+
+
 
     /**
      * Adds a new patient to the system.
@@ -89,10 +109,24 @@ public class PatientService {
      * @return the matching {@link Patient}
      * @throws PatientNotFoundException if no patient is found
      */
-    public Patient findPatientByName(String lastName) {
+    public Patient findPatientActiveByName(String lastName) {
         log.debug("Searching for patient by last name: {}", lastName);
         return patientRepository.findByLastName(lastName)
                 .orElseThrow(() -> new PatientNotFoundException("Patient with name " + lastName + " not found"));
+    }
+
+    public Page<PatientDTO> findPatientActiveByNamePaginated(String lastName, Pageable pageable) {
+        log.debug("Searching for active patients by last name (partial match): {}", lastName);
+        Page<Patient> patients = patientRepository.findByActiveTrueAndLastNameContainingIgnoreCase(lastName, pageable);
+        List<PatientDTO> dtoList = convertToDTOList(patients.getContent());
+        return new PageImpl<>(dtoList, pageable, patients.getTotalElements());
+    }
+
+    public Page<PatientDTO> searchPatientsPaginated(String lastName, Pageable pageable) {
+        log.debug("Searching for active patients by last name (partial match): {}", lastName);
+        Page<Patient> patients = patientRepository.findByLastNameContainingIgnoreCase(lastName, pageable);
+        List<PatientDTO> dtoList = convertToDTOList(patients.getContent());
+        return new PageImpl<>(dtoList, pageable, patients.getTotalElements());
     }
 
     /**

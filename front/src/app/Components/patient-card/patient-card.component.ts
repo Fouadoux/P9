@@ -99,4 +99,14 @@ export class PatientCardComponent {
         }
       });
   }
+
+  translateGender(gender: string | undefined | null): string {
+  switch (gender) {
+    case 'MALE': return 'Homme';
+    case 'FEMALE': return 'Femme';
+    default: return 'Non spécifié';
+  }
+}
+
+
 }

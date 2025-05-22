@@ -1,14 +1,27 @@
 <div class="container">
-    <h2>Liste des Patients</h2>
-    <app-search-bar (search)="onSearch($event)"></app-search-bar>
+  <h2>Liste des Patients</h2>
+  <app-search-bar (search)="onSearch($event)"></app-search-bar>
 
-    <div *ngIf="filteredPatients().length === 0">
-      <p>Aucun patient trouvé.</p>
-    </div>
-
-    <div class="patient-list">
-      <app-patient-card *ngFor="let patient of filteredPatients()" [patient]="patient"></app-patient-card>
-      <app-patient-card [isEmpty]="true"></app-patient-card>
-    </div>
-    
+ <div *ngIf="isLoading()" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
   </div>
+
+  <div *ngIf="patients().length === 0 && !isLoading()" class="no-results">
+    <p>Aucun patient trouvé.</p>
+  </div>
+
+  <div class="patient-list">
+    <app-patient-card *ngFor="let patient of patients()" [patient]="patient"></app-patient-card>
+    <app-patient-card [isEmpty]="true"></app-patient-card>
+  </div>
+
+  <div class="pagination-controls" *ngIf="!isLoading() && totalPages() > 1">
+    <button mat-button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 0">
+      ◀ Précédent
+    </button>
+    <span>Page {{ currentPage() + 1 }} sur {{ totalPages() }}</span>
+    <button mat-button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() + 1 >= totalPages()">
+      Suivant ▶
+    </button>
+  </div>
+</div>

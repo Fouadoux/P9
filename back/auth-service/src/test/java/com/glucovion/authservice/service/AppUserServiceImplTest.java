@@ -9,7 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Arrays;
@@ -176,4 +181,53 @@ public class AppUserServiceImplTest {
         result = appUserService.toggleActiveUser(1L);
         assertTrue(result.getActive());
     }
+
+    @Test
+    void searchUsersPaginated_ShouldReturnMatchingUsersAsDTOs() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<AppUser> users = List.of(sampleUser);
+        Page<AppUser> page = new PageImpl<>(users, pageable, 1);
+
+        when(appUserRepository.findByLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+                "test", "test", pageable)).thenReturn(page);
+
+        Page<AppUserResponseDto> result = appUserService.searchUsersPaginated("test", pageable);
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("test@example.com", result.getContent().get(0).getEmail());
+        verify(appUserRepository, times(1))
+                .findByLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase("test", "test", pageable);
+    }
+
+    @Test
+    void findAllPaginated_ShouldReturnAllUsersAsDTOs() {
+        Pageable pageable = PageRequest.of(0, 5);
+        List<AppUser> users = List.of(sampleUser);
+        Page<AppUser> page = new PageImpl<>(users, pageable, 1);
+
+        when(appUserRepository.findAll(pageable)).thenReturn(page);
+
+        Page<AppUserResponseDto> result = appUserService.findAllPaginated(pageable);
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("test@example.com", result.getContent().get(0).getEmail());
+        verify(appUserRepository, times(1)).findAll(pageable);
+    }
+
+    @Test
+    void searchUsersPaginated_ShouldReturnEmptyPage_WhenNoMatch() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<AppUser> emptyPage = new PageImpl<>(List.of(), pageable, 0);
+
+        when(appUserRepository.findByLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+                "inconnu", "inconnu", pageable)).thenReturn(emptyPage);
+
+        Page<AppUserResponseDto> result = appUserService.searchUsersPaginated("inconnu", pageable);
+
+        assertTrue(result.getContent().isEmpty());
+        assertEquals(0, result.getTotalElements());
+    }
+
+
+
 }

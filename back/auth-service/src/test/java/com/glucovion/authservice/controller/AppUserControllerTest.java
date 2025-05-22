@@ -9,6 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -95,4 +100,47 @@ class AppUserControllerTest {
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(appUserResponseDto, response.getBody());
     }
+
+    @Test
+    void testSearchByLastName() {
+        // Arrange
+        String query = "john";
+        int page = 0;
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size);
+        List<AppUserResponseDto> dtoList = Arrays.asList(new AppUserResponseDto(), new AppUserResponseDto());
+        Page<AppUserResponseDto> dtoPage = new PageImpl<>(dtoList, pageable, dtoList.size());
+
+        when(appUserService.searchUsersPaginated(eq(query), any(Pageable.class))).thenReturn(dtoPage);
+
+        // Act
+        ResponseEntity<Page<AppUserResponseDto>> response = appUserController.searchByLastName(query, page, size);
+
+        // Assert
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(dtoPage, response.getBody());
+        verify(appUserService, times(1)).searchUsersPaginated(eq(query), any(Pageable.class));
+    }
+
+    @Test
+    void testGetAllPaginated() {
+        // Arrange
+        int page = 1;
+        int size = 5;
+        Pageable pageable = PageRequest.of(page, size);
+        List<AppUserResponseDto> dtoList = Arrays.asList(new AppUserResponseDto());
+        Page<AppUserResponseDto> dtoPage = new PageImpl<>(dtoList, pageable, 1);
+
+        when(appUserService.findAllPaginated(any(Pageable.class))).thenReturn(dtoPage);
+
+        // Act
+        ResponseEntity<Page<AppUserResponseDto>> response = appUserController.getAllPaginated(page, size);
+
+        // Assert
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(dtoPage, response.getBody());
+        verify(appUserService, times(1)).findAllPaginated(any(Pageable.class));
+    }
+
+
 }

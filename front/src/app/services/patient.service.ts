@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Patient } from "../model/patient.model";
+import { PaginatedResponse } from "../model/pagination.model";
 
 /**
  * Service responsible for managing patient-related operations.
@@ -28,9 +29,46 @@ export class PatientService {
    * Retrieves only the patients whose accounts are marked as active.
    * @returns An Observable emitting an array of active Patient objects.
    */
-  getPatientsActive(): Observable<Patient[]> {
+/*  getPatientsActive(): Observable<Patient[]> {
     return this.http.get<Patient[]>(`${this.apiUrl}/active`);
   }
+    */
+
+getActivePatientsPaginated(page: number, size: number): Observable<PaginatedResponse<Patient>> {
+  return this.http.get<PaginatedResponse<Patient>>(`${this.apiUrl}/active/page?page=${page}&size=${size}`);
+}
+
+
+searchActivePatientsByName(name: string, page: number, size: number): Observable<PaginatedResponse<Patient>> {
+  return this.http.get<PaginatedResponse<Patient>>(
+    `${this.apiUrl}/active/search`, {
+      params: {
+        name,
+        page: page.toString(),
+        size: size.toString()
+      }
+    }
+  );
+}
+
+searchPatientsByName(name: string, page: number, size: number): Observable<PaginatedResponse<Patient>> {
+  return this.http.get<PaginatedResponse<Patient>>(`${this.apiUrl}/search`, {
+    params: {
+      name,
+      page: page.toString(),
+      size: size.toString()
+    }
+  });
+}
+
+
+getPatientsPaginated(page: number, size: number): Observable<PaginatedResponse<Patient>> {
+  return this.http.get<PaginatedResponse<Patient>>(
+    `${this.apiUrl}/page?page=${page}&size=${size}`
+  );
+}
+
+
 
   /**
    * Fetches a single patient by their unique identifier (UUID).

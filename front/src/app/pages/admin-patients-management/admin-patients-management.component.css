@@ -10,34 +10,60 @@
     gap: 1rem;
   }
   
-  .patient-card {
-    background: #fff;
-    padding: 1rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
   .actions {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
   }
   
-  button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-
   .back-button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-  }
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+ .back-button {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1976d2;
+  background: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.back-button mat-icon {
+  font-size: 20px;
+}
+
+.back-button:hover {
+  color: #0d47a1;
+}
+
+
+
+  .loading-container,
+.empty-message {
+  text-align: center;
+  margin: 2rem 0;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.loading-container mat-spinner {
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+

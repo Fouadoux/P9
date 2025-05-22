@@ -9,7 +9,9 @@
 
       <ng-container *ngIf="isSelectField(key); else textInput">
         <select [formControlName]="key">
-          <option *ngFor="let option of getOptions(key)" [value]="option">{{ option }}</option>
+          <option *ngFor="let option of getOptions(key)" [value]="option">
+            {{ key === 'gender' ? translateGender(option) : option }}
+          </option>
         </select>
       </ng-container>
 
@@ -24,17 +26,29 @@
                 matInput
                 [matDatepicker]="picker"
                 [formControlName]="key"
-                placeholder="DD-MM-YYYY"
+                [min]="minDate"
+                [max]="today"
+                placeholder="JJ-MM-AAAA"
               >
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </ng-container>
           <ng-template #defaultTextInput>
-            <input type="text" [formControlName]="key">
+            <input
+                type="text"
+              [formControlName]="key"
+              (input)="key === 'phone' && filterPhoneInput($event)"
+            >
           </ng-template>
         </ng-template>
       </ng-template>
+
+      <div class="error"
+        *ngIf="form.get(key)?.hasError('pattern') && key === 'phone' && form.get(key)?.touched">
+           Le numéro de téléphone doit contenir exactement 10 chiffres.
+      </div>
+
 
       <div class="error" *ngIf="form.get(key)?.hasError('required') && form.get(key)?.touched">
         Ce champ est obligatoire

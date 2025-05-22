@@ -29,7 +29,7 @@ services:
     depends_on:
       - mysql-auth
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-auth:3306/glucovision-auth-db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-auth:3306/glucovision-auth-db?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: rootroot
       JWT_SECRET: 2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf
@@ -42,7 +42,7 @@ services:
     depends_on:
       - mysql-patient
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-patient:3306/glucovision-patient-db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-patient:3306/glucovision-patient-db?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: rootroot
       JWT_SECRET: 2baf4d3b0e9b42c68fe6d9e9bdcdfcbf2baf4d3b0e9b42c68fe6d9e9bdcdfcbf
@@ -77,6 +77,7 @@ services:
     image: mysql:8.0.36
     volumes:
       - mysql-auth-data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
       - ./back/auth-service/sql:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: rootroot
@@ -85,6 +86,7 @@ services:
     image: mysql:8.0.36
     volumes:
       - mysql-patient-data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
       - ./back/patient-service/sql:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: rootroot

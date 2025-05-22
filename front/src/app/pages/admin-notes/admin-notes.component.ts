@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Patient } from '../../model/patient.model';
 import { PatientService } from '../../services/patient.service';
 import { AppCardComponent } from '../../Components/app-card/app-card.component';
+import { MatButtonModule } from '@angular/material/button';
 
 /**
  * Admin component for managing medical notes of a specific patient.
@@ -18,7 +19,7 @@ import { AppCardComponent } from '../../Components/app-card/app-card.component';
 @Component({
   selector: 'app-admin-notes',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatIconModule, AppCardComponent],
+  imports: [CommonModule, MatDialogModule, MatIconModule, AppCardComponent,MatButtonModule],
   templateUrl: './admin-notes.component.html',
   styleUrl: './admin-notes.component.css'
 })

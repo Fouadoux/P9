@@ -2,6 +2,8 @@ package com.glucovion.authservice.service;
 
 import com.glucovion.authservice.dto.AppUserResponseDto;
 import com.glucovion.authservice.model.AppUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -85,4 +87,8 @@ public interface AppUserService {
      * @return updated user DTO with new status
      */
     AppUserResponseDto toggleActiveUser(Long id);
+
+    Page<AppUserResponseDto> searchUsersPaginated(String query, Pageable pageable);
+    Page<AppUserResponseDto> findAllPaginated(Pageable pageable);
+
 }

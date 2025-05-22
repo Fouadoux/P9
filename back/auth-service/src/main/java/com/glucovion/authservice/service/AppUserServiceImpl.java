@@ -5,6 +5,9 @@ import com.glucovion.authservice.model.AppUser;
 import com.glucovion.authservice.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -160,4 +163,37 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser updated = appUserRepository.save(user);
         return convertToDTO(updated);
     }
+
+    /**
+     * Searches users by last name or email (case-insensitive), and returns paginated results.
+     *
+     * @param query    The search keyword to match against last names or emails.
+     * @param pageable Pagination configuration (page number, size, sorting).
+     * @return A page of users mapped as DTOs that match the search criteria.
+     */
+    @Override
+    public Page<AppUserResponseDto> searchUsersPaginated(String query, Pageable pageable) {
+        log.info("🔍 Searching users with query='{}' [page={}, size={}]", query, pageable.getPageNumber(), pageable.getPageSize());
+        Page<AppUser> users = appUserRepository
+                .findByLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query, pageable);
+        List<AppUserResponseDto> dtos = convertToDTOList(users.getContent());
+        log.info("✅ {} user(s) found for query '{}'", users.getTotalElements(), query);
+        return new PageImpl<>(dtos, pageable, users.getTotalElements());
+    }
+
+    /**
+     * Retrieves all users with pagination.
+     *
+     * @param pageable Pagination configuration (page number, size, sorting).
+     * @return A page of all users mapped as DTOs.
+     */
+    @Override
+    public Page<AppUserResponseDto> findAllPaginated(Pageable pageable) {
+        log.info("📄 Retrieving all users [page={}, size={}]", pageable.getPageNumber(), pageable.getPageSize());
+        Page<AppUser> usersPage = appUserRepository.findAll(pageable);
+        List<AppUserResponseDto> dtoList = convertToDTOList(usersPage.getContent());
+        log.info("✅ Retrieved {} user(s) on page {}", usersPage.getTotalElements(), pageable.getPageNumber());
+        return new PageImpl<>(dtoList, pageable, usersPage.getTotalElements());
+    }
+
 }

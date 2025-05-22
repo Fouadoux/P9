@@ -1,10 +1,4 @@
-/* Fond légèrement dégradé bleu ciel → blanc */
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to bottom, #e0f2ff, #ffffff);
-    min-height: 100vh;
-  }
+
   
   /* Conteneur centré */
   .login-container {
@@ -43,6 +37,7 @@ body {
     border: none;
     border-radius: 0.5rem;
     font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }

@@ -21,6 +21,10 @@ export class RegisterComponent {
   /** Regex pattern for validating email format */
   private emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+  /** Regex pattern for validating strong passwords: at least 9 characters with one special character */
+  private passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{9,}$/;
+
+
   /** Signals used to track input values for the registration form */
   firstName = signal<string>('');
   lastName = signal<string>('');
@@ -72,6 +76,11 @@ export class RegisterComponent {
 
     if (!this.emailRegex.test(emailValue)) {
       this.errorMessage.set("Format de l'adresse email invalide.");
+      return;
+    }
+
+    if (!this.passwordRegex.test(passwordValue)) {
+      this.errorMessage.set("Le mot de passe doit contenir au moins 9 caractères et un caractère spécial.");
       return;
     }
 

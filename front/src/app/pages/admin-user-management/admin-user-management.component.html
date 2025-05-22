@@ -3,21 +3,44 @@
   <h2>Liste des utilisateurs</h2>
 
   <div class="back-button-container">
-    <button mat-stroked-button color="primary" (click)="goTo('admin')">
-      ⬅️ Retour accueil admin
+    <button mat-flat-button color="accent" class="back-button" (click)="goTo('admin')">
+    <mat-icon>arrow_back</mat-icon>
+    Retour
+  </button>
+  </div>
+
+  <app-search-bar (search)="onSearch($event)"></app-search-bar>
+
+  <!-- Spinner pendant le chargement -->
+  <div *ngIf="isLoading()" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des utilisateurs...</p>
+  </div>
+
+  <!-- Message si aucun résultat -->
+  <div *ngIf="!isLoading() && users().length === 0" class="empty-message">
+    Aucun utilisateur trouvé.
+  </div>
+
+  <!-- Liste des utilisateurs -->
+  <div class="user-list" *ngIf="!isLoading() && users().length > 0">
+    <app-app-card class="user-card"
+      *ngFor="let user of users()"
+      [data]="user"
+      (edit)="onEditUser(user)"
+      (toggle)="handleToggleActive(user)"
+    ></app-app-card>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-controls" *ngIf="!isLoading() && totalPages() > 1">
+    <button mat-button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 0">
+      ◀ Précédent
+    </button>
+    <span>Page {{ currentPage() + 1 }} sur {{ totalPages() }}</span>
+    <button mat-button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() + 1 >= totalPages()">
+      Suivant ▶
     </button>
   </div>
 
-  
-
-
-    <div class="user-list">
-      <app-app-card
-    *ngFor="let user of users()"
-    [data]="user"
-    (edit)="onEditUser(user)"
-    (toggle)="handleToggleActive(user)"
-/>
-  </div>
 </div>
-  

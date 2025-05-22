@@ -15,3 +15,13 @@ html, body {
   src: url('assets/fonts/roboto/roboto-regular.woff2') format('woff2');
   font-weight: 400;
 }
+
+.pagination-controls button {
+  color: #1976d2;
+  background: none;
+  transition: color 0.3s ease;
+}
+
+.pagination-controls button:hover {
+  color: #0d47a1;
+}

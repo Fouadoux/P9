@@ -7,6 +7,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditDialogComponent } from '../../Components/edit-dialog/edit-dialog.component';
 import { Router } from '@angular/router';
+import { SearchBarComponent } from '../../Components/search-bar/search-bar.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 /**
  * Admin component for managing application users.
@@ -16,7 +20,7 @@ import { Router } from '@angular/router';
  */
 @Component({
   selector: 'app-admin-user-management',
-  imports: [CommonModule, AppCardComponent, MatDialogModule],
+  imports: [CommonModule, AppCardComponent, MatDialogModule,SearchBarComponent,MatProgressSpinnerModule,MatIconModule,MatButtonModule],
   templateUrl: './admin-user-management.component.html',
   styleUrl: './admin-user-management.component.css'
 })
@@ -49,23 +53,50 @@ export class AdminUserManagementComponent {
   /** Re-export Angular Validators for template use */
   validators = Validators;
 
+  currentPage = signal(0);
+  pageSize = signal(10);
+  totalPages = signal(0);
+  searchQuery = signal('');
+
   /**
    * Constructor triggers data loading for all users using an effect.
    */
   constructor() {
-    effect(() => {
-      this.appUserService.allUser().subscribe({
-        next: (data) => {
-          this.users.set(data);
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          console.error('Error loading users', error);
-          this.isLoading.set(false);
-        }
-      });
-    });
-  }
+  effect(() => {
+    this.fetchUsers();
+  });
+}
+
+private fetchUsers(): void {
+  this.isLoading.set(true);
+  const page = this.currentPage();
+  const size = this.pageSize();
+  const name = this.searchQuery().trim();
+
+  const request$ = name
+    ? this.appUserService.searchUsers(name, page, size)
+    : this.appUserService.allUserPaginated(page, size);
+
+  request$.subscribe({
+    next: (response) => {
+      this.users.set(response.content);
+      this.totalPages.set(response.totalPages);
+      this.isLoading.set(false);
+    },
+    error: (err) => {
+      console.error('Erreur chargement patients', err);
+      this.isLoading.set(false);
+    }
+  });
+}
+
+onSearch(query: string) {
+  this.searchQuery.set(query);
+  this.currentPage.set(0); // reset pagination
+  this.fetchUsers();
+}
+
+
 
   /**
    * Opens a dialog to edit the selected user.
@@ -129,4 +160,11 @@ export class AdminUserManagementComponent {
   goTo(path: string) {
     this.router.navigate([`/${path}`]);
   }
+
+   goToPage(page: number): void {
+  if (page >= 0 && page < this.totalPages()) {
+    this.currentPage.set(page);
+    this.fetchUsers();
+  }
+}
 }

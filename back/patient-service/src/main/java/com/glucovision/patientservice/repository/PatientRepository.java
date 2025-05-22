@@ -1,6 +1,8 @@
 package com.glucovision.patientservice.repository;
 
 import com.glucovision.patientservice.model.Patient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -57,4 +59,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     boolean existsByFirstNameAndLastNameAndBirthDate(String firstName, String lastName, LocalDate birthDate);
 
+    Page<Patient> findByActiveTrue(Pageable pageable);
+    Page<Patient> findByActiveTrueAndLastNameContainingIgnoreCase(String lastName, Pageable pageable);
+    Page<Patient> findByLastNameContainingIgnoreCase(String lastName,Pageable pageable);
 }

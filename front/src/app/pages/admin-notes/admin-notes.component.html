@@ -1,10 +1,19 @@
+<div class="container">
 <h2>
   Notes du patient : {{ patient()?.firstName }} {{ patient()?.lastName }}
 </h2>
 
-<button mat-flat-button color="primary" (click)="onAddNote()">
-  Ajouter une note
-</button>
+<div class="toolbar">
+  <button mat-flat-button color="primary" class="add-note-button" (click)="onAddNote()">
+    <mat-icon>note_add</mat-icon>
+    Ajouter une note
+  </button>
+
+  <button mat-flat-button color="accent" class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Retour
+  </button>
+</div>
 
 <div class="note-list">
   <app-app-card
@@ -15,6 +24,4 @@
   ></app-app-card>
 </div>
 
-<div class="actions">
-  <button (click)="goBack()">⬅️ Retour</button>
 </div>

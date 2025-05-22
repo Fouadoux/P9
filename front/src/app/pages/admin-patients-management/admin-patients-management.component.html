@@ -1,20 +1,49 @@
 <div class="container">
-    <h2>Liste des patients</h2>
-  
-    <div class="back-button-container">
-      <button mat-stroked-button color="primary" (click)="goTo('admin')">
-        ⬅️ Retour accueil admin
-      </button>
-    </div>
 
-    <div class="user-list">
-      <app-app-card
-        *ngFor="let patient of patients()"
-        [data]="patient"
-        (edit)="onEditPatient(patient)"
-        (toggle)="handleToggleActive(patient)"
-        (note)="goToPatientNotes(patient)"
-      ></app-app-card>
-    </div>
+  <h2>Liste des patients</h2>
+
+  <div class="back-button-container">
+    <button mat-flat-button color="accent" class="back-button" (click)="goTo('admin')">
+    <mat-icon>arrow_back</mat-icon>
+    Retour
+  </button>
   </div>
-  
+
+  <app-search-bar (search)="onSearch($event)"></app-search-bar>
+
+  <!-- Spinner de chargement -->
+  <div *ngIf="isLoading()" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des patients...</p>
+  </div>
+
+  <!-- Message vide -->
+  <div *ngIf="!isLoading() && patients().length === 0" class="empty-message">
+    Aucun patient trouvé.
+  </div>
+
+  <!-- Liste des patients -->
+  <div class="patient-list" *ngIf="!isLoading() && patients().length > 0">
+    <app-app-card class="patient-card"
+      *ngFor="let patient of patients()"
+      [data]="patient"
+      (edit)="onEditPatient(patient)"
+      (toggle)="handleToggleActive(patient)"
+      (note)="goToPatientNotes(patient)"
+    ></app-app-card>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-controls" *ngIf="!isLoading() && totalPages() > 1">
+    <button mat-button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 0">
+      ◀ Précédent
+    </button>
+
+    <span>Page {{ currentPage() + 1 }} sur {{ totalPages() }}</span>
+
+    <button mat-button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() + 1 >= totalPages()">
+      Suivant ▶
+    </button>
+  </div>
+
+</div>

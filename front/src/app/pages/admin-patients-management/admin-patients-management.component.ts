@@ -7,6 +7,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { EditDialogComponent } from '../../Components/edit-dialog/edit-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { SearchBarComponent } from '../../Components/search-bar/search-bar.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 /**
  * Admin component responsible for managing patients in the application.
@@ -15,7 +19,9 @@ import { Router } from '@angular/router';
  */
 @Component({
   selector: 'app-admin-patients-management',
-  imports: [CommonModule, AppCardComponent, MatDialogModule],
+  imports: [CommonModule, AppCardComponent, 
+    MatDialogModule,SearchBarComponent,
+    MatProgressSpinnerModule,MatButtonModule,MatIconModule],
   templateUrl: './admin-patients-management.component.html',
   styleUrl: './admin-patients-management.component.css'
 })
@@ -48,23 +54,49 @@ export class AdminPatientsManagementComponent {
   /** Validators exposed for template-driven forms (if needed) */
   validators = Validators;
 
+  currentPage = signal(0);
+  pageSize = signal(10);
+  totalPages = signal(0);
+  searchQuery = signal('');
+
   /**
    * Constructor sets up effect to fetch all patients on component initialization.
    */
   constructor() {
-    effect(() => {
-      this.patientService.getPatients().subscribe({
-        next: (data) => {
-          this.patients.set(data);
-          this.isLoading.set(false);
-        },
-        error: (err) => {
-          console.error('Error loading patients', err);
-          this.isLoading.set(false);
-        }
-      });
-    });
-  }
+  effect(() => {
+    this.fetchPatients();
+  });
+}
+
+ private fetchPatients(): void {
+  this.isLoading.set(true);
+  const page = this.currentPage();
+  const size = this.pageSize();
+  const name = this.searchQuery().trim();
+
+  const request$ = name
+    ? this.patientService.searchPatientsByName(name, page, size)
+    : this.patientService.getPatientsPaginated(page, size);
+
+  request$.subscribe({
+    next: (response) => {
+      this.patients.set(response.content);
+      this.totalPages.set(response.totalPages);
+      this.isLoading.set(false);
+    },
+    error: (err) => {
+      console.error('Erreur chargement patients', err);
+      this.isLoading.set(false);
+    }
+  });
+}
+
+
+onSearch(query: string) {
+  this.searchQuery.set(query);
+  this.currentPage.set(0); // reset pagination
+  this.fetchPatients();
+}
 
   /**
    * Opens a modal dialog to edit the given patient.
@@ -137,4 +169,11 @@ export class AdminPatientsManagementComponent {
   goTo(path: string) {
     this.router.navigate([`/${path}`]);
   }
+
+  goToPage(page: number): void {
+  if (page >= 0 && page < this.totalPages()) {
+    this.currentPage.set(page);
+    this.fetchPatients();
+  }
+}
 }

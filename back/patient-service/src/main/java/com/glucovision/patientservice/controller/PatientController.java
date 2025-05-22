@@ -12,6 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -86,11 +90,22 @@ public class PatientController {
         return ResponseEntity.ok(patientDtos);
     }
 
+    @GetMapping("/page")
+    public ResponseEntity<Page<PatientDTO>> getPatientsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info("[GET] Retrieving paginated list of all patients (page={}, size={})", page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<PatientDTO> patientPage = patientService.getAllActivePatientsPage(pageable);
+        log.info("✅ {} patient(s) found", patientPage.getTotalElements());
+        return ResponseEntity.ok(patientPage);
+    }
+
     /**
      * Retrieves all active patients.
      *
      * @return a list of active patients
-     */
+      */
     @Operation(summary = "Get all active patients")
     @GetMapping("/active")
     public ResponseEntity<List<PatientDTO>> getActivePatients() {
@@ -99,6 +114,28 @@ public class PatientController {
         List<PatientDTO> patientDtos = patientService.convertToDTOList(patients);
         log.info("✅ {} active patient(s) retrieved", patientDtos.size());
         return ResponseEntity.ok(patientDtos);
+    }
+
+    /**
+     * Retrieves a paginated list of all patients (active and inactive).
+     *
+     * @param page Page number (default = 0)
+     * @param size Number of records per page (default = 10)
+     * @return Paginated list of patients
+     */
+    @Operation(summary = "Get paginated list of all patients")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Patients retrieved successfully")
+    })
+    @GetMapping("/active/page")
+    public ResponseEntity<Page<PatientDTO>> getActivePatientsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info("[GET] Retrieving paginated active patients (page={}, size={})", page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<PatientDTO> patientPage = patientService.getAllActivePatientsPaginated(pageable);
+        log.info("✅ {} active patient(s) found", patientPage.getTotalElements());
+        return ResponseEntity.ok(patientPage);
     }
 
     /**
@@ -112,7 +149,7 @@ public class PatientController {
     public ResponseEntity<PatientDTO> getPatientByLastName(
             @Parameter(description = "Patient last name") @PathVariable String lastName) {
         log.info("[GET] Retrieving patient by last name: {}", lastName);
-        Patient patient = patientService.findPatientByName(lastName);
+        Patient patient = patientService.findPatientActiveByName(lastName);
         if (patient == null) {
             log.warn("❌ No patient found with last name: {}", lastName);
             return ResponseEntity.notFound().build();
@@ -120,6 +157,54 @@ public class PatientController {
         PatientDTO patientDto = patientService.convertToDTO(patient);
         log.info("✅ Patient found: {}", patientDto);
         return ResponseEntity.ok(patientDto);
+    }
+
+    /**
+     * Retrieves a paginated list of active patients.
+     *
+     * @param page Page number
+     * @param size Number of records per page
+     * @return Paginated list of active patients
+     */
+    @Operation(summary = "Get paginated list of active patients")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Active patients retrieved successfully")
+    })
+    @GetMapping("/active/search")
+    public ResponseEntity<Page<PatientDTO>> getPatientByLastNamePage(
+            @RequestParam String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        log.info("[GET] Searching active patients by last name: '{}', page={}, size={}", name, page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<PatientDTO> patientPage = patientService.findPatientActiveByNamePaginated(name, pageable);
+        log.info("✅ {} result(s) found", patientPage.getTotalElements());
+        return ResponseEntity.ok(patientPage);
+    }
+
+    /**
+     * Searches for active patients by last name (paginated).
+     *
+     * @param name Partial or full last name to search
+     * @param page Page number
+     * @param size Page size
+     * @return Paginated list of matching patients
+     */
+    @Operation(summary = "Search active patients by last name (paginated)")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Matching active patients found")
+    })
+    @GetMapping("/search")
+    public ResponseEntity<Page<PatientDTO>> searchPatientsPaginated(
+            @RequestParam String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        log.info("[GET] Searching all patients by name='{}' (page={}, size={})", name, page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").and(Sort.by("firstName")));
+        Page<PatientDTO> results = patientService.searchPatientsPaginated(name, pageable);
+        log.info("✅ {} result(s) found", results.getTotalElements());
+        return ResponseEntity.ok(results);
     }
 
     /**

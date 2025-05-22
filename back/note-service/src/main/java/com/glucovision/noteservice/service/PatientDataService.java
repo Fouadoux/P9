@@ -24,9 +24,9 @@ public class PatientDataService {
      * @return true if the patient is active, false otherwise
      */
     public boolean isActivePatient(String id) {
-        log.debug("[PATIENT CHECK] Verifying active status for patientId={}", id);
+        log.info("[PATIENT CHECK] Verifying active status for patientId={}", id);
         boolean result = patientClient.isActivePatient(id);
-        log.debug("[PATIENT CHECK] Result for patientId={} => active={}", id, result);
+        log.info("[PATIENT CHECK] Result for patientId={} => active={}", id, result);
         return result;
     }
 }

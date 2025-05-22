@@ -5,6 +5,10 @@ import { PatientService } from '../../services/patient.service';
 import { PatientCardComponent } from '../../Components/patient-card/patient-card.component';
 import { Patient } from '../../model/patient.model';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 /**
  * Component responsible for displaying all active patients.
@@ -19,7 +23,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     SearchBarComponent,
     PatientCardComponent,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,MatIconModule,MatDialogModule
   ],
   templateUrl: './patients.component.html',
   styleUrl: './patients.component.css'
@@ -38,41 +44,56 @@ export class PatientsComponent {
   /** Signal indicating whether data is currently being loaded */
   isLoading = signal<boolean>(true);
 
-  /**
-   * Computed signal returning a filtered list of patients based on the search query.
-   * Matches against first name + last name (case insensitive).
-   */
-  filteredPatients = computed(() =>
-    this.patients().filter(patient =>
-      `${patient.firstName} ${patient.lastName}`.toLowerCase().includes(this.searchQuery().toLowerCase())
-    )
-  );
+currentPage = signal(0);
+pageSize = signal(10);
+totalPages = signal(0);
 
   /**
    * Constructor sets up an effect to fetch active patients when the component is initialized.
    * Updates signals based on the API response or error.
    */
   constructor() {
-    effect(() => {
-      this.patientService.getPatientsActive().subscribe({
-        next: data => {
-          this.patients.set(data);
-          this.isLoading.set(false);
-          console.log('patients:', this.patients());
-        },
-        error: error => {
-          console.error('Erreur lors du chargement des patients', error);
-          this.isLoading.set(false);
-        }
-      });
-    });
-  }
+  effect(() => {
+    this.fetchPatients();
+  });
+}
 
-  /**
-   * Updates the current search query signal based on user input.
-   * @param query The new search query string.
-   */
-  onSearch(query: string) {
-    this.searchQuery.set(query);
+private fetchPatients(): void {
+  this.isLoading.set(true);
+  const name = this.searchQuery().trim();
+  const page = this.currentPage();
+  const size = this.pageSize();
+
+  const request$ = name
+    ? this.patientService.searchActivePatientsByName(name, page, size)
+    : this.patientService.getActivePatientsPaginated(page, size);
+
+  request$.subscribe({
+    next: response => {
+      this.patients.set(response.content);
+      this.totalPages.set(response.totalPages);
+      this.isLoading.set(false);
+    },
+    error: err => {
+      console.error('Erreur lors du chargement des patients', err);
+      this.isLoading.set(false);
+    }
+  });
+}
+
+
+
+ onSearch(query: string): void {
+  this.searchQuery.set(query);
+  this.currentPage.set(0); // reset pagination
+  this.fetchPatients();
+}
+
+goToPage(page: number): void {
+  if (page >= 0 && page < this.totalPages()) {
+    this.currentPage.set(page);
+    this.fetchPatients();
   }
+}
+
 }

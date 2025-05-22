@@ -1,3 +1,7 @@
+<div class="register-container">
+  <h2>Inscription à GlucoVision </h2>
+
+
 <form (ngSubmit)="register()">
   <input
     type="text"
@@ -43,4 +47,5 @@
   <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
 </form>
 
-<p>Déjà un compte ? <a (click)="goToLogin()">Se connecter</a></p>
+<p>Déjà un compte ? <a (click)="goToLogin()" style="cursor: pointer;">Se connecter</a></p>
+</div>

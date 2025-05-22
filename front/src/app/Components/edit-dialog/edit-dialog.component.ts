@@ -61,6 +61,8 @@ export class EditDialogComponent<T extends Record<string, any>> {
   /** Field display order determined by object type (from helper service) */
   readonly fieldsOrder = this.formHelper.fieldsOrderMap[this.dialogData.type];
 
+  today = new Date();
+  minDate = new Date(1900, 0, 1); 
   /**
    * Initializes the form dynamically using the FormBuilderHelperService.
    */
@@ -108,4 +110,19 @@ export class EditDialogComponent<T extends Record<string, any>> {
   handleClose() {
     this.dialogRef.close();
   }
+
+  filterPhoneInput(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  input.value = input.value.replace(/\D/g, ''); // Retire tout sauf les chiffres
+  this.form.get('phone')?.setValue(input.value, { emitEvent: false });
+}
+
+translateGender(gender: string): string {
+  switch (gender) {
+    case 'MALE': return 'Homme';
+    case 'FEMALE': return 'Femme';
+    default: return gender;
+  }
+}
+
 }

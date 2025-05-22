@@ -51,11 +51,29 @@ export class FormBuilderHelperService {
     const fieldsOrder = this.fieldsOrderMap[type];
     const requiredFields = this.requiredFieldsMap[type];
 
-    for (const key of Object.keys(obj)) {
+  /*  for (const key of Object.keys(obj)) {
       group[key] = requiredFields.includes(key)
         ? this.fb.control(obj[key], Validators.required)
         : this.fb.control(obj[key]);
     }
+        */
+
+for (const key of Object.keys(obj)) {
+  const validators = [];
+
+  if (requiredFields.includes(key)) {
+    validators.push(Validators.required);
+  }
+
+  // Validation spécifique : numéro de téléphone = exactement 10 chiffres
+  if (key === 'phone') {
+    validators.push(Validators.pattern(/^\d{10}$/));
+  }
+
+  group[key] = this.fb.control(obj[key], validators);
+}
+
+
 
     return this.fb.group(group);
   }

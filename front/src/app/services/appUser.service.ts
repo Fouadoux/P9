@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AppUserResponse } from "../model/appUserResponse.model";
 import { Observable } from "rxjs";
+import { PaginatedResponse } from "../model/pagination.model";
 
 /**
  * Service responsible for managing application users in GlucoVision.
@@ -54,4 +55,22 @@ export class appUserService {
   toggleActiveUser(id: number): Observable<AppUserResponse> {
     return this.http.put<AppUserResponse>(`${this.apiUrl}toggle/${id}`, null);
   }
+
+  searchUsers(query: string, page: number, size: number): Observable<PaginatedResponse<AppUserResponse>> {
+  return this.http.get<PaginatedResponse<AppUserResponse>>(`${this.apiUrl}search`, {
+    params: {
+      name: query,
+      page: page.toString(),
+      size: size.toString()
+    }
+  });
+}
+
+  allUserPaginated(page: number, size: number): Observable<PaginatedResponse<AppUserResponse>> {
+    return this.http.get<PaginatedResponse<AppUserResponse>>(
+      `${this.apiUrl}page?page=${page}&size=${size}`
+    );
+  }
+
+
 }

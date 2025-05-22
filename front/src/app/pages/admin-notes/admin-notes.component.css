@@ -1,44 +1,59 @@
-/* Styles pour AdminNotesComponent */
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
 
-h2 {
-    margin-bottom: 16px;
-    font-size: 1.75rem;
-    font-weight: 500;
-  }
-  
-  button[mat-flat-button] {
-    margin-bottom: 24px;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  ul li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  ul li:last-child {
-    border-bottom: none;
-  }
-  
-  ul li button[mat-icon-button] {
-    margin-left: 8px;
-  }
-  
-  .actions {
-    margin-top: 32px;
-  }
-  
-  .actions button {
-    padding: 8px 16px;
-    font-size: 0.875rem;
-    cursor: pointer;
-  }
-  
+  h2 {
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.add-note-button mat-icon {
+  margin-right: 8px;
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.back-button {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1976d2;
+  background: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.back-button mat-icon {
+  font-size: 20px;
+}
+
+.back-button:hover {
+  color: #0d47a1;
+}
+
+
+.note-list {
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+
