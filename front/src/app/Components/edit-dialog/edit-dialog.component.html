@@ -44,10 +44,17 @@
         </ng-template>
       </ng-template>
 
+     
+
       <div class="error"
         *ngIf="form.get(key)?.hasError('pattern') && key === 'phone' && form.get(key)?.touched">
            Le numéro de téléphone doit contenir exactement 10 chiffres.
       </div>
+
+      <div class="error"
+     *ngIf="form.get(key)?.hasError('pattern') && key === 'password' && form.get(key)?.touched">
+  Le mot de passe doit contenir au moins 9 caractères et un caractère spécial.
+</div>
 
 
       <div class="error" *ngIf="form.get(key)?.hasError('required') && form.get(key)?.touched">

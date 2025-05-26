@@ -28,6 +28,9 @@ public class AppUserResponseDto {
     @Schema(description = "User's email address", example = "jane.doe@example.com")
     private String email;
 
+    @Schema(description = "User's pass word", example = "PassWord123^^")
+    private String password;
+
     @Schema(description = "User's role (e.g., USER or ADMIN)", example = "USER")
     private AppRole role;
 

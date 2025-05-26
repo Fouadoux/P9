@@ -21,3 +21,9 @@ management:
     web:
       exposure:
         include: health, info
+
+logging:
+  file:
+    name: /app/logs/gateway-service.log
+  level:
+    root: INFO

@@ -13,6 +13,8 @@ services:
     build: ./back/gateway-service
     ports:
       - "8080:8080"
+    volumes:
+      - ./logs:/app/logs 
     depends_on:
       - auth-service
       - patient-service
@@ -26,6 +28,8 @@ services:
     build: ./back/auth-service
     ports:
       - "8088:8080"
+    volumes:
+      - ./logs:/app/logs 
     depends_on:
       - mysql-auth
     environment:
@@ -39,6 +43,8 @@ services:
     build: ./back/patient-service
     ports:
       - "8085:8080"
+    volumes:
+      - ./logs:/app/logs    
     depends_on:
       - mysql-patient
     environment:
@@ -54,6 +60,8 @@ services:
     build: ./back/note-service
     ports:
       - "8086:8080"
+    volumes:
+      - ./logs:/app/logs 
     depends_on:
       - mongodb-note
     environment:
@@ -65,6 +73,8 @@ services:
     build: ./back/diabetes-risk-service
     ports:
       - "8087:8080"
+    volumes:
+      - ./logs:/app/logs 
     depends_on:
       - note-service
       - patient-service
@@ -102,7 +112,28 @@ services:
     environment:
       MONGO_INITDB_DATABASE: glucovision-note-db
 
+   # === LOGGING STACK ===
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./logs:/var/log/myapp
+      - ./promtail-config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+
+
 volumes:
   mysql-auth-data:
   mysql-patient-data:
   mongodb-note-data:
+

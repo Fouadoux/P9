@@ -44,3 +44,8 @@ info:
   version: v1
   description: User and Security Management API
 
+logging:
+  file:
+    name: /app/logs/auth-service.log
+  level:
+    root: INFO

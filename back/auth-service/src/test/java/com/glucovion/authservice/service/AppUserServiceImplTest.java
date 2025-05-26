@@ -16,11 +16,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.glucovion.authservice.model.AppRole.USER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -33,6 +35,9 @@ public class AppUserServiceImplTest {
     @InjectMocks
     private AppUserServiceImpl appUserService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private AppUser sampleUser;
     private AppUserResponseDto sampleDto;
 
@@ -43,7 +48,7 @@ public class AppUserServiceImplTest {
         sampleUser.setEmail("test@example.com");
         sampleUser.setFirstName("John");
         sampleUser.setLastName("Doe");
-        sampleUser.setRole(AppRole.USER);
+        sampleUser.setRole(USER);
         sampleUser.setActive(true);
 
         sampleDto = new AppUserResponseDto();
@@ -51,7 +56,7 @@ public class AppUserServiceImplTest {
         sampleDto.setEmail("test@example.com");
         sampleDto.setFirstName("John");
         sampleDto.setLastName("Doe");
-        sampleDto.setRole(AppRole.USER);
+        sampleDto.setRole(USER);
         sampleDto.setActive(true);
     }
 
@@ -226,6 +231,59 @@ public class AppUserServiceImplTest {
 
         assertTrue(result.getContent().isEmpty());
         assertEquals(0, result.getTotalElements());
+    }
+
+    @Test
+    void shouldUpdateUserWithNewPassword() {
+        AppUser existingUser = new AppUser();
+        existingUser.setId(1L);
+        existingUser.setPassword("oldEncoded");
+
+        AppUserResponseDto dto = new AppUserResponseDto();
+        dto.setId(1L);
+        dto.setFirstName("Alice");
+        dto.setLastName("Smith");
+        dto.setEmail("alice@example.com");
+        dto.setRole(USER);
+        dto.setActive(true);
+        dto.setPassword("newPlainPassword");
+
+        when(appUserRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+        when(passwordEncoder.encode("newPlainPassword")).thenReturn("encodedPassword");
+        when(appUserRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        AppUserResponseDto result = appUserService.updateAppUser(dto);
+
+        assertEquals("Alice", result.getFirstName());
+        assertEquals("Smith", result.getLastName());
+        assertEquals("alice@example.com", result.getEmail());
+        verify(passwordEncoder).encode("newPlainPassword");
+        verify(appUserRepository).save(existingUser);
+        assertEquals("encodedPassword", existingUser.getPassword());
+    }
+
+    @Test
+    void shouldNotUpdatePasswordIfBlank() {
+        AppUser existingUser = new AppUser();
+        existingUser.setId(1L);
+        existingUser.setPassword("alreadyEncoded");
+
+        AppUserResponseDto dto = new AppUserResponseDto();
+        dto.setId(1L);
+        dto.setFirstName("Alice");
+        dto.setLastName("Smith");
+        dto.setEmail("alice@example.com");
+        dto.setRole(USER);
+        dto.setActive(true);
+        dto.setPassword(""); // Intentionnellement vide
+
+        when(appUserRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+        when(appUserRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        AppUserResponseDto result = appUserService.updateAppUser(dto);
+
+        assertEquals("alreadyEncoded", existingUser.getPassword());
+        verify(passwordEncoder, never()).encode(any());
     }
 
 

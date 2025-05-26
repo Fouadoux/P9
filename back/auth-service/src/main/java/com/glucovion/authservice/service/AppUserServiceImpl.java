@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import java.util.Optional;
 public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
-
+    private final PasswordEncoder passwordEncoder;
     /**
      * Finds a user by their email address.
      *
@@ -140,6 +141,11 @@ public class AppUserServiceImpl implements AppUserService {
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
         user.setActive(dto.getActive());
+
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            log.info("Mot de passe mis à jour pour l'utilisateur: {}", user.getEmail());
+        }
 
         AppUser updated = appUserRepository.save(user);
         return convertToDTO(updated);

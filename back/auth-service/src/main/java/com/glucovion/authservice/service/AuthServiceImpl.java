@@ -8,6 +8,7 @@ import com.glucovion.authservice.exception.DisabledAccountException;
 import com.glucovion.authservice.repository.AppUserRepository;
 import com.glucovion.authservice.security.JwtService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,23 +23,19 @@ import static com.glucovion.authservice.model.AppRole.PENDING;
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private AppUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    /**
-     * Registers a new user with PENDING role and encodes their password.
-     * A JWT token is returned if registration is successful.
-     *
-     * @param registerDto the registration data
-     * @return the authentication response containing JWT and user info
-     * @throws IllegalArgumentException if the email is already used
-     */
     @Override
     public AuthResponseDto register(AppUserRegisterDto registerDto) {
+        log.info("Tentative d'enregistrement pour l'email: {}", registerDto.getEmail());
+
         if (userRepository.existsByEmail(registerDto.getEmail())) {
+            log.warn("Échec de l'enregistrement : l'email {} est déjà utilisé.", registerDto.getEmail());
             throw new IllegalArgumentException("Email address already in use");
         }
 
@@ -51,7 +48,10 @@ public class AuthServiceImpl implements AuthService {
         appUser.setActive(true);
 
         AppUser savedUser = userRepository.save(appUser);
+        log.info("Utilisateur enregistré avec succès : {}", savedUser.getEmail());
+
         String token = jwtService.generateToken(savedUser);
+        log.debug("JWT généré pour l'utilisateur {}", savedUser.getEmail());
 
         return new AuthResponseDto(
                 token,
@@ -62,30 +62,29 @@ public class AuthServiceImpl implements AuthService {
         );
     }
 
-    /**
-     * Authenticates a user by verifying email, password, and active status.
-     * Returns a JWT token if successful.
-     *
-     * @param loginRequest the login credentials
-     * @return the authentication response containing JWT and user info
-     * @throws IllegalArgumentException if email is not found
-     * @throws BadCredentialsException  if password is invalid
-     * @throws DisabledAccountException if the account is deactivated
-     */
     @Override
     public AuthResponseDto login(LoginRequestDto loginRequest) {
+        log.info("Tentative de connexion pour l'email: {}", loginRequest.getEmail());
+
         AppUser user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
+                .orElseThrow(() -> {
+                    log.warn("Email non trouvé: {}", loginRequest.getEmail());
+                    return new BadCredentialsException("INVALID_CREDENTIALS");
+                });
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid password");
+            log.warn("Mot de passe invalide pour l'email: {}", loginRequest.getEmail());
+            throw new BadCredentialsException("INVALID_PASSWORD");
         }
 
         if (!user.getActive()) {
+            log.warn("Compte désactivé pour l'utilisateur: {}", loginRequest.getEmail());
             throw new DisabledAccountException("Ce compte est désactivé. Contacte un admin.");
         }
 
         String token = jwtService.generateToken(user);
+        log.info("Connexion réussie pour l'utilisateur: {}", user.getEmail());
+        log.debug("JWT généré pour l'utilisateur {}", user.getEmail());
 
         return new AuthResponseDto(
                 token,
@@ -95,4 +94,5 @@ public class AuthServiceImpl implements AuthService {
                 user.getRole()
         );
     }
+
 }

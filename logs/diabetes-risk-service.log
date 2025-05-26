@@ -1,0 +1,205 @@
+2025-05-26T11:23:11.441Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T11:23:11.485Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T11:23:21.151Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T11:23:25.036Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T11:23:25.170Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T11:23:25.194Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T11:23:25.474Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T11:23:25.500Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 13387 ms
+2025-05-26T11:23:38.197Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T11:23:38.494Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T11:23:38.618Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T11:23:39.538Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T11:23:41.854Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T11:23:41.917Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 34.516 seconds (process running for 38.184)
+2025-05-26T11:24:39.399Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-26T11:24:39.402Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-26T11:24:39.415Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2025-05-26T11:24:39.693Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] c.g.d.controller.RiskController          : [GET] Request received to evaluate diabetes risk for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:24:39.698Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] c.g.d.service.RiskService                : 🔍 Starting risk evaluation for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:24:40.436Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] c.g.d.service.PatientDataService         : Patient data retrieved for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:24:40.489Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] c.g.d.service.NoteDataService            : Retrieved 1 note(s) for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:24:40.491Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] c.g.d.service.RiskService                : ✅ Risk level evaluated for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74 -> IN_DANGER
+2025-05-26T11:24:40.492Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-1] c.g.d.controller.RiskController          : ✅ Risk evaluation complete: patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74, riskLevel=IN_DANGER
+2025-05-26T11:27:18.547Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-3] c.g.d.controller.RiskController          : [GET] Request received to evaluate diabetes risk for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:27:18.548Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-3] c.g.d.service.RiskService                : 🔍 Starting risk evaluation for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:27:18.617Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-3] c.g.d.service.PatientDataService         : Patient data retrieved for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:27:18.661Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-3] c.g.d.service.NoteDataService            : Retrieved 1 note(s) for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T11:27:18.662Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-3] c.g.d.service.RiskService                : ✅ Risk level evaluated for patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74 -> IN_DANGER
+2025-05-26T11:27:18.663Z  INFO 1 --- [diabetes-risk-service] [http-nio-8080-exec-3] c.g.d.controller.RiskController          : ✅ Risk evaluation complete: patientId=1287c5a3-ef61-4e2e-9153-b294d9892d74, riskLevel=IN_DANGER
+2025-05-26T11:35:48.223Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T11:35:48.273Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T11:37:08.496Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T11:37:08.512Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T11:37:17.373Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T11:37:22.187Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T11:37:22.342Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T11:37:22.345Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T11:37:22.651Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T11:37:22.653Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 13779 ms
+2025-05-26T11:37:32.977Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T11:37:33.108Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T11:37:33.258Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T11:37:34.726Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T11:37:37.336Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T11:37:37.478Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 32.291 seconds (process running for 35.812)
+2025-05-26T11:42:24.682Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T11:42:24.842Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T11:43:31.302Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T11:43:31.313Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T11:43:38.510Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T11:43:40.444Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T11:43:40.589Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T11:43:40.591Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T11:43:41.147Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T11:43:41.158Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9516 ms
+2025-05-26T11:43:48.517Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T11:43:48.674Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T11:43:48.952Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T11:43:50.366Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T11:43:51.935Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T11:43:51.980Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 22.932 seconds (process running for 26.331)
+2025-05-26T11:48:56.641Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T11:48:56.662Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T11:51:23.374Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T11:51:23.386Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T11:51:29.768Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T11:51:31.398Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T11:51:31.469Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T11:51:31.473Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T11:51:31.596Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T11:51:31.602Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7955 ms
+2025-05-26T11:51:36.828Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T11:51:36.974Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T11:51:37.185Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T11:51:38.284Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T11:51:39.916Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T11:51:39.962Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 19.255 seconds (process running for 22.671)
+2025-05-26T12:38:49.660Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T12:38:49.880Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T12:39:56.322Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T12:39:56.333Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:40:02.561Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T12:40:04.830Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T12:40:04.968Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T12:40:04.971Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T12:40:05.305Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T12:40:05.309Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8616 ms
+2025-05-26T12:40:12.418Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T12:40:12.486Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T12:40:12.611Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T12:40:13.361Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T12:40:15.130Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T12:40:15.172Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 21.537 seconds (process running for 24.847)
+2025-05-26T12:40:57.596Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T12:40:57.611Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T12:41:36.813Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T12:41:36.833Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:41:42.400Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T12:41:45.029Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T12:41:45.142Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T12:41:45.147Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T12:41:45.418Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T12:41:45.421Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8393 ms
+2025-05-26T12:41:53.040Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T12:41:53.217Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T12:41:53.451Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T12:41:54.037Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T12:41:56.259Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T12:41:56.310Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 21.78 seconds (process running for 24.917)
+2025-05-26T12:49:14.174Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T12:49:14.348Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T12:50:24.613Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T12:50:24.649Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T12:50:33.187Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T12:50:36.266Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T12:50:36.408Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T12:50:36.414Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T12:50:36.742Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T12:50:36.746Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 11534 ms
+2025-05-26T12:50:46.974Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T12:50:47.126Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T12:50:47.275Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T12:50:48.069Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T12:50:49.063Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T12:50:49.136Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 28.232 seconds (process running for 32.324)
+2025-05-26T13:04:24.042Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T13:04:24.182Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T13:05:32.388Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T13:05:32.411Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T13:05:42.508Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T13:05:46.404Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T13:05:46.702Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T13:05:46.710Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T13:05:47.328Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T13:05:47.334Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 14037 ms
+2025-05-26T13:05:57.540Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T13:05:57.730Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T13:05:57.893Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T13:05:58.728Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T13:06:00.260Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T13:06:00.311Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 31.76 seconds (process running for 35.126)
+2025-05-26T13:24:51.092Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T13:24:51.214Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T13:30:03.634Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T13:30:03.648Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T13:30:11.871Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T13:30:14.318Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T13:30:14.422Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T13:30:14.429Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T13:30:14.710Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T13:30:14.720Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 10723 ms
+2025-05-26T13:30:25.852Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T13:30:26.229Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T13:30:26.502Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T13:30:27.120Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T13:30:29.231Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T13:30:29.270Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 28.832 seconds (process running for 32.933)
+2025-05-26T13:34:43.229Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T13:34:43.469Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T13:36:13.286Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T13:36:13.297Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T13:36:20.309Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T13:36:22.512Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T13:36:22.652Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T13:36:22.654Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T13:36:22.949Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T13:36:22.955Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9231 ms
+2025-05-26T13:36:30.998Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T13:36:31.084Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T13:36:31.233Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T13:36:31.763Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T13:36:33.068Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T13:36:33.116Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 22.769 seconds (process running for 26.505)
+2025-05-26T13:39:27.087Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T13:39:27.199Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T13:40:14.949Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T13:40:14.974Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T13:40:22.826Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T13:40:24.819Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T13:40:24.940Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T13:40:24.946Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T13:40:25.170Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T13:40:25.172Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9775 ms
+2025-05-26T13:40:36.899Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T13:40:37.201Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T13:40:37.413Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T13:40:38.566Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T13:40:40.527Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T13:40:40.602Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 28.543 seconds (process running for 31.269)
+2025-05-26T13:42:50.720Z  INFO 1 --- [diabetes-risk-service] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T13:42:50.744Z  INFO 1 --- [diabetes-risk-service] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-26T13:43:31.010Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Starting DiabetesRiskServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T13:43:31.018Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T13:43:36.170Z  INFO 1 --- [diabetes-risk-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=169ddeb1-f7a0-30b6-9792-fb39dc4af774
+2025-05-26T13:43:37.644Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T13:43:37.714Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T13:43:37.721Z  INFO 1 --- [diabetes-risk-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-05-26T13:43:37.996Z  INFO 1 --- [diabetes-risk-service] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T13:43:38.001Z  INFO 1 --- [diabetes-risk-service] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6774 ms
+2025-05-26T13:43:44.663Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T13:43:44.819Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Configuring security filter chain...
+2025-05-26T13:43:44.935Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.config.SecurityConfig              : Security filter chain configured successfully.
+2025-05-26T13:43:45.607Z  INFO 1 --- [diabetes-risk-service] [main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-05-26T13:43:47.066Z  INFO 1 --- [diabetes-risk-service] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T13:43:47.188Z  INFO 1 --- [diabetes-risk-service] [main] c.g.d.DiabetesRiskServiceApplication     : Started DiabetesRiskServiceApplication in 18.291 seconds (process running for 21.309)

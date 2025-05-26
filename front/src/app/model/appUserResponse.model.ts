@@ -5,5 +5,6 @@ export interface AppUserResponse{
     email:string
     role:string
     active:boolean
+    password:string
     status: 'ACTIF' | 'INACTIF'
 }

@@ -42,3 +42,9 @@ info:
   title: GlucoVision API
   version: v1
   description: Diabetes Risk Management API.
+
+logging:
+  file:
+    name: /app/logs/diabetes-risk-service.log
+  level:
+    root: INFO

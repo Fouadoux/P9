@@ -45,3 +45,9 @@ info:
   title: GlucoVision API
   version: v1
   description: API for managing patients.
+
+logging:
+  file:
+    name: /app/logs/patient-service.log
+  level:
+    root: INFO

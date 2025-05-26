@@ -30,10 +30,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(org.springframework.security.authentication.BadCredentialsException.class)
     public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                Map.of("error", "INVALID_CREDENTIALS", "details", ex.getMessage())
-        );
+        String code = ex.getMessage().equals("INVALID_PASSWORD") ? "INVALID_PASSWORD" : "INVALID_CREDENTIALS";
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", code, "details", "Invalid email or password"));
     }
+
 
     @ExceptionHandler(IllegalArgumentException .class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException (IllegalArgumentException  ex) {

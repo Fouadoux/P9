@@ -97,6 +97,11 @@ export class EditDialogComponent<T extends Record<string, any>> {
    * Emits the updated data and closes the dialog if the form is valid.
    */
   handleSave() {
+    const data = this.form.value;
+    if (!data.password) {
+      delete data.password;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

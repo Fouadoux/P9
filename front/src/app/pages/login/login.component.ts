@@ -72,15 +72,23 @@ export class LoginComponent {
           this.router.navigate(['/patients']);
         }
       },
-      error: (err) => {
-        if (err.error?.error === 'DISABLED_ACCOUNT') {
-          this.router.navigate(['/account-disabled']);
-        } else if (err.error?.error === 'INVALID_PASSWORD') {
-          this.errorMessage.set("Mot de passe incorrect.");
-        } else {
-          this.errorMessage.set("Identifiants incorrects.");
-        }
-      }
+    error: (err) => {
+  switch (err.error?.error) {
+    case 'DISABLED_ACCOUNT':
+      this.router.navigate(['/account-disabled']);
+      break;
+    case 'INVALID_PASSWORD':
+      this.errorMessage.set("Mot de passe incorrect.");
+      break;
+    case 'INVALID_CREDENTIALS':
+      this.errorMessage.set("Identifiants incorrects.");
+      break;
+    default:
+      this.errorMessage.set("Une erreur inattendue est survenue.");
+      break;
+  }
+}
+
     });
   }
 

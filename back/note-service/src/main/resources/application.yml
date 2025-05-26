@@ -43,3 +43,9 @@ info:
   title: GlucoVision API
   version: v1
   description: API for managing medical notes.
+
+logging:
+  file:
+    name: /app/logs/note-service.log
+  level:
+    root: INFO

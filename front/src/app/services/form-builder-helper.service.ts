@@ -17,7 +17,7 @@ export class FormBuilderHelperService {
    */
   public readonly fieldsOrderMap: Record<string, string[]> = {
     patient: ['firstName', 'lastName', 'birthDate', 'gender', 'address', 'phone'],
-    user: ['firstName', 'lastName', 'email', 'role'],
+    user: ['firstName', 'lastName', 'email', 'role','password'],
     note: ['comments']
   };
 
@@ -51,12 +51,6 @@ export class FormBuilderHelperService {
     const fieldsOrder = this.fieldsOrderMap[type];
     const requiredFields = this.requiredFieldsMap[type];
 
-  /*  for (const key of Object.keys(obj)) {
-      group[key] = requiredFields.includes(key)
-        ? this.fb.control(obj[key], Validators.required)
-        : this.fb.control(obj[key]);
-    }
-        */
 
 for (const key of Object.keys(obj)) {
   const validators = [];
@@ -65,15 +59,19 @@ for (const key of Object.keys(obj)) {
     validators.push(Validators.required);
   }
 
+ 
+
   // Validation spécifique : numéro de téléphone = exactement 10 chiffres
   if (key === 'phone') {
     validators.push(Validators.pattern(/^\d{10}$/));
   }
 
+  if (key === 'password') {
+    validators.push(Validators.pattern(/^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{9,}$/));
+  }
+
   group[key] = this.fb.control(obj[key], validators);
-}
-
-
+  }
 
     return this.fb.group(group);
   }
