@@ -809,3 +809,243 @@ Using generated security password: 202e248d-9477-40dd-a331-b8d069a23e78
 2025-05-26T13:46:08.285Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
 2025-05-26T13:46:50.252Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: POST /api/auth/login
 2025-05-26T13:46:50.254Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: POST /api/auth/login
+2025-05-26T15:07:23.847Z  INFO 1 --- [gateway-service] [SpringApplicationShutdownHook] o.s.b.w.embedded.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T15:07:23.998Z  INFO 1 --- [gateway-service] [netty-shutdown] o.s.b.w.embedded.netty.GracefulShutdown  : Graceful shutdown complete
+2025-05-26T15:16:49.286Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Starting GatewayServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T15:16:49.342Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T15:17:00.155Z  INFO 1 --- [gateway-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=2a279bc5-4219-3248-a97e-3c0524675619
+2025-05-26T15:17:02.409Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T15:17:02.413Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] ✅ JwtAuthenticationFilter successfully injected.
+2025-05-26T15:17:02.444Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : 🔧 Initializing global CORS configuration...
+2025-05-26T15:17:02.495Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : ✅ Global CORS configuration successfully registered.
+2025-05-26T15:17:02.514Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔀 Initializing route mappings...
+2025-05-26T15:17:02.563Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔐 Registering JwtAuthenticationFilter as GlobalFilter
+2025-05-26T15:17:02.567Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T15:17:03.018Z  INFO 1 --- [gateway-service] [main] ctiveUserDetailsServiceAutoConfiguration : 
+
+Using generated security password: e6123890-9f28-4c68-9552-23c6c6ef3afa
+
+2025-05-26T15:17:03.820Z  INFO 1 --- [gateway-service] [main] c.g.g.configuration.SecurityConfig       : [GATEWAY SECURITY] 🔐 Initializing WebFlux security configuration
+2025-05-26T15:17:07.172Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2025-05-26T15:17:07.180Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2025-05-26T15:17:07.187Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2025-05-26T15:17:07.191Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2025-05-26T15:17:07.193Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2025-05-26T15:17:07.198Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2025-05-26T15:17:07.203Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2025-05-26T15:17:07.211Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2025-05-26T15:17:07.217Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2025-05-26T15:17:07.219Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2025-05-26T15:17:07.232Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-26T15:17:07.236Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-26T15:17:07.239Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2025-05-26T15:17:07.241Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-26T15:17:09.209Z  INFO 1 --- [gateway-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T15:17:13.169Z  INFO 1 --- [gateway-service] [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080 (http)
+2025-05-26T15:17:13.452Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Started GatewayServiceApplication in 28.457 seconds (process running for 32.337)
+2025-05-26T15:18:18.124Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: POST /api/auth/login
+2025-05-26T15:18:18.130Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: POST /api/auth/login
+2025-05-26T15:18:21.547Z  INFO 1 --- [gateway-service] [parallel-4] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T15:18:21.677Z  INFO 1 --- [gateway-service] [parallel-4] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:21.685Z  INFO 1 --- [gateway-service] [parallel-4] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T15:18:21.695Z  INFO 1 --- [gateway-service] [parallel-4] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:24.572Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:24.586Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:24.588Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:24.601Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:43.957Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:43.978Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:43.979Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:43.996Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:44.004Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:44.016Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:44.018Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:44.033Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:46.744Z  INFO 1 --- [gateway-service] [parallel-13] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:46.748Z  INFO 1 --- [gateway-service] [parallel-14] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:46.752Z  INFO 1 --- [gateway-service] [parallel-13] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:46.754Z  INFO 1 --- [gateway-service] [parallel-13] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:46.772Z  INFO 1 --- [gateway-service] [parallel-14] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:46.778Z  INFO 1 --- [gateway-service] [parallel-14] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:46.784Z  INFO 1 --- [gateway-service] [parallel-13] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:46.785Z  INFO 1 --- [gateway-service] [parallel-14] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.011Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.011Z  INFO 1 --- [gateway-service] [parallel-1] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.019Z  INFO 1 --- [gateway-service] [parallel-1] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.019Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.021Z  INFO 1 --- [gateway-service] [parallel-1] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.021Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.028Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.029Z  INFO 1 --- [gateway-service] [parallel-1] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.255Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.255Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.263Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.264Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.266Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.266Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/search
+2025-05-26T15:18:47.275Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:47.275Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:53.066Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T15:18:53.072Z  INFO 1 --- [gateway-service] [parallel-9] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/notes/patient/1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T15:18:53.074Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:53.077Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T15:18:53.082Z  INFO 1 --- [gateway-service] [parallel-9] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:53.084Z  INFO 1 --- [gateway-service] [parallel-9] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/notes/patient/1287c5a3-ef61-4e2e-9153-b294d9892d74
+2025-05-26T15:18:53.088Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:53.095Z  INFO 1 --- [gateway-service] [parallel-9] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:59.387Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:59.394Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T15:18:59.396Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T15:18:59.405Z  INFO 1 --- [gateway-service] [parallel-10] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:11:12.780Z  INFO 1 --- [gateway-service] [SpringApplicationShutdownHook] o.s.b.w.embedded.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T16:11:12.843Z  INFO 1 --- [gateway-service] [netty-shutdown] o.s.b.w.embedded.netty.GracefulShutdown  : Graceful shutdown complete
+2025-05-26T16:12:26.250Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Starting GatewayServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T16:12:26.261Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:12:32.643Z  INFO 1 --- [gateway-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=2a279bc5-4219-3248-a97e-3c0524675619
+2025-05-26T16:12:34.320Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:12:34.324Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] ✅ JwtAuthenticationFilter successfully injected.
+2025-05-26T16:12:34.341Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : 🔧 Initializing global CORS configuration...
+2025-05-26T16:12:34.394Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : ✅ Global CORS configuration successfully registered.
+2025-05-26T16:12:34.412Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔀 Initializing route mappings...
+2025-05-26T16:12:34.473Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔐 Registering JwtAuthenticationFilter as GlobalFilter
+2025-05-26T16:12:34.490Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:12:35.036Z  INFO 1 --- [gateway-service] [main] ctiveUserDetailsServiceAutoConfiguration : 
+
+Using generated security password: e3c00219-fcd2-4942-9588-8b443c84bb48
+
+2025-05-26T16:12:35.648Z  INFO 1 --- [gateway-service] [main] c.g.g.configuration.SecurityConfig       : [GATEWAY SECURITY] 🔐 Initializing WebFlux security configuration
+2025-05-26T16:12:39.694Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2025-05-26T16:12:39.699Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2025-05-26T16:12:39.702Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2025-05-26T16:12:39.704Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2025-05-26T16:12:39.707Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2025-05-26T16:12:39.716Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2025-05-26T16:12:39.719Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2025-05-26T16:12:39.721Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2025-05-26T16:12:39.725Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2025-05-26T16:12:39.734Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2025-05-26T16:12:39.738Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-26T16:12:39.740Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-26T16:12:39.747Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2025-05-26T16:12:39.755Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-26T16:12:41.217Z  INFO 1 --- [gateway-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T16:12:43.405Z  INFO 1 --- [gateway-service] [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080 (http)
+2025-05-26T16:12:43.764Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Started GatewayServiceApplication in 21.024 seconds (process running for 23.9)
+2025-05-26T16:13:50.674Z  INFO 1 --- [gateway-service] [SpringApplicationShutdownHook] o.s.b.w.embedded.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T16:13:50.683Z  INFO 1 --- [gateway-service] [netty-shutdown] o.s.b.w.embedded.netty.GracefulShutdown  : Graceful shutdown complete
+2025-05-26T16:14:56.980Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Starting GatewayServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T16:14:56.995Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:15:00.382Z  INFO 1 --- [gateway-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=2a279bc5-4219-3248-a97e-3c0524675619
+2025-05-26T16:15:01.486Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:15:01.489Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] ✅ JwtAuthenticationFilter successfully injected.
+2025-05-26T16:15:01.501Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : 🔧 Initializing global CORS configuration...
+2025-05-26T16:15:01.529Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : ✅ Global CORS configuration successfully registered.
+2025-05-26T16:15:01.546Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔀 Initializing route mappings...
+2025-05-26T16:15:01.597Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔐 Registering JwtAuthenticationFilter as GlobalFilter
+2025-05-26T16:15:01.605Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:15:01.856Z  INFO 1 --- [gateway-service] [main] ctiveUserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 922ac035-4a3d-4121-9f90-d27839164667
+
+2025-05-26T16:15:02.533Z  INFO 1 --- [gateway-service] [main] c.g.g.configuration.SecurityConfig       : [GATEWAY SECURITY] 🔐 Initializing WebFlux security configuration
+2025-05-26T16:15:04.905Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2025-05-26T16:15:04.909Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2025-05-26T16:15:04.912Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2025-05-26T16:15:04.917Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2025-05-26T16:15:04.920Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2025-05-26T16:15:04.922Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2025-05-26T16:15:04.925Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2025-05-26T16:15:04.929Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2025-05-26T16:15:04.938Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2025-05-26T16:15:04.940Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2025-05-26T16:15:04.941Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-26T16:15:04.943Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-26T16:15:04.950Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2025-05-26T16:15:04.957Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-26T16:15:06.213Z  INFO 1 --- [gateway-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T16:15:07.685Z  INFO 1 --- [gateway-service] [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080 (http)
+2025-05-26T16:15:07.865Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Started GatewayServiceApplication in 12.762 seconds (process running for 14.713)
+2025-05-26T16:15:47.885Z  INFO 1 --- [gateway-service] [SpringApplicationShutdownHook] o.s.b.w.embedded.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T16:15:47.891Z  INFO 1 --- [gateway-service] [netty-shutdown] o.s.b.w.embedded.netty.GracefulShutdown  : Graceful shutdown complete
+2025-05-26T16:16:52.352Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Starting GatewayServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T16:16:52.376Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:16:58.007Z  INFO 1 --- [gateway-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=2a279bc5-4219-3248-a97e-3c0524675619
+2025-05-26T16:16:59.324Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:16:59.329Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] ✅ JwtAuthenticationFilter successfully injected.
+2025-05-26T16:16:59.340Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : 🔧 Initializing global CORS configuration...
+2025-05-26T16:16:59.382Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : ✅ Global CORS configuration successfully registered.
+2025-05-26T16:16:59.421Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔀 Initializing route mappings...
+2025-05-26T16:16:59.462Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔐 Registering JwtAuthenticationFilter as GlobalFilter
+2025-05-26T16:16:59.468Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:16:59.773Z  INFO 1 --- [gateway-service] [main] ctiveUserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 89407d0b-b909-4f89-9eac-ac148f4d9d42
+
+2025-05-26T16:17:00.554Z  INFO 1 --- [gateway-service] [main] c.g.g.configuration.SecurityConfig       : [GATEWAY SECURITY] 🔐 Initializing WebFlux security configuration
+2025-05-26T16:17:04.061Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2025-05-26T16:17:04.069Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2025-05-26T16:17:04.078Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2025-05-26T16:17:04.088Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2025-05-26T16:17:04.095Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2025-05-26T16:17:04.105Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2025-05-26T16:17:04.118Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2025-05-26T16:17:04.122Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2025-05-26T16:17:04.124Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2025-05-26T16:17:04.135Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2025-05-26T16:17:04.143Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-26T16:17:04.152Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-26T16:17:04.155Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2025-05-26T16:17:04.157Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-26T16:17:05.840Z  INFO 1 --- [gateway-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T16:17:08.107Z  INFO 1 --- [gateway-service] [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080 (http)
+2025-05-26T16:17:08.267Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Started GatewayServiceApplication in 18.586 seconds (process running for 21.4)
+2025-05-26T16:21:03.277Z  INFO 1 --- [gateway-service] [SpringApplicationShutdownHook] o.s.b.w.embedded.netty.GracefulShutdown  : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-26T16:21:03.286Z  INFO 1 --- [gateway-service] [netty-shutdown] o.s.b.w.embedded.netty.GracefulShutdown  : Graceful shutdown complete
+2025-05-26T16:22:15.335Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Starting GatewayServiceApplication v0.0.1-SNAPSHOT using Java 21.0.7 with PID 1 (/app/app.jar started by root in /app)
+2025-05-26T16:22:15.344Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:22:20.578Z  INFO 1 --- [gateway-service] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=2a279bc5-4219-3248-a97e-3c0524675619
+2025-05-26T16:22:21.627Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:22:21.630Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] ✅ JwtAuthenticationFilter successfully injected.
+2025-05-26T16:22:21.654Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : 🔧 Initializing global CORS configuration...
+2025-05-26T16:22:21.680Z  INFO 1 --- [gateway-service] [main] c.g.g.c.CorsGlobalConfiguration          : ✅ Global CORS configuration successfully registered.
+2025-05-26T16:22:21.708Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔀 Initializing route mappings...
+2025-05-26T16:22:21.764Z  INFO 1 --- [gateway-service] [main] c.g.gateway.configuration.GatewayConfig  : [GATEWAY] 🔐 Registering JwtAuthenticationFilter as GlobalFilter
+2025-05-26T16:22:21.768Z  INFO 1 --- [gateway-service] [main] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ JwtAuthenticationFilter initialized.
+2025-05-26T16:22:22.103Z  INFO 1 --- [gateway-service] [main] ctiveUserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 46abfd60-878a-4bd8-bde2-e2a54af5c551
+
+2025-05-26T16:22:22.687Z  INFO 1 --- [gateway-service] [main] c.g.g.configuration.SecurityConfig       : [GATEWAY SECURITY] 🔐 Initializing WebFlux security configuration
+2025-05-26T16:22:25.078Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2025-05-26T16:22:25.080Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2025-05-26T16:22:25.084Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2025-05-26T16:22:25.089Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2025-05-26T16:22:25.092Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2025-05-26T16:22:25.096Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2025-05-26T16:22:25.098Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2025-05-26T16:22:25.100Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2025-05-26T16:22:25.102Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2025-05-26T16:22:25.104Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2025-05-26T16:22:25.104Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-26T16:22:25.105Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-26T16:22:25.106Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2025-05-26T16:22:25.107Z  INFO 1 --- [gateway-service] [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-26T16:22:26.300Z  INFO 1 --- [gateway-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-05-26T16:22:27.997Z  INFO 1 --- [gateway-service] [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080 (http)
+2025-05-26T16:22:28.200Z  INFO 1 --- [gateway-service] [main] c.g.gateway.GatewayServiceApplication    : Started GatewayServiceApplication in 15.125 seconds (process running for 17.653)
+2025-05-26T16:23:34.407Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T16:23:34.556Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:23:34.570Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T16:23:34.582Z  INFO 1 --- [gateway-service] [parallel-2] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:23:40.116Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T16:23:40.116Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T16:23:40.127Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:23:40.127Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:23:40.129Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T16:23:40.130Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/users/page
+2025-05-26T16:23:40.137Z  INFO 1 --- [gateway-service] [parallel-6] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:23:40.140Z  INFO 1 --- [gateway-service] [parallel-5] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:23:44.524Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T16:23:44.534Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
+2025-05-26T16:23:44.537Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] Incoming request: GET /api/patients/page
+2025-05-26T16:23:44.547Z  INFO 1 --- [gateway-service] [parallel-8] c.g.g.security.JwtAuthenticationFilter   : [GATEWAY] ✅ Valid token – User: admin@example.com, Role: ADMIN
